@@ -14,12 +14,20 @@ def app():
     _app = Flask('Testing app')
 
     @_app.route('/author/<int:id>')
-    def author():
-        return 'Fred Douglass'
+    def author(id):
+        return 'Steven Pressfield'
 
-    @_app.route('/authors')
+    @_app.route('/authors/')
     def authors():
-        return 'Steve Pressfield, Chuck Paluhniuk'
+        return 'Steven Pressfield, Chuck Paluhniuk'
+
+    @_app.route('/books/')
+    def books():
+        return 'Legend of Bagger Vance, Fight Club'
+
+    @_app.route('/books/<id>')
+    def book(id):
+        return 'Legend of Bagger Vance'
 
     ctx = _app.test_request_context()
     ctx.push()
@@ -35,6 +43,15 @@ def mockauthor():
     author.id = 123
     author.name = 'Fred Douglass'
     return author
+
+@pytest.fixture
+def mockbook(mockauthor):
+    book = mock.Mock()
+    book.id = 42
+    book.author = mockauthor
+    book.title = 'Legend of Bagger Vance'
+    return book
+
 
 @pytest.mark.parametrize('template', [
     '<id>',
@@ -110,6 +127,17 @@ class AuthorMarshal(Serializer):
         'collection': fields.URL('authors')
     })
 
+class BookMarshal(Serializer):
+    class Meta:
+        fields = ('id', 'title', 'author', 'links')
+
+    author = fields.Nested(AuthorMarshal)
+
+    links = fields.Hyperlinks({
+        'self': fields.URL('book', id='<id>'),
+        'collection': fields.URL('books'),
+    })
+
 def test_serializer(app, mockauthor):
 
     s = AuthorMarshal(mockauthor)
@@ -124,3 +152,10 @@ def test_jsonify(app, mockauthor):
     resp = s.jsonify()
     assert isinstance(resp, BaseResponse)
     assert resp.content_type == 'application/json'
+
+def test_links_within_nested_object(app, mockbook):
+    s = BookMarshal(mockbook)
+    assert s.data['title'] == mockbook.title
+    author = s.data['author']
+    assert author['links']['self'] == url_for('author', id=mockbook.author.id)
+    assert author['links']['collection'] == url_for('authors')
