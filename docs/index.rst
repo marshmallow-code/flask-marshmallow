@@ -16,7 +16,7 @@ Flask-Marshmallow: Flask + marshmallow for beautiful APIs
 .. code-block:: python
 
     from myapp.database import Model, Integer, String, DateTime
-    from flask_marshmallow import Serializer, fields, pprint
+    from flask.ext.marshmallow import Serializer, fields, pprint
 
     class User(Model):
         id = Column(Integer)
