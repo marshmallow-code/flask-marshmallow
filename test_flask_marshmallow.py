@@ -7,7 +7,7 @@ from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
 
 from flask_marshmallow import Serializer, fields, pprint
-from flask_marshmallow.fields import Hyperlinks, URL, tpl, AbsoluteURL
+from flask_marshmallow.fields import Hyperlinks, URL, _tpl, AbsoluteURL
 
 @pytest.yield_fixture(scope='function')
 def app():
@@ -62,9 +62,9 @@ def mockbook(mockauthor):
     '< id >',
 ])
 def test_tpl(template):
-    assert tpl(template) == 'id'
-    assert tpl(template) == 'id'
-    assert tpl(template) == 'id'
+    assert _tpl(template) == 'id'
+    assert _tpl(template) == 'id'
+    assert _tpl(template) == 'id'
 
 def test_url_field(app, mockauthor):
     field = URL('author', id='<id>')

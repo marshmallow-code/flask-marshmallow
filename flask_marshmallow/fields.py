@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
     flask_marshmallow.fields
@@ -25,10 +26,11 @@ if not PY2:
 else:
     iteritems = lambda d: d.iteritems()
 
-
 _tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
 
-def tpl(val):
+
+def _tpl(val):
+    """Return value within ``< >`` if possible, else return ``None``."""
     match = _tpl_pattern.match(val)
     if match:
         return match.groups()[0]
@@ -68,13 +70,14 @@ class URL(fields.Raw):
         param_values = {}
         for name, attr in iteritems(self.params):
             try:
-                attr_name = tpl(str(attr))
+                attr_name = _tpl(str(attr))
                 param_values[name] = self.get_value(key=attr_name, obj=obj)
             except AttributeError:
                 param_values[name] = attr
         return url_for(self.endpoint, **param_values)
 
 Url = URL
+
 
 class AbsoluteURL(URL):
     """Field that outputs the absolute URL for an endpoint."""
@@ -87,6 +90,7 @@ class AbsoluteURL(URL):
         return val
 
 AbsoluteUrl = AbsoluteURL
+
 
 def _rapply(d, func, *args, **kwargs):
     """Apply a function to all values in a dictionary, recursively."""

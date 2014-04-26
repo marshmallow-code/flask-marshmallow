@@ -1,6 +1,6 @@
-=================
+*****************
 Flask-Marshmallow
-=================
+*****************
 
 .. image:: https://travis-ci.org/sloria/flask-marshmallow.png?branch=master
         :target: https://travis-ci.org/sloria/flask-marshmallow
@@ -57,9 +57,9 @@ Get it now
     pip install flask-marshmallow
 
 http://flask-marshmallow.readthedocs.org/
------------------------------------------
+=========================================
 
 License
--------
+=======
 
 MIT licensed. See the bundled `LICENSE <https://github.com/sloria/flask-marshmallow/blob/master/LICENSE>`_ file for more details.
