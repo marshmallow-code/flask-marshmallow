@@ -6,7 +6,7 @@ from flask import Flask, url_for
 from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
 
-from flask_marshmallow import Serializer, fields
+from flask_marshmallow import Serializer, fields, pprint
 from flask_marshmallow.fields import Hyperlinks, URL, tpl, AbsoluteURL
 
 @pytest.yield_fixture(scope='function')
@@ -120,7 +120,9 @@ def test_aliases():
 
 class AuthorMarshal(Serializer):
     class Meta:
-        fields = ('id', 'name', 'links')
+        fields = ('id', 'name', 'absolute_url', 'links')
+
+    absolute_url = AbsoluteURL('author', id='<id>')
 
     links = fields.Hyperlinks({
         'self': fields.URL('author', id='<id>'),
@@ -139,10 +141,11 @@ class BookMarshal(Serializer):
     })
 
 def test_serializer(app, mockauthor):
-
     s = AuthorMarshal(mockauthor)
     assert s.data['id'] == mockauthor.id
     assert s.data['name'] == mockauthor.name
+    assert s.data['absolute_url'] == url_for('author',
+        id=mockauthor.id, _external=True)
     links = s.data['links']
     assert links['self'] == url_for('author', id=mockauthor.id)
     assert links['collection'] == url_for('authors')
