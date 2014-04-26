@@ -58,7 +58,7 @@ class URL(fields.Raw):
         self.params = kwargs
         # All fields need self.attribute
         self.attribute = None
-        self.required = None
+        self.required = False
 
     def format(self, val):
         return val
@@ -147,9 +147,10 @@ class Hyperlinks(fields.Raw):
         :class:`URL <flask_marshmallow.fields.URL>` endpoints.
     """
 
-    def __init__(self, schema, **kwargs):
-        super(Hyperlinks, self).__init__(**kwargs)
+    def __init__(self, schema):
         self.schema = schema
+        self.attribute = None
+        self.required = False
 
     def format(self, val):
         return val
