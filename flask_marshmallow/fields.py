@@ -65,14 +65,22 @@ class URL(fields.Raw):
 
     def output(self, key, obj):
         """Output the URL for the endpoint, given the kwargs passed to
-        ``_init__``.
+        ``__init__``.
         """
         param_values = {}
         for name, attr in iteritems(self.params):
-            try:
-                attr_name = _tpl(str(attr))
-                param_values[name] = self.get_value(key=attr_name, obj=obj)
-            except AttributeError:
+            attr_name = _tpl(str(attr))
+            if attr_name:
+                attribute_value = self.get_value(key=attr_name, obj=obj)
+                if attribute_value:
+                    param_values[name] = attribute_value
+                else:
+                    raise AttributeError(
+                        '{attr_name!r} is not a valid '
+                        'attribute of {obj!r}'.format(
+                            attr_name=attr_name, obj=obj,
+                        ))
+            else:
                 param_values[name] = attr
         return url_for(self.endpoint, **param_values)
 

@@ -39,14 +39,14 @@ def app():
 
 @pytest.fixture
 def mockauthor():
-    author = mock.Mock()
+    author = mock.Mock(spec=['id', 'name'])
     author.id = 123
     author.name = 'Fred Douglass'
     return author
 
 @pytest.fixture
 def mockbook(mockauthor):
-    book = mock.Mock()
+    book = mock.Mock(spec=['id', 'author', 'title'])
     book.id = 42
     book.author = mockauthor
     book.title = 'Legend of Bagger Vance'
@@ -70,6 +70,14 @@ def test_url_field(app, mockauthor):
     field = URL('author', id='<id>')
     result = field.output('url', mockauthor)
     assert result == url_for('author', id=mockauthor.id)
+
+def test_url_field_with_invalid_attribute(app, mockauthor):
+    field = URL('author', id='<not-an-attr>')
+    with pytest.raises(AttributeError) as excinfo:
+        field.output('url', mockauthor)
+    expected_msg = '{0!r} is not a valid attribute of {1!r}'.format(
+        'not-an-attr', mockauthor)
+    assert expected_msg in str(excinfo)
 
 def test_invalid_endpoint_raises_build_error(app, mockauthor):
     field = URL('badendpoint')
