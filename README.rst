@@ -26,10 +26,11 @@ Flask + marshmallow for beautiful APIs
     class UserMarshal(Serializer):
 
         class Meta:
+            # Fields to expose
             fields = ('email', 'date_created', '_links')
 
         _links = fields.Hyperlinks({
-            # Like Flask.url_for, but args can be attribute names
+            # Same params as Flask.url_for, but args can be attribute names
             # surrounded by < >
             'self': fields.URL('author_detail', id='<id>'),
             'collection': fields.URL('authors')
@@ -49,6 +50,11 @@ Flask + marshmallow for beautiful APIs
     #     }
     # }
 
+Get it now
+==========
+::
+
+    pip install flask-marshmallow
 
 http://flask-marshmallow.readthedocs.org/
 -----------------------------------------
