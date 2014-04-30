@@ -7,10 +7,10 @@ Flask-Marshmallow: Flask + marshmallow for beautiful APIs
 `issues <http://github.com/sloria/flask-marshmallow/issues>`_
 
 
-`Flask`_ + `marshmallow`_ for beautiful APIs
-============================================
+Flask + marshmallow for beautiful APIs
+======================================
 
-*Flask-Marshmallow is a thin integration layer for Flask and marshmallow that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.*
+Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
 
 .. code-block:: python

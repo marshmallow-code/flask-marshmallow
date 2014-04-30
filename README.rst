@@ -9,8 +9,7 @@ Flask-Marshmallow
 Flask + marshmallow for beautiful APIs
 ======================================
 
-*Flask-Marshmallow is a thin integration layer for Flask and marshmallow that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.*
-
+Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
 .. code-block:: python
 
@@ -63,3 +62,8 @@ License
 =======
 
 MIT licensed. See the bundled `LICENSE <https://github.com/sloria/flask-marshmallow/blob/master/LICENSE>`_ file for more details.
+
+
+.. _Flask: http://flask.pocoo.org
+.. _marshmallow: http://marshmallow.readthedocs.org
+
