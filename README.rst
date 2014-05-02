@@ -13,9 +13,9 @@ Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framewo
 
 .. code-block:: python
 
-    from flask import Flask
+    from flask import Flask, jsonify
     from your_orm import Model, Column, Integer, String, DateTime
-    from flask.ext.marshmallow import Marshmallow, pprint
+    from flask.ext.marshmallow import Marshmallow
 
     app = Flask(__name__)
     ma = Marshmallow(app)
@@ -35,11 +35,17 @@ Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framewo
             'collection': ma.URL('authors')
         })
 
-    user = User(email='fred@queen.com', password='secret')
-    user.save()
+    @app.route('/api/users/')
+    def authors():
+        users = User.all()
+        serialized = UserMarshal(users, many=True)
+        return jsonify(serialized.data)
 
-    serialized = UserMarshal(user)
-    pprint(serialized.data)
+    @app.route('/api/users/<id>')
+    def author_detail(id):
+        user = User.get(id)
+        serialized = UserMarshal(user)
+        return jsonify(serialized.data)
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
