@@ -14,9 +14,6 @@ import re
 import sys
 
 from marshmallow import fields
-# Make all marshmallow fields importable from flask_marshmallow.fields
-# flask8: noqa
-from marshmallow.fields import *
 from flask import url_for
 
 # Py2/3 compatibility
@@ -28,6 +25,13 @@ else:
 
 _tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
 
+__all__ = [
+    'URL',
+    'Url',
+    'AbsoluteURL',
+    'AbsoluteUrl',
+    'Hyperlinks',
+]
 
 def _tpl(val):
     """Return value within ``< >`` if possible, else return ``None``."""
