@@ -15,27 +15,23 @@ Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framewo
 .. code-block:: python
 
     from flask import Flask
-    from your_orm import Model, Integer, String, DateTime
-    from flask.ext.marshmallow import Marshmallow
+    from your_orm import Model, Column, Integer, String, DateTime
+    from flask.ext.marshmallow import Marshmallow, pprint
 
     app = Flask(__name__)
     ma = Marshmallow(app)
 
     class User(Model):
-        id = Column(Integer)
         email = Column(String)
         password = Column(String)
         date_created = Column(DateTime, auto_now_add=True)
 
     class UserMarshal(ma.Serializer):
-
         class Meta:
             # Fields to expose
             fields = ('email', 'date_created', '_links')
 
         _links = ma.Hyperlinks({
-            # Same params as Flask.url_for, but args can be attribute names
-            # surrounded by < >
             'self': ma.URL('author_detail', id='<id>'),
             'collection': ma.URL('authors')
         })
@@ -62,13 +58,27 @@ Get it now
     pip install flask-marshmallow
 
 
+Configuration
+=============
+
+The following app configuration values exist for Flask-Marshmallow.
+
++------------------------+------------------------------------------------------------------------------------------------------------------------------------+
+| Config value           | Description                                                                                                                        |
++========================+====================================================================================================================================+
+| MARSHMALLOW_STRICT     | Raise a :class:`MarshallingError` if invalid data are passed to a serializer (instead of storing errors on the serializer object). |
++------------------------+------------------------------------------------------------------------------------------------------------------------------------+
+| MARSHMALLOW_DATEFORMAT | Default date format for all :class:`DateTime` fields.                                                                              |
++------------------------+------------------------------------------------------------------------------------------------------------------------------------+
+
+
+
 API
 ===
 
 .. module:: flask_marshmallow
 
-
-.. autoclass:: Serializer
+.. autoclass:: flask_marshmallow.Marshmallow
     :members:
 
 

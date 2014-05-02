@@ -1,10 +1,10 @@
 Changelog
 ---------
 
-0.1.1 (unreleased)
+0.2.0 (unreleased)
 ++++++++++++++++++
 
-* Raise an ``AttributeError`` if a bad attribute argument is passed to ``URL`` field.
+* Implementation as a proper class-based Flask extension.
 
 0.1.0 (2014-04-25)
 ++++++++++++++++++

@@ -3,13 +3,13 @@
     flask.ext.marshmallow
     ~~~~~~~~~~~~~~~~~
 
-    Adds support for the marshmallow serialization library to your application.
+    Integrates the marshmallow serialization library with your Flask application.
 
     :copyright: (c) 2014 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
 
-from flask import jsonify, current_app, json
+from flask import jsonify, current_app
 from marshmallow import (
     Serializer as BaseSerializer,
     fields as base_fields,
@@ -73,6 +73,32 @@ class Serializer(BaseSerializer):
         return jsonify(self.data, *args, **kwargs)
 
 class Marshmallow(object):
+    """Wrapper class that integrates Marshmallow with a Flask application.
+
+    To use it, instantiate with an application::
+
+        app = Flask(__name__)
+        ma = Marshmallow(app)
+
+    The object provides access to the :class:`Serializer` class,
+    all fields in :mod:`marshmallow.fields`, as well as the Flask-specific
+    fields in :mod:`flask_marshmallow.fields`.
+
+    You can declare serializers like so::
+
+        class BookMarshal(ma.Serializer):
+            class Meta:
+                fields = ('id', 'title', 'author', 'links')
+
+            author = ma.Nested(AuthorMarshal)
+
+            links = ma.Hyperlinks({
+                'self': ma.URL('book_detail', id='<id>'),
+                'collection': ma.URL('book_list')
+            })
+
+    :param Flask app: The Flask application object.
+    """
 
     def __init__(self, app=None):
         if app is not None:

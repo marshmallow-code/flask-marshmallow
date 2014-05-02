@@ -4,9 +4,8 @@
     flask_marshmallow.fields
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Field classes for formatting and validating the serialized object.
-
-    All marshmallow fields are importable from this module.
+    Custom, Flask-specific fields. See the following link for a list of all available
+    fields from the marshmallow library.
 
     See http://marshmallow.readthedocs.org/en/latest/api_reference.html#module-marshmallow.fields
 """
