@@ -13,8 +13,12 @@ Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framewo
 
 .. code-block:: python
 
-    from myapp.database import Model, Integer, String, DateTime
-    from flask.ext.marshmallow import Serializer, fields, pprint
+    from flask import Flask
+    from your_orm import Model, Integer, String, DateTime
+    from flask.ext.marshmallow import Marshmallow
+
+    app = Flask(__name__)
+    ma = Marshmallow(app)
 
     class User(Model):
         id = Column(Integer)
@@ -22,17 +26,17 @@ Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framewo
         password = Column(String)
         date_created = Column(DateTime, auto_now_add=True)
 
-    class UserMarshal(Serializer):
+    class UserMarshal(ma.Serializer):
 
         class Meta:
             # Fields to expose
             fields = ('email', 'date_created', '_links')
 
-        _links = fields.Hyperlinks({
+        _links = ma.Hyperlinks({
             # Same params as Flask.url_for, but args can be attribute names
             # surrounded by < >
-            'self': fields.URL('author_detail', id='<id>'),
-            'collection': fields.URL('authors')
+            'self': ma.URL('author_detail', id='<id>'),
+            'collection': ma.URL('authors')
         })
 
     user = User(email='fred@queen.com', password='secret')
