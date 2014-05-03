@@ -137,9 +137,9 @@ def test_deferred_initialization():
     assert 'flask-marshmallow' in app.extensions
 
 def test_aliases(ma):
-    from flask_marshmallow.fields import Url, AbsoluteUrl
-    assert Url == ma.URL
-    assert AbsoluteUrl == ma.AbsoluteURL
+    from flask_marshmallow.fields import Url, AbsoluteUrl, URL, AbsoluteURL
+    assert Url is URL
+    assert AbsoluteUrl is AbsoluteURL
 
 class AuthorMarshal(mar.Serializer):
     class Meta:
