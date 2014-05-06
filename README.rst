@@ -11,29 +11,47 @@ Flask + marshmallow for beautiful APIs
 
 Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
+Create your app
+
 .. code-block:: python
 
     from flask import Flask, jsonify
-    from your_orm import Model, Column, Integer, String, DateTime
     from flask.ext.marshmallow import Marshmallow
 
     app = Flask(__name__)
     ma = Marshmallow(app)
+
+Write your models
+
+.. code-block:: python
+
+    from your_orm import Model, Column, Integer, String, DateTime
 
     class User(Model):
         email = Column(String)
         password = Column(String)
         date_created = Column(DateTime, auto_now_add=True)
 
+
+Define your output format
+
+.. code-block:: python
+
+
     class UserMarshal(ma.Serializer):
         class Meta:
             # Fields to expose
             fields = ('email', 'date_created', '_links')
-
+        # Smart hyperlinking
         _links = ma.Hyperlinks({
             'self': ma.URL('author_detail', id='<id>'),
             'collection': ma.URL('authors')
         })
+
+
+Output the data in your views
+
+.. code-block:: python
 
     @app.route('/api/users/')
     def authors():
