@@ -19,7 +19,7 @@ from marshmallow import (
 from marshmallow.serializer import SerializerOpts as BaseSerializerOpts
 from . import fields
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 __all__ = [

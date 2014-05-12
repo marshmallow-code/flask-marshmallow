@@ -5,6 +5,7 @@ Changelog
 ++++++++++++++++++
 
 * Implementation as a proper class-based Flask extension.
+* Serializer and fields classes are available from the ``Marshmallow`` object.
 
 0.1.0 (2014-04-25)
 ++++++++++++++++++

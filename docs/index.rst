@@ -13,7 +13,7 @@ Flask + marshmallow for beautiful APIs
 Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
 
-Create your app
+Create your app.
 
 .. code-block:: python
 
@@ -23,7 +23,7 @@ Create your app
     app = Flask(__name__)
     ma = Marshmallow(app)
 
-Write your models
+Write your models.
 
 .. code-block:: python
 
@@ -35,7 +35,7 @@ Write your models
         date_created = Column(DateTime, auto_now_add=True)
 
 
-Define your output format
+Define your output format with marshmallow.
 
 .. code-block:: python
 
@@ -51,7 +51,7 @@ Define your output format
         })
 
 
-Output the data in your views
+Output the data in your views.
 
 .. code-block:: python
 
@@ -75,6 +75,13 @@ Output the data in your views
     #     }
     # }
 
+
+Learn More
+==========
+
+To learn more about marshmallow, check out its `docs <http://marshmallow.readthedocs.org/en/latest/>`_.
+
+
 Get it now
 ==========
 
@@ -93,7 +100,7 @@ The following app configuration values exist for Flask-Marshmallow.
 +========================+====================================================================================================================================+
 | MARSHMALLOW_STRICT     | Raise a :class:`MarshallingError` if invalid data are passed to a serializer (instead of storing errors on the serializer object). |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
-| MARSHMALLOW_DATEFORMAT | Default date format for all :class:`DateTime` fields.                                                                              |
+| MARSHMALLOW_DATEFORMAT | Default date format for all :class:`DateTime` fields. Can be a 'iso', 'rfc' or a date format string.                               |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
 
 
