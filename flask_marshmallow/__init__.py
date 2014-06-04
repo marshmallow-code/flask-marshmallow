@@ -70,7 +70,7 @@ class Serializer(BaseSerializer):
     def data(self):
         """The serialized data as an :class:`OrderedDict`.
         """
-        if not self.__data:  # Cache the data
+        if not self._data:  # Cache the data
 
             try:
                 raw_data = self.marshal(self.obj, self.fields, many=self.many)
@@ -86,8 +86,8 @@ class Serializer(BaseSerializer):
 
             if self.extra:
                 raw_data.update(self.extra)
-            self.__data = self.process_data(raw_data)
-        return self.__data
+            self._data = self.process_data(raw_data)
+        return self._data
 
 
     OPTIONS_CLASS = SerializerOpts
