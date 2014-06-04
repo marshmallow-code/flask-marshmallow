@@ -66,6 +66,30 @@ class Serializer(BaseSerializer):
     http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
     """
 
+    @property
+    def data(self):
+        """The serialized data as an :class:`OrderedDict`.
+        """
+        if not self._data:  # Cache the data
+
+            try:
+                raw_data = self.marshal(self.obj, self.fields, many=self.many)
+                if self.errors:
+                    raise exceptions.MarshallingError("An error occurred while serializing your data")
+
+            except exceptions.MarshallingError as err:
+
+                if callable(current_app.ma.error_func):
+                    current_app.ma.error_func(err)
+                else:
+                    raise
+
+            if self.extra:
+                raw_data.update(self.extra)
+            self._data = self.process_data(raw_data)
+        return self._data
+
+
     OPTIONS_CLASS = SerializerOpts
 
     def jsonify(self, *args, **kwargs):
@@ -106,13 +130,22 @@ class Marshmallow(object):
 
         self.Serializer = Serializer
         _attach_fields(self)
+        self.error_func = None
+
+    def error_handler(self, error_func):
+        self.error_func = error_func
+        return error_func
+
+
 
     def init_app(self, app):
         """Initializes the application with the extension.
 
         :param Flask app: The Flask application object.
         """
+
         app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'rfc')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
         app.extensions[EXTENSION_NAME] = self
+        app.extensions['marshmallow'] = self
