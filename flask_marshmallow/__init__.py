@@ -134,6 +134,7 @@ class Marshmallow(object):
 
     def error_handler(self, error_func):
         self.error_func = error_func
+        return error_func
 
 
 
@@ -143,8 +144,8 @@ class Marshmallow(object):
         :param Flask app: The Flask application object.
         """
 
-        app.ma = self
         app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'rfc')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
         app.extensions[EXTENSION_NAME] = self
+        app.extensions['marshmallow'] = self
