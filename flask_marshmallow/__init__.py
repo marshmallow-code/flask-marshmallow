@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
     flask.ext.marshmallow
-    ~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~
 
     Integrates the marshmallow serialization library with your Flask application.
 
@@ -45,7 +45,7 @@ def _attach_fields(obj):
         setattr(obj, attr, getattr(fields, attr))
 
 class SchemaOpts(BaseSchemaOpts):
-    """``class Meta`` options for the Serializer. Defines defaults, pulling
+    """``class Meta`` options for the `Schema` class. Defines defaults, pulling
     values from the current Flask app's config where appropriate.
     """
 

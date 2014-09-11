@@ -9,7 +9,7 @@ Flask-Marshmallow
 Flask + marshmallow for beautiful APIs
 ======================================
 
-Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
+Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (an object serialization/deserialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
 
 Create your app.
@@ -39,7 +39,7 @@ Define your output format with marshmallow.
 .. code-block:: python
 
 
-    class UserMarshal(ma.Serializer):
+    class UserSchema(ma.Schema):
         class Meta:
             # Fields to expose
             fields = ('email', 'date_created', '_links')
@@ -57,13 +57,13 @@ Output the data in your views.
     @app.route('/api/users/')
     def authors():
         users = User.all()
-        serialized = UserMarshal(users, many=True)
+        serialized = UserSchema(users, many=True)
         return jsonify(serialized.data)
 
     @app.route('/api/users/<id>')
     def author_detail(id):
         user = User.get(id)
-        serialized = UserMarshal(user)
+        serialized = UserSchema(user)
         return jsonify(serialized.data)
     # {
     #     "email": "fred@queen.com",

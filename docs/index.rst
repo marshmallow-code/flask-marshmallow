@@ -10,7 +10,7 @@ Flask-Marshmallow: Flask + marshmallow for beautiful APIs
 Flask + marshmallow for beautiful APIs
 ======================================
 
-Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (a serialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
+Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (an object serialization/deserialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
 
 
 Create your app.
@@ -40,7 +40,7 @@ Define your output format with marshmallow.
 .. code-block:: python
 
 
-    class UserMarshal(ma.Serializer):
+    class UserSchema(ma.Schema):
         class Meta:
             # Fields to expose
             fields = ('email', 'date_created', '_links')
@@ -58,13 +58,13 @@ Output the data in your views.
     @app.route('/api/users/')
     def authors():
         users = User.all()
-        serialized = UserMarshal(users, many=True)
+        serialized = UserSchema(users, many=True)
         return jsonify(serialized.data)
 
     @app.route('/api/users/<id>')
     def author_detail(id):
         user = User.get(id)
-        serialized = UserMarshal(user)
+        serialized = UserSchema(user)
         return jsonify(serialized.data)
     # {
     #     "email": "fred@queen.com",
@@ -98,7 +98,7 @@ The following app configuration values exist for Flask-Marshmallow.
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
 | Config value           | Description                                                                                                                        |
 +========================+====================================================================================================================================+
-| MARSHMALLOW_STRICT     | Raise a :class:`MarshallingError` if invalid data are passed to a serializer (instead of storing errors on the serializer object). |
+| MARSHMALLOW_STRICT     | Raise a :exc:`MarshallingError` if invalid data are passed to a `Schema` (instead of storing errors on the serializer object).     |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
 | MARSHMALLOW_DATEFORMAT | Default date format for all :class:`DateTime` fields. Can be a 'iso', 'rfc' or a date format string.                               |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
@@ -108,10 +108,8 @@ The following app configuration values exist for Flask-Marshmallow.
 API
 ===
 
-.. module:: flask_marshmallow
-
-.. autoclass:: flask_marshmallow.Marshmallow
-    :members:
+.. automodule:: flask_marshmallow
+    :inherited-members:
 
 
 .. automodule:: flask_marshmallow.fields
