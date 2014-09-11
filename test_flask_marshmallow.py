@@ -10,7 +10,7 @@ from flask.ext.marshmallow import Marshmallow
 from flask.ext.marshmallow.fields import _tpl
 from flask.ext.marshmallow import exceptions
 
-_app = Flask('Testing app')
+_app = Flask(__name__)
 
 @_app.route('/author/<int:id>')
 def author(id):
