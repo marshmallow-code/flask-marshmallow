@@ -62,9 +62,6 @@ class URL(fields.Field):
     def __init__(self, endpoint, **kwargs):
         self.endpoint = endpoint
         self.params = kwargs
-        # All fields need self.attribute
-        self.attribute = None
-        self.required = False
 
     def _format(self, val):
         return val
@@ -158,8 +155,6 @@ class Hyperlinks(fields.Raw):
 
     def __init__(self, schema):
         self.schema = schema
-        self.attribute = None
-        self.required = False
 
     def _format(self, val):
         return val
