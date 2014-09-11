@@ -4,5 +4,6 @@ python:
   - "3.3"
   - "pypy"
 install:
+  - pip install -U git+https://github.com/sloria/marshmallow.git@release/1.0
   - pip install .
 script:  py.test
