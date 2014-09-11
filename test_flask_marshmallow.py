@@ -76,13 +76,13 @@ def test_tpl(template):
 
 def test_url_field(ma, mockauthor):
     field = ma.URL('author', id='<id>')
-    result = field.output('url', mockauthor)
+    result = field.serialize('url', mockauthor)
     assert result == url_for('author', id=mockauthor.id)
 
 def test_url_field_with_invalid_attribute(ma, mockauthor):
     field = ma.URL('author', id='<not-an-attr>')
     with pytest.raises(AttributeError) as excinfo:
-        field.output('url', mockauthor)
+        field.serialize('url', mockauthor)
     expected_msg = '{0!r} is not a valid attribute of {1!r}'.format(
         'not-an-attr', mockauthor)
     assert expected_msg in str(excinfo)
@@ -90,7 +90,7 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
 def test_invalid_endpoint_raises_build_error(ma, mockauthor):
     field = ma.URL('badendpoint')
     with pytest.raises(BuildError):
-        field.output('url', mockauthor)
+        field.serialize('url', mockauthor)
 
 def test_hyperlinks_field(ma, mockauthor):
     field = ma.Hyperlinks({
@@ -98,7 +98,7 @@ def test_hyperlinks_field(ma, mockauthor):
         'collection': ma.URL('authors')
     })
 
-    result = field.output('_links', mockauthor)
+    result = field.serialize('_links', mockauthor)
     assert result == {
         'self': url_for('author', id=mockauthor.id),
         'collection': url_for('authors')
@@ -115,7 +115,7 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
             'title': 'Authors list'
         }
     })
-    result = field.output('_links', mockauthor)
+    result = field.serialize('_links', mockauthor)
 
     assert result == {
         'self': {'href': url_for('author', id=mockauthor.id),
@@ -126,7 +126,7 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
 
 def test_absolute_url(ma, mockauthor):
     field = ma.AbsoluteURL('authors')
-    result = field.output('abs_url', mockauthor)
+    result = field.serialize('abs_url', mockauthor)
     assert result == url_for('authors', _external=True)
 
 def test_deferred_initialization():
@@ -141,7 +141,7 @@ def test_aliases(ma):
     assert Url is URL
     assert AbsoluteUrl is AbsoluteURL
 
-class AuthorMarshal(mar.Serializer):
+class AuthorSchema(mar.Schema):
     class Meta:
         fields = ('id', 'name', 'absolute_url', 'links')
 
@@ -152,11 +152,11 @@ class AuthorMarshal(mar.Serializer):
         'collection': mar.URL('authors')
     })
 
-class BookMarshal(mar.Serializer):
+class BookSchema(mar.Schema):
     class Meta:
         fields = ('id', 'title', 'author', 'links')
 
-    author = mar.Nested(AuthorMarshal)
+    author = mar.Nested(AuthorSchema)
 
     links = mar.Hyperlinks({
         'self': mar.URL('book', id='<id>'),
@@ -164,7 +164,7 @@ class BookMarshal(mar.Serializer):
     })
 
 def test_serializer(app, mockauthor):
-    s = AuthorMarshal(mockauthor)
+    s = AuthorSchema(mockauthor)
     assert s.data['id'] == mockauthor.id
     assert s.data['name'] == mockauthor.name
     assert s.data['absolute_url'] == url_for('author',
@@ -174,13 +174,13 @@ def test_serializer(app, mockauthor):
     assert links['collection'] == url_for('authors')
 
 def test_jsonify(app, mockauthor):
-    s = AuthorMarshal(mockauthor)
+    s = AuthorSchema(mockauthor)
     resp = s.jsonify()
     assert isinstance(resp, BaseResponse)
     assert resp.content_type == 'application/json'
 
 def test_links_within_nested_object(app, mockbook):
-    s = BookMarshal(mockbook)
+    s = BookSchema(mockbook)
     assert s.data['title'] == mockbook.title
     author = s.data['author']
     assert author['links']['self'] == url_for('author', id=mockbook.author.id)
@@ -198,10 +198,10 @@ class ConfigTestCase:
         ma = Marshmallow()
         ma.init_app(self.app)
 
-        class Marshal(ma.Serializer):
+        class _Schema(ma.Schema):
             meaning = ma.Integer()
 
-        self.Marshal = Marshal
+        self.Schema = _Schema
 
         self.obj = mock.Mock()
         self.obj.meaning = 42
@@ -214,24 +214,24 @@ class TestStrictConfig(ConfigTestCase):
 
     def test_strict_mode_default(self):
         with self.app.test_request_context():
-            serialized = self.Marshal(self.obj)
+            serialized = self.Schema(self.obj)
             assert serialized.strict is True
             with pytest.raises(exceptions.MarshallingError):
                 badobj = mock.Mock()
                 badobj.meaning = 'bad'
-                self.Marshal(badobj)
+                self.Schema(badobj)
 
     def test_strict_mode_override(self):
         ma = Marshmallow(self.app)
 
-        class MyMarshal(ma.Serializer):
+        class MySchema(ma.Schema):
             meaning = ma.Integer()
             # override strict mode
             class Meta:
                 strict = False
 
         with self.app.test_request_context():
-            serialized = MyMarshal(self.obj)
+            serialized = MySchema(self.obj)
             assert serialized.strict is False
 
 class TestDateformatConfig(ConfigTestCase):
@@ -241,14 +241,14 @@ class TestDateformatConfig(ConfigTestCase):
 
     def test_dateformat_default(self):
         with self.app.test_request_context():
-            serialized = self.Marshal(self.obj)
+            serialized = self.Schema(self.obj)
             assert serialized.opts.dateformat == 'iso'
 
     def test_dateformat_override(self):
         ma = Marshmallow(self.app)
-        class MyMarshal(self.Marshal):
+        class MySchema(self.Schema):
             class Meta:
                 dateformat = '%d'
         with self.app.test_request_context():
-            s = MyMarshal(self.obj)
+            s = MySchema(self.obj)
             assert s.opts.dateformat == '%d'

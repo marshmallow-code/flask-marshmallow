@@ -4,3 +4,5 @@ sphinx
 wheel
 invoke
 mock
+
+git+https://github.com/sloria/marshmallow.git@release/1.0
