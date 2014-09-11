@@ -80,7 +80,7 @@ class Marshmallow(object):
         app = Flask(__name__)
         ma = Marshmallow(app)
 
-    The object provides access to the :class:`Serializer` class,
+    The object provides access to the :class:`Schema` class,
     all fields in :mod:`marshmallow.fields`, as well as the Flask-specific
     fields in :mod:`flask_marshmallow.fields`.
 
@@ -112,7 +112,7 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
-        app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'rfc')
+        app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'iso')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
         app.extensions[EXTENSION_NAME] = self

@@ -239,12 +239,12 @@ class TestStrictConfig(ConfigTestCase):
 class TestDateformatConfig(ConfigTestCase):
 
     def set_config(self, app):
-        self.app.config['MARSHMALLOW_DATEFORMAT'] = 'iso'
+        self.app.config['MARSHMALLOW_DATEFORMAT'] = 'rfc'
 
     def test_dateformat_default(self):
         with self.app.test_request_context():
             serialized = self.Schema()
-            assert serialized.opts.dateformat == 'iso'
+            assert serialized.opts.dateformat == 'rfc'
 
     def test_dateformat_override(self):
         ma = Marshmallow(self.app)
