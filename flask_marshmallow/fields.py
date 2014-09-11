@@ -13,7 +13,9 @@ import re
 import sys
 
 from marshmallow import fields
+from marshmallow.exceptions import ForcedError
 from flask import url_for
+from werkzeug.routing import BuildError
 
 # Py2/3 compatibility
 PY2 = sys.version_info[0] == 2
@@ -40,7 +42,7 @@ def _tpl(val):
     return None
 
 
-class URL(fields.Raw):
+class URL(fields.Field):
     """Field that outputs the URL for an endpoint. Acts identically to
     Flask's ``url_for`` function, except that arguments can be pulled from the
     object to be serialized.
@@ -55,37 +57,38 @@ class URL(fields.Raw):
         arguments enclosed in `< >` will be interpreted as attributes to pull
         from the object.
     """
+    _CHECK_ATTRIBUTE = False
 
     def __init__(self, endpoint, **kwargs):
         self.endpoint = endpoint
         self.params = kwargs
-        # All fields need self.attribute
-        self.attribute = None
-        self.required = False
 
-    def format(self, val):
+    def _format(self, val):
         return val
 
-    def output(self, key, obj):
+    def _serialize(self, value, key, obj):
         """Output the URL for the endpoint, given the kwargs passed to
         ``__init__``.
         """
         param_values = {}
-        for name, attr in iteritems(self.params):
-            attr_name = _tpl(str(attr))
+        for name, attr_tpl in iteritems(self.params):
+            attr_name = _tpl(str(attr_tpl))
             if attr_name:
-                attribute_value = self.get_value(key=attr_name, obj=obj)
+                attribute_value = self.get_value(attr=attr_name, obj=obj)
                 if attribute_value:
                     param_values[name] = attribute_value
                 else:
-                    raise AttributeError(
+                    raise ForcedError(AttributeError(
                         '{attr_name!r} is not a valid '
                         'attribute of {obj!r}'.format(
                             attr_name=attr_name, obj=obj,
-                        ))
+                        )))
             else:
-                param_values[name] = attr
-        return url_for(self.endpoint, **param_values)
+                param_values[name] = attr_tpl
+        try:
+            return url_for(self.endpoint, **param_values)
+        except BuildError as err:  # Make sure BuildErrors are raised
+            raise ForcedError(err)
 
 Url = URL
 
@@ -97,7 +100,7 @@ class AbsoluteURL(URL):
         kwargs['_external'] = True
         URL.__init__(self, endpoint=endpoint, **kwargs)
 
-    def format(self, val):
+    def _format(self, val):
         return val
 
 AbsoluteUrl = AbsoluteURL
@@ -115,11 +118,11 @@ def _rapply(d, func, *args, **kwargs):
 
 
 def _url_val(val, key, obj, **kwargs):
-    """Function applied by ``HyperlinksField`` to get the correct value in the
+    """Function applied by `HyperlinksField` to get the correct value in the
     schema.
     """
     if isinstance(val, URL):
-        return val.output(key, obj, **kwargs)
+        return val.serialize(key, obj, **kwargs)
     else:
         return val
 
@@ -137,7 +140,7 @@ class Hyperlinks(fields.Raw):
             }
         })
 
-    ``URL`` objects can be nested within the dictionary. ::
+    `URL` objects can be nested within the dictionary. ::
 
         _links = Hyperlinks({
             'self': {
@@ -152,11 +155,9 @@ class Hyperlinks(fields.Raw):
 
     def __init__(self, schema):
         self.schema = schema
-        self.attribute = None
-        self.required = False
 
-    def format(self, val):
+    def _format(self, val):
         return val
 
-    def output(self, key, obj):
-        return _rapply(self.schema, _url_val, key=key, obj=obj)
+    def _serialize(self, value, attr, obj):
+        return _rapply(self.schema, _url_val, key=attr, obj=obj)

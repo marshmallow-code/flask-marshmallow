@@ -11,22 +11,22 @@
 
 from flask import jsonify, current_app
 from marshmallow import (
-    Serializer as BaseSerializer,
+    Schema as BaseSchema,
     fields as base_fields,
     exceptions,
     pprint
 )
-from marshmallow.serializer import SerializerOpts as BaseSerializerOpts
+from marshmallow.schema import SchemaOpts as BaseSchemaOpts
 from . import fields
 
-__version__ = '0.2.0'
+__version__ = '0.3.0-dev'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 __all__ = [
     'EXTENSION_NAME',
-    'SerializerOpts',
+    'SchemaOpts',
     'Marshmallow',
-    'Serializer',
+    'Schema',
     'fields',
     'exceptions',
     'pprint'
@@ -44,13 +44,13 @@ def _attach_fields(obj):
     for attr in fields.__all__:
         setattr(obj, attr, getattr(fields, attr))
 
-class SerializerOpts(BaseSerializerOpts):
+class SchemaOpts(BaseSchemaOpts):
     """``class Meta`` options for the Serializer. Defines defaults, pulling
     values from the current Flask app's config where appropriate.
     """
 
     def __init__(self, meta):
-        BaseSerializerOpts.__init__(self, meta)
+        BaseSchemaOpts.__init__(self, meta)
         # Use current app's config as defaults
         self.strict = getattr(
             meta, 'strict', current_app.config['MARSHMALLOW_STRICT']
@@ -60,13 +60,13 @@ class SerializerOpts(BaseSerializerOpts):
         )
 
 
-class Serializer(BaseSerializer):
+class Schema(BaseSchema):
     """Base serializer with which to define custom serializers.
 
     http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
     """
 
-    OPTIONS_CLASS = SerializerOpts
+    OPTIONS_CLASS = SchemaOpts
 
     def jsonify(self, *args, **kwargs):
         """Return a JSON response of the serialized data."""
@@ -80,13 +80,13 @@ class Marshmallow(object):
         app = Flask(__name__)
         ma = Marshmallow(app)
 
-    The object provides access to the :class:`Serializer` class,
+    The object provides access to the :class:`Schema` class,
     all fields in :mod:`marshmallow.fields`, as well as the Flask-specific
     fields in :mod:`flask_marshmallow.fields`.
 
-    You can declare serializers like so::
+    You can declare schema like so::
 
-        class BookMarshal(ma.Serializer):
+        class BookSchema(ma.Schema):
             class Meta:
                 fields = ('id', 'title', 'author', 'links')
 
@@ -104,7 +104,7 @@ class Marshmallow(object):
         if app is not None:
             self.init_app(app)
 
-        self.Serializer = Serializer
+        self.Schema = Schema
         _attach_fields(self)
 
     def init_app(self, app):
@@ -112,7 +112,7 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
-        app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'rfc')
+        app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'iso')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
         app.extensions[EXTENSION_NAME] = self
