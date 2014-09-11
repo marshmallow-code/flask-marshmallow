@@ -164,12 +164,13 @@ class BookSchema(mar.Schema):
     })
 
 def test_serializer(app, mockauthor):
-    s = AuthorSchema(mockauthor)
-    assert s.data['id'] == mockauthor.id
-    assert s.data['name'] == mockauthor.name
-    assert s.data['absolute_url'] == url_for('author',
+    s = AuthorSchema()
+    result = s.dump(mockauthor)
+    assert result.data['id'] == mockauthor.id
+    assert result.data['name'] == mockauthor.name
+    assert result.data['absolute_url'] == url_for('author',
         id=mockauthor.id, _external=True)
-    links = s.data['links']
+    links = result.data['links']
     assert links['self'] == url_for('author', id=mockauthor.id)
     assert links['collection'] == url_for('authors')
 
@@ -180,9 +181,10 @@ def test_jsonify(app, mockauthor):
     assert resp.content_type == 'application/json'
 
 def test_links_within_nested_object(app, mockbook):
-    s = BookSchema(mockbook)
-    assert s.data['title'] == mockbook.title
-    author = s.data['author']
+    s = BookSchema()
+    result = s.dump(mockbook)
+    assert result.data['title'] == mockbook.title
+    author = result.data['author']
     assert author['links']['self'] == url_for('author', id=mockbook.author.id)
     assert author['links']['collection'] == url_for('authors')
 
@@ -241,7 +243,7 @@ class TestDateformatConfig(ConfigTestCase):
 
     def test_dateformat_default(self):
         with self.app.test_request_context():
-            serialized = self.Schema(self.obj)
+            serialized = self.Schema()
             assert serialized.opts.dateformat == 'iso'
 
     def test_dateformat_override(self):
