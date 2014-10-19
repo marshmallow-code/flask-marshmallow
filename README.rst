@@ -49,22 +49,25 @@ Define your output format with marshmallow.
             'collection': ma.URL('authors')
         })
 
+    user_schema = UserSchema()
+    users_schema = UserSchema(many=True)
+
 
 Output the data in your views.
 
 .. code-block:: python
 
     @app.route('/api/users/')
-    def authors():
+    def users():
         users = User.all()
-        serialized = UserSchema(users, many=True)
-        return jsonify(serialized.data)
+        result = users_schema.dump(users)
+        return jsonify(result.data)
 
     @app.route('/api/users/<id>')
-    def author_detail(id):
+    def user_detail(id):
         user = User.get(id)
-        serialized = UserSchema(user)
-        return jsonify(serialized.data)
+        result = user_schema.dump(user)
+        return jsonify(result.data)
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",

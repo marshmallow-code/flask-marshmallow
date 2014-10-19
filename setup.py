@@ -7,7 +7,7 @@ from setuptools.command.test import test as TestCommand
 
 REQUIRES = [
     'Flask',
-    # 'marshmallow>=0.5.5',
+    # 'marshmallow>=1.0-a',
 ]
 
 class PyTest(TestCommand):

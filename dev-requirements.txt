@@ -4,5 +4,5 @@ sphinx
 wheel
 invoke
 mock
-
-git+https://github.com/sloria/marshmallow.git@release/1.0
+# TODO: Remove me once 1.0-a is released
+git+https://github.com/sloria/marshmallow.git@release/1.0-a
