@@ -59,8 +59,8 @@ Output the data in your views.
 
     @app.route('/api/users/')
     def users():
-        users = User.all()
-        result = users_schema.dump(users)
+        all_users = User.all()
+        result = users_schema.dump(all_users)
         return jsonify(result.data)
 
     @app.route('/api/users/<id>')

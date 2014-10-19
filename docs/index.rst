@@ -56,16 +56,16 @@ Output the data in your views.
 .. code-block:: python
 
     @app.route('/api/users/')
-    def authors():
-        users = User.all()
-        serialized = UserSchema(users, many=True)
-        return jsonify(serialized.data)
+    def users():
+        all_users = User.all()
+        result = users_schema.dump(all_users)
+        return jsonify(result.data)
 
     @app.route('/api/users/<id>')
-    def author_detail(id):
+    def user_detail(id):
         user = User.get(id)
-        serialized = UserSchema(user)
-        return jsonify(serialized.data)
+        result = user_schema.dump(user)
+        return jsonify(result.data)
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
