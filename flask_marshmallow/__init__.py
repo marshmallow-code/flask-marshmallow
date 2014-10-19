@@ -19,7 +19,7 @@ from marshmallow import (
 from marshmallow.schema import SchemaOpts as BaseSchemaOpts
 from . import fields
 
-__version__ = '0.3.0-dev'
+__version__ = '0.3.0'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 __all__ = [

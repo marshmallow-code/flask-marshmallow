@@ -1,10 +1,10 @@
 Changelog
 ---------
 
-0.3.0 (unreleased)
+0.3.0 (2014-10-19)
 ******************
 
-* Supports marshmallow >= 1.0.
+* Supports marshmallow >= 1.0.0-a.
 
 0.2.0 (2014-05-12)
 ++++++++++++++++++
