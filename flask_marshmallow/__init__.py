@@ -3,7 +3,7 @@
     flask.ext.marshmallow
     ~~~~~~~~~~~~~~~~~~~~~
 
-    Integrates the marshmallow serialization library with your Flask application.
+    Integrates the marshmallow serialization/deserialization library with your Flask application.
 
     :copyright: (c) 2014 by Steven Loria
     :license: MIT, see LICENSE for more details.
