@@ -46,8 +46,8 @@ Define your output format with marshmallow.
             fields = ('email', 'date_created', '_links')
         # Smart hyperlinking
         _links = ma.Hyperlinks({
-            'self': ma.URL('author_detail', id='<id>'),
-            'collection': ma.URL('authors')
+            'self': ma.URLFor('author_detail', id='<id>'),
+            'collection': ma.URLFor('authors')
         })
 
 

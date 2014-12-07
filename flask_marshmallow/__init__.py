@@ -19,7 +19,7 @@ from marshmallow import (
 from marshmallow.schema import SchemaOpts as BaseSchemaOpts
 from . import fields
 
-__version__ = '0.3.0'
+__version__ = '0.4.0-dev'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 __all__ = [
@@ -93,8 +93,8 @@ class Marshmallow(object):
             author = ma.Nested(AuthorMarshal)
 
             links = ma.Hyperlinks({
-                'self': ma.URL('book_detail', id='<id>'),
-                'collection': ma.URL('book_list')
+                'self': ma.URLFor('book_detail', id='<id>'),
+                'collection': ma.URLFor('book_list')
             })
 
     :param Flask app: The Flask application object.

@@ -49,8 +49,8 @@ class URLFor(fields.Field):
 
     Usage: ::
 
-        url = URL('author_get', id='<id>')
-        https_url = URL('author_get', id='<id>', _scheme='https', _external=True)
+        url = URLFor('author_get', id='<id>')
+        https_url = URLFor('author_get', id='<id>', _scheme='https', _external=True)
 
     :param str endpoint: Flask endpoint name.
     :param kwargs: Same keyword arguments as Flask's url_for, except string
