@@ -98,7 +98,7 @@ The following app configuration values exist for Flask-Marshmallow.
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
 | Config value           | Description                                                                                                                        |
 +========================+====================================================================================================================================+
-| MARSHMALLOW_STRICT     | Raise a :exc:`MarshallingError` if invalid data are passed to a `Schema` (instead of storing errors on the serializer object).     |
+| MARSHMALLOW_STRICT     | Raise a an exception if invalid data are passed to a `Schema.load` or `Schema.dump`.                                               |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+
 | MARSHMALLOW_DATEFORMAT | Default date format for all :class:`DateTime` fields. Can be a 'iso', 'rfc' or a date format string.                               |
 +------------------------+------------------------------------------------------------------------------------------------------------------------------------+

@@ -75,12 +75,12 @@ def test_tpl(template):
     assert _tpl(template) == 'id'
 
 def test_url_field(ma, mockauthor):
-    field = ma.URL('author', id='<id>')
+    field = ma.URLFor('author', id='<id>')
     result = field.serialize('url', mockauthor)
     assert result == url_for('author', id=mockauthor.id)
 
 def test_url_field_with_invalid_attribute(ma, mockauthor):
-    field = ma.URL('author', id='<not-an-attr>')
+    field = ma.URLFor('author', id='<not-an-attr>')
     with pytest.raises(AttributeError) as excinfo:
         field.serialize('url', mockauthor)
     expected_msg = '{0!r} is not a valid attribute of {1!r}'.format(
@@ -88,14 +88,14 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
     assert expected_msg in str(excinfo)
 
 def test_invalid_endpoint_raises_build_error(ma, mockauthor):
-    field = ma.URL('badendpoint')
+    field = ma.URLFor('badendpoint')
     with pytest.raises(BuildError):
         field.serialize('url', mockauthor)
 
 def test_hyperlinks_field(ma, mockauthor):
     field = ma.Hyperlinks({
-        'self': ma.URL('author', id='<id>'),
-        'collection': ma.URL('authors')
+        'self': ma.URLFor('author', id='<id>'),
+        'collection': ma.URLFor('authors')
     })
 
     result = field.serialize('_links', mockauthor)
@@ -107,11 +107,11 @@ def test_hyperlinks_field(ma, mockauthor):
 def test_hyperlinks_field_recurses(ma, mockauthor):
     field = ma.Hyperlinks({
         'self': {
-            'href': ma.URL('author', id='<id>'),
+            'href': ma.URLFor('author', id='<id>'),
             'title': 'The author'
         },
         'collection': {
-            'href': ma.URL('authors'),
+            'href': ma.URLFor('authors'),
             'title': 'Authors list'
         }
     })
@@ -125,7 +125,7 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
     }
 
 def test_absolute_url(ma, mockauthor):
-    field = ma.AbsoluteURL('authors')
+    field = ma.AbsoluteURLFor('authors')
     result = field.serialize('abs_url', mockauthor)
     assert result == url_for('authors', _external=True)
 
@@ -137,19 +137,19 @@ def test_deferred_initialization():
     assert 'flask-marshmallow' in app.extensions
 
 def test_aliases(ma):
-    from flask_marshmallow.fields import Url, AbsoluteUrl, URL, AbsoluteURL
-    assert Url is URL
-    assert AbsoluteUrl is AbsoluteURL
+    from flask_marshmallow.fields import UrlFor, AbsoluteUrlFor, URLFor, AbsoluteURLFor
+    assert UrlFor is URLFor
+    assert AbsoluteUrlFor is AbsoluteURLFor
 
 class AuthorSchema(mar.Schema):
     class Meta:
         fields = ('id', 'name', 'absolute_url', 'links')
 
-    absolute_url = mar.AbsoluteURL('author', id='<id>')
+    absolute_url = mar.AbsoluteURLFor('author', id='<id>')
 
     links = mar.Hyperlinks({
-        'self': mar.URL('author', id='<id>'),
-        'collection': mar.URL('authors')
+        'self': mar.URLFor('author', id='<id>'),
+        'collection': mar.URLFor('authors')
     })
 
 class BookSchema(mar.Schema):
@@ -159,8 +159,8 @@ class BookSchema(mar.Schema):
     author = mar.Nested(AuthorSchema)
 
     links = mar.Hyperlinks({
-        'self': mar.URL('book', id='<id>'),
-        'collection': mar.URL('books'),
+        'self': mar.URLFor('book', id='<id>'),
+        'collection': mar.URLFor('books'),
     })
 
 def test_serializer(app, mockauthor):

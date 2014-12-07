@@ -27,10 +27,10 @@ else:
 _tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
 
 __all__ = [
-    'URL',
-    'Url',
-    'AbsoluteURL',
-    'AbsoluteUrl',
+    'URLFor',
+    'UrlFor',
+    'AbsoluteURLFor',
+    'AbsoluteUrlFor',
     'Hyperlinks',
 ]
 
@@ -42,7 +42,7 @@ def _tpl(val):
     return None
 
 
-class URL(fields.Field):
+class URLFor(fields.Field):
     """Field that outputs the URL for an endpoint. Acts identically to
     Flask's ``url_for`` function, except that arguments can be pulled from the
     object to be serialized.
@@ -90,20 +90,20 @@ class URL(fields.Field):
         except BuildError as err:  # Make sure BuildErrors are raised
             raise ForcedError(err)
 
-Url = URL
+UrlFor = URLFor
 
 
-class AbsoluteURL(URL):
+class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
     def __init__(self, endpoint, **kwargs):
         kwargs['_external'] = True
-        URL.__init__(self, endpoint=endpoint, **kwargs)
+        URLFor.__init__(self, endpoint=endpoint, **kwargs)
 
     def _format(self, val):
         return val
 
-AbsoluteUrl = AbsoluteURL
+AbsoluteUrlFor = AbsoluteURLFor
 
 
 def _rapply(d, func, *args, **kwargs):
@@ -121,7 +121,7 @@ def _url_val(val, key, obj, **kwargs):
     """Function applied by `HyperlinksField` to get the correct value in the
     schema.
     """
-    if isinstance(val, URL):
+    if isinstance(val, URLFor):
         return val.serialize(key, obj, **kwargs)
     else:
         return val
