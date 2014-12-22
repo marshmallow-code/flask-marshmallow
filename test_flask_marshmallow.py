@@ -87,6 +87,12 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
         'not-an-attr', mockauthor)
     assert expected_msg in str(excinfo)
 
+def test_url_field_deserialization(ma):
+    field = ma.URLFor('author', id='<not-an-attr>')
+    # noop
+    assert field.deserialize('foo') == 'foo'
+    assert field.deserialize(None) is None
+
 def test_invalid_endpoint_raises_build_error(ma, mockauthor):
     field = ma.URLFor('badendpoint')
     with pytest.raises(BuildError):
@@ -124,10 +130,23 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
                         'title': 'Authors list'}
     }
 
+def test_hyperlinks_field_deserialization(ma):
+    field = ma.Hyperlinks({
+        'href': ma.URLFor('author', id='<id>')
+    })
+    # noop
+    assert field.deserialize('/author') == '/author'
+    assert field.deserialize(None) is None
+
 def test_absolute_url(ma, mockauthor):
     field = ma.AbsoluteURLFor('authors')
     result = field.serialize('abs_url', mockauthor)
     assert result == url_for('authors', _external=True)
+
+def test_absolute_url_deserialization(ma):
+    field = ma.AbsoluteURLFor('authors')
+    assert field.deserialize('foo') == 'foo'
+    assert field.deserialize(None) is None
 
 def test_deferred_initialization():
     app = Flask(__name__)
@@ -163,7 +182,7 @@ class BookSchema(mar.Schema):
         'collection': mar.URLFor('books'),
     })
 
-def test_serializer(app, mockauthor):
+def test_schema(app, mockauthor):
     s = AuthorSchema()
     result = s.dump(mockauthor)
     assert result.data['id'] == mockauthor.id

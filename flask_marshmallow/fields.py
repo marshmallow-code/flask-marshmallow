@@ -62,6 +62,7 @@ class URLFor(fields.Field):
     def __init__(self, endpoint, **kwargs):
         self.endpoint = endpoint
         self.params = kwargs
+        fields.Field.__init__(self, **kwargs)
 
     def _format(self, val):
         return val
@@ -127,7 +128,7 @@ def _url_val(val, key, obj, **kwargs):
         return val
 
 
-class Hyperlinks(fields.Raw):
+class Hyperlinks(fields.Field):
     """Field that outputs a dictionary of hyperlinks,
     given a dictionary schema with :class:`URL <flask_marshmallow.fields.URL>`
     objects as values.
@@ -152,9 +153,11 @@ class Hyperlinks(fields.Raw):
     :param dict schema: A dict that maps names to
         :class:`URL <flask_marshmallow.fields.URL>` endpoints.
     """
+    _CHECK_ATTRIBUTE = False
 
-    def __init__(self, schema):
+    def __init__(self, schema, **kwargs):
         self.schema = schema
+        fields.Field.__init__(self, **kwargs)
 
     def _format(self, val):
         return val
