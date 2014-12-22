@@ -5,6 +5,12 @@ Changelog
 ******************
 
 * *Backwards-incompatible*: Rename ``URL`` and ``AbsoluteURL`` to ``URLFor`` and ``AbsoluteURLFor``, respectively, to prevent overriding marshmallow's ``URL`` field. Thanks @svenstaro for the suggestion.
+* Fix bug that raised an error when deserializing ``Hyperlinks`` and ``URL`` fields. Thanks @raj-kesavan for reporting.
+
+Deprecation:
+
+* ``Schema.jsonify`` is deprecated. Use ``flask.jsonify`` on the result of ``Schema.dump`` instead.
+* The ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` config values are deprecated. Use a base ``Schema`` class instead.
 
 0.3.0 (2014-10-19)
 ******************
