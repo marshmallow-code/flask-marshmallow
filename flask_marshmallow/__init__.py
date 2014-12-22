@@ -8,6 +8,7 @@
     :copyright: (c) 2014 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
+import warnings
 
 from flask import jsonify, current_app
 from marshmallow import (
@@ -69,7 +70,15 @@ class Schema(BaseSchema):
     OPTIONS_CLASS = SchemaOpts
 
     def jsonify(self, *args, **kwargs):
-        """Return a JSON response of the serialized data."""
+        """Return a JSON response of the serialized data.
+
+        .. deprecated:: 0.4.0
+        """
+        warnings.warn(
+            'Schema.jsonify is deprecated. Call jsonify on the '
+            'output of Schema.dump instead.',
+            category=DeprecationWarning
+        )
         return jsonify(self.data, *args, **kwargs)
 
 class Marshmallow(object):
@@ -112,6 +121,16 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
+        if app.config.get('MARSHMALLOW_DATEFORMAT'):
+            warnings.warn('The MARSHMALLOW_DATEFORMAT config value is deprecated. '
+                'Use a base Schema class instead.',
+                category=DeprecationWarning
+            )
+        if app.config.get('MARSHMALLOW_STRICT'):
+            warnings.warn('The MARSHMALLOW_STRICT config value is deprecated. '
+                'Use a base Schema class instead.',
+                category=DeprecationWarning
+            )
         app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'iso')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
