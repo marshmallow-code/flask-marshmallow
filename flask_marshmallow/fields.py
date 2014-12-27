@@ -12,7 +12,7 @@
 import re
 import sys
 
-from marshmallow import fields
+from marshmallow import fields, utils
 from marshmallow.exceptions import ForcedError
 from flask import url_for
 from werkzeug.routing import BuildError
@@ -75,8 +75,8 @@ class URLFor(fields.Field):
         for name, attr_tpl in iteritems(self.params):
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
-                attribute_value = self.get_value(attr=attr_name, obj=obj)
-                if attribute_value:
+                attribute_value = utils.get_value(attr_name, obj, default=fields.missing)
+                if attribute_value is not fields.missing:
                     param_values[name] = attribute_value
                 else:
                     raise ForcedError(AttributeError(
