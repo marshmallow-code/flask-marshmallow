@@ -79,6 +79,10 @@ def test_url_field(ma, mockauthor):
     result = field.serialize('url', mockauthor)
     assert result == url_for('author', id=mockauthor.id)
 
+    mockauthor.id = 0
+    result = field.serialize('url', mockauthor)
+    assert result == url_for('author', id=0)
+
 def test_url_field_with_invalid_attribute(ma, mockauthor):
     field = ma.URLFor('author', id='<not-an-attr>')
     with pytest.raises(AttributeError) as excinfo:
