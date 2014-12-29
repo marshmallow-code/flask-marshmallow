@@ -102,7 +102,7 @@ http://flask-marshmallow.readthedocs.org/
 License
 =======
 
-MIT licensed. See the bundled `LICENSE <https://github.com/sloria/flask-marshmallow/blob/master/LICENSE>`_ file for more details.
+MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flask-marshmallow/blob/master/LICENSE>`_ file for more details.
 
 
 .. _Flask: http://flask.pocoo.org

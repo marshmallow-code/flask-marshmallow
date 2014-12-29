@@ -2,9 +2,9 @@
 Flask-Marshmallow: Flask + marshmallow for beautiful APIs
 *********************************************************
 
-`github <http://github.com/sloria/flask-marshmallow>`_ //
+`github <http://github.com/marshmallow-code/flask-marshmallow>`_ //
 `pypi <http://pypi.python.org/pypi/flask-marshmallow>`_ //
-`issues <http://github.com/sloria/flask-marshmallow/issues>`_
+`issues <http://github.com/marshmallow-code/flask-marshmallow/issues>`_
 
 
 Flask + marshmallow for beautiful APIs

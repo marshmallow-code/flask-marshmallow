@@ -54,7 +54,7 @@ setup(
                         read("HISTORY.rst")),
     author='Steven Loria',
     author_email='sloria1@gmail.com',
-    url='https://github.com/sloria/flask-marshmallow',
+    url='https://github.com/marshmallow-code/flask-marshmallow',
     packages=find_packages(exclude=("test*", )),
     package_dir={'flask-marshmallow': 'flask-marshmallow'},
     include_package_data=True,
