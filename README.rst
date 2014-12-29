@@ -6,8 +6,8 @@ Flask-Marshmallow
     :target: http://badge.fury.io/py/flask-marshmallow
     :alt: Latest version
 
-.. image:: https://travis-ci.org/sloria/flask-marshmallow.png?branch=master
-    :target: https://travis-ci.org/sloria/flask-marshmallow
+.. image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=master
+    :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
 
 
 Flask + marshmallow for beautiful APIs
