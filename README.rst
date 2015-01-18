@@ -99,6 +99,14 @@ Get it now
 http://flask-marshmallow.readthedocs.org/
 =========================================
 
+Project Links
+=============
+
+- Docs: http://flask-marshmallow.rtfd.org/
+- Changelog: http://flask-marshmallow.readthedocs.org/en/latest/changelog.html
+- PyPI: https://pypi.python.org/pypi/flask-marshmallow
+- Issues: https://github.com/marshmallow-code/flask-marshmallow/issues
+
 License
 =======
 

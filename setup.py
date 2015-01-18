@@ -50,8 +50,7 @@ setup(
     name='flask-marshmallow',
     version=__version__,
     description='Flask + marshmallow for beautiful APIs',
-    long_description=(read("README.rst") + '\n\n' +
-                        read("HISTORY.rst")),
+    long_description=read('README.rst'),
     author='Steven Loria',
     author_email='sloria1@gmail.com',
     url='https://github.com/marshmallow-code/flask-marshmallow',
@@ -77,5 +76,4 @@ setup(
     test_suite='test_flask_marshmallow',
     tests_require=['pytest', 'mock'],
     cmdclass={'test': PyTest}
-
 )

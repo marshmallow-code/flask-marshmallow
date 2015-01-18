@@ -1,6 +1,5 @@
 pytest
 tox>=1.5.0
-sphinx
 wheel
 invoke
 mock
