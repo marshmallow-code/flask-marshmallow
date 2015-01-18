@@ -4,6 +4,8 @@ Changelog
 0.5.0 (unreleased)
 ******************
 
+* *Backwards-incompatible*: Remove ``flask_marshmallow.SchemaOpts`` class and remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` (:issue:`8`).
+
 0.4.0 (2014-12-22)
 ******************
 

@@ -10,7 +10,7 @@
 """
 import warnings
 
-from flask import jsonify, current_app
+from flask import jsonify
 from marshmallow import (
     Schema as BaseSchema,
     fields as base_fields,
@@ -45,29 +45,12 @@ def _attach_fields(obj):
     for attr in fields.__all__:
         setattr(obj, attr, getattr(fields, attr))
 
-class SchemaOpts(BaseSchemaOpts):
-    """``class Meta`` options for the `Schema` class. Defines defaults, pulling
-    values from the current Flask app's config where appropriate.
-    """
-
-    def __init__(self, meta):
-        BaseSchemaOpts.__init__(self, meta)
-        # Use current app's config as defaults
-        self.strict = getattr(
-            meta, 'strict', current_app.config['MARSHMALLOW_STRICT']
-        )
-        self.dateformat = getattr(
-            meta, 'dateformat', current_app.config['MARSHMALLOW_DATEFORMAT']
-        )
-
 
 class Schema(BaseSchema):
     """Base serializer with which to define custom serializers.
 
     http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
     """
-
-    OPTIONS_CLASS = SchemaOpts
 
     def jsonify(self, *args, **kwargs):
         """Return a JSON response of the serialized data.
@@ -122,14 +105,14 @@ class Marshmallow(object):
         :param Flask app: The Flask application object.
         """
         if app.config.get('MARSHMALLOW_DATEFORMAT'):
-            warnings.warn('The MARSHMALLOW_DATEFORMAT config value is deprecated. '
+            warnings.warn('The MARSHMALLOW_DATEFORMAT config value has been removed. '
                 'Use a base Schema class instead.',
-                category=DeprecationWarning
+                category=UserWarning
             )
         if app.config.get('MARSHMALLOW_STRICT'):
-            warnings.warn('The MARSHMALLOW_STRICT config value is deprecated. '
+            warnings.warn('The MARSHMALLOW_STRICT config value has been removed. '
                 'Use a base Schema class instead.',
-                category=DeprecationWarning
+                category=UserWarning
             )
         app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'iso')
         app.config.setdefault('MARSHMALLOW_STRICT', False)
