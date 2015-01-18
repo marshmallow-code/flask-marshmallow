@@ -285,3 +285,9 @@ tt.xref, a tt {
 a:hover tt {
     background: #EEE;
 }
+
+/* mods by sloria */
+/* hack to make header links consistently styled */
+.reference.internal em {
+    font-style: normal;
+}
