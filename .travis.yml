@@ -4,6 +4,10 @@ python:
   - "3.3"
   - "3.4"
   - "pypy"
+
 install:
-  - pip install .
+  - pip install -U -r dev-requirements.txt
+  - pip install -U .
+before_script:
+  - flake8 .
 script:  py.test
