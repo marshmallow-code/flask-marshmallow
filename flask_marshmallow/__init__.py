@@ -3,7 +3,8 @@
     flask.ext.marshmallow
     ~~~~~~~~~~~~~~~~~~~~~
 
-    Integrates the marshmallow serialization/deserialization library with your Flask application.
+    Integrates the marshmallow serialization/deserialization library
+    with your Flask application.
 
     :copyright: (c) 2014 by Steven Loria
     :license: MIT, see LICENSE for more details.
@@ -17,15 +18,14 @@ from marshmallow import (
     exceptions,
     pprint
 )
-from marshmallow.schema import SchemaOpts as BaseSchemaOpts
 from . import fields
 
 __version__ = '0.5.0-dev'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
+
 __all__ = [
     'EXTENSION_NAME',
-    'SchemaOpts',
     'Marshmallow',
     'Schema',
     'fields',
@@ -105,12 +105,14 @@ class Marshmallow(object):
         :param Flask app: The Flask application object.
         """
         if app.config.get('MARSHMALLOW_DATEFORMAT'):
-            warnings.warn('The MARSHMALLOW_DATEFORMAT config value has been removed. '
+            warnings.warn(
+                'The MARSHMALLOW_DATEFORMAT config value has been removed. '
                 'Use a base Schema class instead.',
                 category=UserWarning
             )
         if app.config.get('MARSHMALLOW_STRICT'):
-            warnings.warn('The MARSHMALLOW_STRICT config value has been removed. '
+            warnings.warn(
+                'The MARSHMALLOW_STRICT config value has been removed. '
                 'Use a base Schema class instead.',
                 category=UserWarning
             )

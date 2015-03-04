@@ -8,7 +8,6 @@ from werkzeug.wrappers import BaseResponse
 
 from flask.ext.marshmallow import Marshmallow
 from flask.ext.marshmallow.fields import _tpl
-from flask.ext.marshmallow import exceptions
 
 _app = Flask(__name__)
 
