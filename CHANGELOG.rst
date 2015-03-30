@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.5.0 (unreleased)
+0.5.0 (2015-03-29)
 ******************
 
-* *Backwards-incompatible*: Remove ``flask_marshmallow.SchemaOpts`` class and remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` (:issue:`8`).
+* *Backwards-incompatible*: Remove ``flask_marshmallow.SchemaOpts`` class and remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` (:issue:`8`). Prevents a ``RuntimeError`` when instantiating a ``Schema`` outside of a request context.
 
 0.4.0 (2014-12-22)
 ******************
