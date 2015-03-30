@@ -6,7 +6,7 @@ Flask-Marshmallow
     :target: http://badge.fury.io/py/flask-marshmallow
     :alt: Latest version
 
-.. image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=master
+.. image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=pypi
     :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
 
 
@@ -21,7 +21,7 @@ Create your app.
 .. code-block:: python
 
     from flask import Flask, jsonify
-    from flask.ext.marshmallow import Marshmallow
+    from flask_marshmallow import Marshmallow
 
     app = Flask(__name__)
     ma = Marshmallow(app)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    flask.ext.marshmallow
-    ~~~~~~~~~~~~~~~~~~~~~
+    flask_marshmallow
+    ~~~~~~~~~~~~~~~~~
 
     Integrates the marshmallow serialization/deserialization library
     with your Flask application.

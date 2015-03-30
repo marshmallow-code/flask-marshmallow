@@ -6,8 +6,8 @@ from flask import Flask, url_for
 from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
 
-from flask.ext.marshmallow import Marshmallow
-from flask.ext.marshmallow.fields import _tpl
+from flask_marshmallow import Marshmallow
+from flask_marshmallow.fields import _tpl
 
 _app = Flask(__name__)
 

@@ -19,7 +19,7 @@ Create your app.
 .. code-block:: python
 
     from flask import Flask, jsonify
-    from flask.ext.marshmallow import Marshmallow
+    from flask_marshmallow import Marshmallow
 
     app = Flask(__name__)
     ma = Marshmallow(app)
