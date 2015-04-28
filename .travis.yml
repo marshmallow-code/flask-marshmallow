@@ -14,8 +14,8 @@ env:
 
 install:
   - pip install -U -r dev-requirements.txt
-  - pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
   - pip install -U .
+  - pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
 before_script:
   - flake8 .
 script:  py.test
