@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.5.1 (unreleased)
+0.5.1 (2015-04-27)
 ******************
 
-* Fix compatibility with marshmallow>=2.0.0a1.
+* Fix compatibility with marshmallow>=2.0.0.
 
 0.5.0 (2015-03-29)
 ******************

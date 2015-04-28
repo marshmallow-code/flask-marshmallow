@@ -6,7 +6,7 @@
     Integrates the marshmallow serialization/deserialization library
     with your Flask application.
 
-    :copyright: (c) 2014 by Steven Loria
+    :copyright: (c) 2014-2015 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
 import warnings
@@ -20,7 +20,7 @@ from marshmallow import (
 )
 from . import fields
 
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 
