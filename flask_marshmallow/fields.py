@@ -12,10 +12,21 @@
 import re
 import sys
 
-from marshmallow import fields, utils
-from marshmallow.exceptions import ForcedError
 from flask import url_for
 from werkzeug.routing import BuildError
+from marshmallow import fields, utils
+try:
+    from marshmallow import missing
+except ImportError:  # marshmallow 1.2 support
+    from marshmallow.fields import missing
+
+try:
+    # marshmallow 1.2
+    from marshmallow.exceptions import ForcedError
+except ImportError:
+    has_forced_error = False
+else:  # marshmallow 2.0
+    has_forced_error = True
 
 # Py2/3 compatibility
 PY2 = sys.version_info[0] == 2
@@ -75,21 +86,27 @@ class URLFor(fields.Field):
         for name, attr_tpl in iteritems(self.params):
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
-                attribute_value = utils.get_value(attr_name, obj, default=fields.missing)
-                if attribute_value is not fields.missing:
+                attribute_value = utils.get_value(attr_name, obj, default=missing)
+                if attribute_value is not missing:
                     param_values[name] = attribute_value
                 else:
-                    raise ForcedError(AttributeError(
+                    err = AttributeError(
                         '{attr_name!r} is not a valid '
-                        'attribute of {obj!r}'.format(
-                            attr_name=attr_name, obj=obj,
-                        )))
+                        'attribute of {obj!r}'.format(attr_name=attr_name, obj=obj)
+                    )
+                    if has_forced_error:
+                        raise ForcedError(err)
+                    else:
+                        raise err
             else:
                 param_values[name] = attr_tpl
         try:
             return url_for(self.endpoint, **param_values)
         except BuildError as err:  # Make sure BuildErrors are raised
-            raise ForcedError(err)
+            if has_forced_error:
+                raise ForcedError(err)
+            else:
+                raise err
 
 UrlFor = URLFor
 

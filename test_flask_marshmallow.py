@@ -5,9 +5,12 @@ import pytest
 from flask import Flask, url_for
 from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
-
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.fields import _tpl
+
+import marshmallow
+
+IS_MARSHMALLOW_2 = int(marshmallow.__version__.split('.')[0]) >= 2
 
 _app = Flask(__name__)
 
@@ -44,19 +47,25 @@ def ma(app):
     return Marshmallow(app)
 
 
+class MockModel(dict):
+    def __init__(self, *args, **kwargs):
+        super(MockModel, self).__init__(*args, **kwargs)
+        self.__dict__ = self
+
+class Author(MockModel):
+    pass
+
+class Book(MockModel):
+    pass
+
 @pytest.fixture
 def mockauthor():
-    author = mock.Mock(spec=['id', 'name'])
-    author.id = 123
-    author.name = 'Fred Douglass'
+    author = Author(id=123, name='Fred Douglass')
     return author
 
 @pytest.fixture
 def mockbook(mockauthor):
-    book = mock.Mock(spec=['id', 'author', 'title'])
-    book.id = 42
-    book.author = mockauthor
-    book.title = 'Legend of Bagger Vance'
+    book = Book(id=42, author=mockauthor, title='Legend of Bagger Vance')
     return book
 
 
@@ -91,7 +100,7 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
     assert expected_msg in str(excinfo)
 
 def test_url_field_deserialization(ma):
-    field = ma.URLFor('author', id='<not-an-attr>')
+    field = ma.URLFor('author', id='<not-an-attr>', allow_none=True)
     # noop
     assert field.deserialize('foo') == 'foo'
     assert field.deserialize(None) is None
@@ -136,7 +145,7 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
 def test_hyperlinks_field_deserialization(ma):
     field = ma.Hyperlinks({
         'href': ma.URLFor('author', id='<id>')
-    })
+    }, allow_none=True)
     # noop
     assert field.deserialize('/author') == '/author'
     assert field.deserialize(None) is None
@@ -147,7 +156,7 @@ def test_absolute_url(ma, mockauthor):
     assert result == url_for('authors', _external=True)
 
 def test_absolute_url_deserialization(ma):
-    field = ma.AbsoluteURLFor('authors')
+    field = ma.AbsoluteURLFor('authors', allow_none=True)
     assert field.deserialize('foo') == 'foo'
     assert field.deserialize(None) is None
 
@@ -196,9 +205,11 @@ def test_schema(app, mockauthor):
     assert links['self'] == url_for('author', id=mockauthor.id)
     assert links['collection'] == url_for('authors')
 
+@pytest.mark.skipif(IS_MARSHMALLOW_2, reason='jsonify will not work with marshmallow 2 '
+    'because Schema.data was removed')
 def test_jsonify(app, mockauthor):
     s = AuthorSchema(mockauthor)
-    resp = s.jsonify()
+    resp = s.jsonify(mockauthor)
     assert isinstance(resp, BaseResponse)
     assert resp.content_type == 'application/json'
 
