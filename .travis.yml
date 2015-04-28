@@ -6,8 +6,15 @@ python:
   - "3.4"
   - "pypy"
 
+env:
+  # 1.2 line
+  - MARSHMALLOW_VERSION="==1.2.5"
+  # Latest release
+  - MARSHMALLOW_VERSION=""
+
 install:
   - pip install -U -r dev-requirements.txt
+  - pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
   - pip install -U .
 before_script:
   - flake8 .
