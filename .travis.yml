@@ -7,6 +7,8 @@ python:
   - "pypy"
 
 env:
+  # Oldest supported version
+  - MARSHMALLOW_VERSION="==1.0.0-a"
   # 1.2 line
   - MARSHMALLOW_VERSION="==1.2.5"
   # Latest release
