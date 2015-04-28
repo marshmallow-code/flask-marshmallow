@@ -209,7 +209,7 @@ def test_schema(app, mockauthor):
     'because Schema.data was removed')
 def test_jsonify(app, mockauthor):
     s = AuthorSchema(mockauthor)
-    resp = s.jsonify(mockauthor)
+    resp = s.jsonify()
     assert isinstance(resp, BaseResponse)
     assert resp.content_type == 'application/json'
 
