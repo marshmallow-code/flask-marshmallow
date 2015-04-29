@@ -6,12 +6,16 @@ Changelog
 
 Features:
 
-- ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keywork arguments are passed to ``flask.jsonify``.
+- ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keyword arguments are passed to ``flask.jsonify``.
 
 
 Deprecation/Removal:
 
 - Remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` config options.
+
+Other changes:
+
+- Drop support for marshmallow==1.0.0-a. marshmallow==1.0.0 is the minimum supported version.
 
 0.5.1 (2015-04-27)
 ******************
