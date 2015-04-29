@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import mock
 import pytest
 
 from flask import Flask, url_for
@@ -205,11 +204,9 @@ def test_schema(app, mockauthor):
     assert links['self'] == url_for('author', id=mockauthor.id)
     assert links['collection'] == url_for('authors')
 
-@pytest.mark.skipif(IS_MARSHMALLOW_2, reason='jsonify will not work with marshmallow 2 '
-    'because Schema.data was removed')
 def test_jsonify(app, mockauthor):
-    s = AuthorSchema(mockauthor)
-    resp = s.jsonify()
+    s = AuthorSchema()
+    resp = s.jsonify(mockauthor)
     assert isinstance(resp, BaseResponse)
     assert resp.content_type == 'application/json'
 

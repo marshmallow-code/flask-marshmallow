@@ -61,12 +61,13 @@ Output the data in your views.
         all_users = User.all()
         result = users_schema.dump(all_users)
         return jsonify(result.data)
+        # OR
+        # return user_schema.jsonify(all_users)
 
     @app.route('/api/users/<id>')
     def user_detail(id):
         user = User.get(id)
-        result = user_schema.dump(user)
-        return jsonify(result.data)
+        return user_schema.jsonify(user)
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",

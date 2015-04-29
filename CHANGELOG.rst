@@ -4,6 +4,11 @@ Changelog
 0.6.0 (unreleased)
 ******************
 
+Features:
+
+- ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keywork arguments are passed to ``flask.jsonify``.
+
+
 Deprecation/Removal:
 
 - Remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` config options.

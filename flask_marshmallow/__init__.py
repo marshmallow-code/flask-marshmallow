@@ -52,17 +52,20 @@ class Schema(BaseSchema):
     http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
     """
 
-    def jsonify(self, *args, **kwargs):
-        """Return a JSON response of the serialized data.
+    def jsonify(self, obj, many=False, *args, **kwargs):
+        """Return a JSON response containing the serialized data.
 
-        .. deprecated:: 0.4.0
+
+        :param obj: Object to serialize.
+        :param bool many: Set to `True` if `obj` should be serialized as a collection.
+        :param kwargs: Additional keyword arguments passed to `flask.jsonify`.
+
+        .. versionchanged:: 0.6.0
+            Takes the same arguments as `marshmallow.Schema.dump`. Additional
+            keyword arguments are passed to `flask.jsonify`.
         """
-        warnings.warn(
-            'Schema.jsonify is deprecated. Call jsonify on the '
-            'output of Schema.dump instead.',
-            category=DeprecationWarning
-        )
-        return jsonify(self.data, *args, **kwargs)
+        data = self.dump(obj, many=many).data
+        return jsonify(data, *args, **kwargs)
 
 class Marshmallow(object):
     """Wrapper class that integrates Marshmallow with a Flask application.
