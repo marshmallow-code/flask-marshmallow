@@ -9,7 +9,6 @@
     :copyright: (c) 2014-2015 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
-import warnings
 
 from flask import jsonify
 from marshmallow import (
