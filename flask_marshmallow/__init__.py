@@ -20,7 +20,7 @@ from marshmallow import (
 )
 from . import fields
 
-__version__ = '0.5.1'
+__version__ = '0.6.0.dev'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 
