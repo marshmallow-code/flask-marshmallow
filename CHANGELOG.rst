@@ -4,6 +4,10 @@ Changelog
 0.6.0 (unreleased)
 ******************
 
+Deprecation/Removal:
+
+- Remove support for ``MARSHMALLOW_DATEFORMAT`` and ``MARSHMALLOW_STRICT`` config options.
+
 0.5.1 (2015-04-27)
 ******************
 

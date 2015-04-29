@@ -104,19 +104,5 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
-        if app.config.get('MARSHMALLOW_DATEFORMAT'):
-            warnings.warn(
-                'The MARSHMALLOW_DATEFORMAT config value has been removed. '
-                'Use a base Schema class instead.',
-                category=UserWarning
-            )
-        if app.config.get('MARSHMALLOW_STRICT'):
-            warnings.warn(
-                'The MARSHMALLOW_STRICT config value has been removed. '
-                'Use a base Schema class instead.',
-                category=UserWarning
-            )
-        app.config.setdefault('MARSHMALLOW_DATEFORMAT', 'iso')
-        app.config.setdefault('MARSHMALLOW_STRICT', False)
         app.extensions = getattr(app, 'extensions', {})
         app.extensions[EXTENSION_NAME] = self

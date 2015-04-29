@@ -220,23 +220,3 @@ def test_links_within_nested_object(app, mockbook):
     author = result.data['author']
     assert author['links']['self'] == url_for('author', id=mockbook.author.id)
     assert author['links']['collection'] == url_for('authors')
-
-class ConfigTestCase:
-
-    def set_config(self, app):
-        pass
-
-    def setup_method(self, method):
-        self.app = Flask(__name__)
-        self.set_config(self.app)
-
-        ma = Marshmallow()
-        ma.init_app(self.app)
-
-        class _Schema(ma.Schema):
-            meaning = ma.Integer()
-
-        self.Schema = _Schema
-
-        self.obj = mock.Mock()
-        self.obj.meaning = 42
