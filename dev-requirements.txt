@@ -6,3 +6,7 @@ mock
 
 # Syntax checking
 flake8==2.4.0
+
+# Soft requirements
+flask-sqlalchemy
+marshmallow-sqlalchemy

@@ -7,6 +7,8 @@ from werkzeug.wrappers import BaseResponse
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.fields import _tpl
 
+from flask_sqlalchemy import SQLAlchemy
+
 import marshmallow
 
 IS_MARSHMALLOW_2 = int(marshmallow.__version__.split('.')[0]) >= 2
@@ -217,3 +219,57 @@ def test_links_within_nested_object(app, mockbook):
     author = result.data['author']
     assert author['links']['self'] == url_for('author', id=mockbook.author.id)
     assert author['links']['collection'] == url_for('authors')
+
+class TestSQLAlchemy:
+
+    @pytest.yield_fixture()
+    def extapp(self):
+        app_ = Flask('extapp')
+        app_.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        SQLAlchemy(app_)
+        Marshmallow(app_)
+        ctx = _app.test_request_context()
+        ctx.push()
+
+        yield app_
+
+        ctx.pop()
+
+    @pytest.fixture()
+    def db(self, extapp):
+        return extapp.extensions['sqlalchemy'].db
+
+    @pytest.fixture()
+    def extma(self, extapp):
+        return extapp.extensions['flask-marshmallow']
+
+    @pytest.yield_fixture()
+    def models(self, db):
+        class AuthorModel(db.Model):
+            id = db.Column(db.Integer, primary_key=True)
+            name = db.Column(db.String(255))
+
+        db.create_all()
+
+        class _models:
+            def __init__(self):
+                self.Author = AuthorModel
+
+        yield _models()
+        db.drop_all()
+
+    def test_can_declare_model(self, extma, models, db):
+        class AuthorSchema(extma.ModelSchema):
+            class Meta:
+                model = models.Author
+
+        author_schema = AuthorSchema()
+
+        author = models.Author(name='Chuck Paluhniuk')
+
+        db.session.add(author)
+        db.session.commit()
+        result = author_schema.dump(author)
+        assert 'id' in result.data
+        assert 'name' in result.data
+        assert result.data['name'] == 'Chuck Paluhniuk'

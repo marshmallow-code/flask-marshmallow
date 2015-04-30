@@ -19,6 +19,14 @@ from marshmallow import (
 )
 from . import fields
 
+try:
+    import flask_sqlalchemy  # flake8: noqa
+    from . import sqla
+except ImportError:
+    has_sqla = False
+else:
+    has_sqla = True
+
 __version__ = '0.6.0.dev'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
@@ -95,11 +103,12 @@ class Marshmallow(object):
     """
 
     def __init__(self, app=None):
+        self.Schema = Schema
+        if has_sqla:
+            self.ModelSchema = sqla.ModelSchema
+        _attach_fields(self)
         if app is not None:
             self.init_app(app)
-
-        self.Schema = Schema
-        _attach_fields(self)
 
     def init_app(self, app):
         """Initializes the application with the extension.
@@ -107,4 +116,8 @@ class Marshmallow(object):
         :param Flask app: The Flask application object.
         """
         app.extensions = getattr(app, 'extensions', {})
+
+        if has_sqla and 'sqlalchemy' in app.extensions:
+            db = app.extensions['sqlalchemy'].db
+            self.ModelSchema.Meta.sqla_session = db.session
         app.extensions[EXTENSION_NAME] = self
