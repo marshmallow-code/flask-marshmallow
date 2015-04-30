@@ -273,3 +273,6 @@ class TestSQLAlchemy:
         assert 'id' in result.data
         assert 'name' in result.data
         assert result.data['name'] == 'Chuck Paluhniuk'
+
+        resp = author_schema.jsonify(author)
+        assert isinstance(resp, BaseResponse)

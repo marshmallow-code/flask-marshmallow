@@ -10,14 +10,13 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from flask import jsonify
 from marshmallow import (
-    Schema as BaseSchema,
     fields as base_fields,
     exceptions,
     pprint
 )
 from . import fields
+from .schema import Schema
 
 try:
     import flask_sqlalchemy  # flake8: noqa
@@ -53,27 +52,6 @@ def _attach_fields(obj):
         setattr(obj, attr, getattr(fields, attr))
 
 
-class Schema(BaseSchema):
-    """Base serializer with which to define custom serializers.
-
-    http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
-    """
-
-    def jsonify(self, obj, many=False, *args, **kwargs):
-        """Return a JSON response containing the serialized data.
-
-
-        :param obj: Object to serialize.
-        :param bool many: Set to `True` if `obj` should be serialized as a collection.
-        :param kwargs: Additional keyword arguments passed to `flask.jsonify`.
-
-        .. versionchanged:: 0.6.0
-            Takes the same arguments as `marshmallow.Schema.dump`. Additional
-            keyword arguments are passed to `flask.jsonify`.
-        """
-        data = self.dump(obj, many=many).data
-        return jsonify(data, *args, **kwargs)
-
 class Marshmallow(object):
     """Wrapper class that integrates Marshmallow with a Flask application.
 
@@ -99,6 +77,20 @@ class Marshmallow(object):
                 'collection': ma.URLFor('book_list')
             })
 
+
+    In order to integrate with Flask-SQLAlchemy, this extension must by initialized *after*
+    `flask_sqlalchemy.SQLAlchemy`. ::
+
+            db = SQLAlchemy(app)
+            ma = Marshmallow(app)
+
+    This gives you access to `ma.ModelSchema`, which generates a marshmallow
+    `Schema <marshmallow.Schmea>` based on the passed in model. ::
+
+        class AuthorSchema(ma.ModelSchema):
+            class Meta:
+                model = Author
+
     :param Flask app: The Flask application object.
     """
 
@@ -117,6 +109,7 @@ class Marshmallow(object):
         """
         app.extensions = getattr(app, 'extensions', {})
 
+        # If using Flask-SQLAlchemy, attach db.session to ModelSchema
         if has_sqla and 'sqlalchemy' in app.extensions:
             db = app.extensions['sqlalchemy'].db
             self.ModelSchema.Meta.sqla_session = db.session

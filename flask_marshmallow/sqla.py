@@ -2,6 +2,7 @@
 """Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy."""
 
 import marshmallow_sqlalchemy as msqla
+from .schema import Schema
 
 class DummySession(object):
     """Placeholder session object."""
@@ -20,7 +21,7 @@ class SchemaOpts(msqla.SchemaOpts):
             meta.sqla_session = DummySession()
         super(SchemaOpts, self).__init__(meta)
 
-class ModelSchema(msqla.ModelSchema):
+class ModelSchema(msqla.ModelSchema, Schema):
     """ModelSchema that generates fields based on the
     `model` class Meta option, which should be a
     ``db.Model`` class from `flask_sqlalchemy`. Uses the
