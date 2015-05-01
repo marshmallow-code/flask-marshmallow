@@ -143,6 +143,19 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
                         'title': 'Authors list'}
     }
 
+
+def test_hyperlinks_field_recurses_into_list(ma, mockauthor):
+    field = ma.Hyperlinks([
+        {'rel': 'self', 'href': ma.URLFor('author', id='<id>')},
+        {'rel': 'collection', 'href': ma.URLFor('authors')}
+    ])
+    result = field.serialize('_links', mockauthor)
+
+    assert result == [
+        {'rel': 'self', 'href': url_for('author', id=mockauthor.id)},
+        {'rel': 'collection', 'href': url_for('authors')}
+    ]
+
 def test_hyperlinks_field_deserialization(ma):
     field = ma.Hyperlinks({
         'href': ma.URLFor('author', id='<id>')

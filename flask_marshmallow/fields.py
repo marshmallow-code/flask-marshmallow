@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
     flask_marshmallow.fields
@@ -125,7 +124,9 @@ AbsoluteUrlFor = AbsoluteURLFor
 
 
 def _rapply(d, func, *args, **kwargs):
-    """Apply a function to all values in a dictionary, recursively."""
+    """Apply a function to all values in a dictionary or list of dictionaries, recursively."""
+    if isinstance(d, (tuple, list)):
+        return [_rapply(each, func, *args, **kwargs) for each in d]
     if isinstance(d, dict):
         return {
             key: _rapply(value, func, *args, **kwargs)
