@@ -6,6 +6,7 @@ Changelog
 
 Features:
 
+- Add Flask-SQLAlchemy/marshmallow-sqlalchemy support via the ``ModelSchema`` class.
 - ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keyword arguments are passed to ``flask.jsonify``.
 
 

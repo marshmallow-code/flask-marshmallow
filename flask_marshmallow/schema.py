@@ -5,7 +5,7 @@ import marshmallow as ma
 class Schema(ma.Schema):
     """Base serializer with which to define custom serializers.
 
-    http://marshmallow.readthedocs.org/en/latest/api_reference.html#serializer
+    See `marshmallow.Schema` for more details about the `Schema` API.
     """
 
     def jsonify(self, obj, many=False, *args, **kwargs):
