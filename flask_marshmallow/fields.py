@@ -9,11 +9,11 @@
     See the `marshmallow.fields` module for information about the available fields.
 """
 import re
-import sys
 
 from flask import url_for
 from werkzeug.routing import BuildError
 from marshmallow import fields, utils
+from marshmallow.compat import iteritems
 try:
     from marshmallow import missing
 except ImportError:  # marshmallow 1.2 support
@@ -27,12 +27,6 @@ except ImportError:
 else:  # marshmallow 2.0
     has_forced_error = True
 
-# Py2/3 compatibility
-PY2 = sys.version_info[0] == 2
-if not PY2:
-    iteritems = lambda d: iter(d.items())
-else:
-    iteritems = lambda d: d.iteritems()
 
 _tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
 
