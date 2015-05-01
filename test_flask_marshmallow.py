@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import marshmallow
 
-IS_MARSHMALLOW_2 = int(marshmallow.__version__.split('.')[0]) >= 2
+MARSHMALLOW_2 = int(marshmallow.__version__.split('.')[0]) >= 2
 
 _app = Flask(__name__)
 
@@ -233,6 +233,8 @@ def test_links_within_nested_object(app, mockbook):
     assert author['links']['self'] == url_for('author', id=mockbook.author.id)
     assert author['links']['collection'] == url_for('authors')
 
+@pytest.mark.skipif(not MARSHMALLOW_2, reason='marshmallow-sqlalchemy '
+                    'not supported in marshmallow<2.0')
 class TestSQLAlchemy:
 
     @pytest.yield_fixture()
