@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import webbrowser
 
 from invoke import task, run
 
@@ -25,19 +26,39 @@ def clean_docs():
 
 @task
 def browse_docs():
-    run("open %s" % os.path.join(build_dir, 'index.html'))
+    path = os.path.join(build_dir, 'index.html')
+    webbrowser.open_new_tab(path)
 
 @task
-def docs(clean=False, browse=False):
+def docs(clean=False, browse=False, watch=False):
+    """Build the docs."""
     if clean:
         clean_docs()
     run("sphinx-build %s %s" % (docs_dir, build_dir), pty=True)
     if browse:
         browse_docs()
+    if watch:
+        watch_docs()
+
+@task
+def watch_docs():
+    """Run build the docs when a file changes."""
+    try:
+        import sphinx_autobuild  # noqa
+    except ImportError:
+        print('ERROR: watch task requires the sphinx_autobuild package.')
+        print('Install it with:')
+        print('    pip install sphinx-autobuild')
+        sys.exit(1)
+    docs()
+    run('sphinx-autobuild {} {}'.format(docs_dir, build_dir), pty=True)
+
 
 @task
 def readme(browse=False):
     run('rst2html.py README.rst > README.html')
+    if browse:
+        webbrowser.open_new_tab('README.html')
 
 @task
 def publish(test=False):

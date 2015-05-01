@@ -7,7 +7,7 @@
     Custom, Flask-specific fields. See the following link for a list of all available
     fields from the marshmallow library.
 
-    See http://marshmallow.readthedocs.org/en/latest/api_reference.html#module-marshmallow.fields
+    See the `marshmallow.fields` module for information about the available fields.
 """
 import re
 import sys

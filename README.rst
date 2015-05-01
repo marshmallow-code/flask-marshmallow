@@ -13,7 +13,13 @@ Flask-Marshmallow
 Flask + marshmallow for beautiful APIs
 ======================================
 
-Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (an object serialization/deserialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs.
+Flask-Marshmallow is a thin integration layer for `Flask`_ (a Python web framework) and `marshmallow`_ (an object serialization/deserialization library) that adds additional features to marshmallow, including URL and Hyperlinks fields for HATEOAS-ready APIs. It also (optionally) integrates with `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_.
+
+Get it now
+----------
+::
+
+    pip install flask-marshmallow
 
 
 Create your app.
@@ -53,9 +59,6 @@ Define your output format with marshmallow.
             'collection': ma.URLFor('authors')
         })
 
-    user_schema = UserSchema()
-    users_schema = UserSchema(many=True)
-
 
 Output the data in your views.
 
@@ -66,12 +69,13 @@ Output the data in your views.
         all_users = User.all()
         result = users_schema.dump(all_users)
         return jsonify(result.data)
+        # OR
+        # return user_schema.jsonify(all_users)
 
     @app.route('/api/users/<id>')
     def user_detail(id):
         user = User.get(id)
-        result = user_schema.dump(user)
-        return jsonify(result.data)
+        return user_schema.jsonify(user)
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
@@ -82,22 +86,15 @@ Output the data in your views.
     # }
 
 
+http://flask-marshmallow.readthedocs.org/
+=========================================
+
 Learn More
 ==========
 
 To learn more about marshmallow, check out its `docs <http://marshmallow.readthedocs.org/en/latest/>`_.
 
 
-Get it now
-==========
-
-::
-
-    pip install flask-marshmallow
-
-
-http://flask-marshmallow.readthedocs.org/
-=========================================
 
 Project Links
 =============

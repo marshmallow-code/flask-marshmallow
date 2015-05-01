@@ -5,7 +5,19 @@ import os
 sys.path.insert(0, os.path.abspath('..'))
 import flask_marshmallow
 sys.path.append(os.path.abspath("_themes"))
-extensions = ['sphinx.ext.autodoc', 'sphinx_issues']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx_issues'
+]
+
+intersphinx_mapping = {
+    'python': ('http://python.readthedocs.org/en/latest/', None),
+    'flask': ('http://flask.pocoo.org/docs/latest/', None),
+    'flask-sqlalchemy': ('http://flask-sqlalchemy.pocoo.org/latest/', None),
+    'marshmallow': ('http://marshmallow.readthedocs.org/en/latest/', None),
+    'marshmallow-sqlalchemy': ('http://marshmallow-sqlalchemy.readthedocs.org/en/latest/', None),
+}
 
 primary_domain = 'py'
 default_role = 'py:obj'
