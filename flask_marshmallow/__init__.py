@@ -57,6 +57,8 @@ class Marshmallow(object):
 
     To use it, instantiate with an application::
 
+        from flask import Flask
+
         app = Flask(__name__)
         ma = Marshmallow(app)
 
@@ -112,5 +114,5 @@ class Marshmallow(object):
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema
         if has_sqla and 'sqlalchemy' in app.extensions:
             db = app.extensions['sqlalchemy'].db
-            self.ModelSchema.Meta.sqla_session = db.session
+            self.ModelSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self

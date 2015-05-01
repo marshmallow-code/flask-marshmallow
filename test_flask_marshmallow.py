@@ -246,15 +246,23 @@ class TestSQLAlchemy:
     @pytest.yield_fixture()
     def models(self, db):
         class AuthorModel(db.Model):
+            __tablename__ = 'author'
             id = db.Column(db.Integer, primary_key=True)
             name = db.Column(db.String(255))
+
+        class BookModel(db.Model):
+            __tablename__ = 'book'
+            id = db.Column(db.Integer, primary_key=True)
+            title = db.Column(db.String(255))
+            author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
+            author = db.relationship('AuthorModel', backref='books')
 
         db.create_all()
 
         class _models:
             def __init__(self):
                 self.Author = AuthorModel
-
+                self.Book = BookModel
         yield _models()
         db.drop_all()
 
