@@ -8,7 +8,7 @@ Features:
 
 - Add Flask-SQLAlchemy/marshmallow-sqlalchemy support via the ``ModelSchema`` class.
 - ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keyword arguments are passed to ``flask.jsonify``.
-- ``Hyperlinks`` field supports serializing a list of hyperlinks (:issue:`11`). Thanks :user:`royruskj`
+- ``Hyperlinks`` field supports serializing a list of hyperlinks (:issue:`11`). Thanks :user:`royrusso` for the suggestion.
 
 
 Deprecation/Removal:
