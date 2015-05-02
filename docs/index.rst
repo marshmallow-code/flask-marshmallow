@@ -105,10 +105,11 @@ Next, initialize the `SQLAlchemy <flask.ext.sqlalchemy.SQLAlchemy>` and `Marshma
     app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 
+    # Order matters: Initialize SQLAlchemy before Marshmallow
     db = SQLAlchemy(app)
     ma = Marshmallow(app)
 
-.. warning::
+.. admonition:: Note on initialization order
 
     Flask-SQLAlchemy **must** be initialized before Flask-Marshmallow.
 
@@ -122,11 +123,20 @@ Declare your models like normal.
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(255))
 
+        # Used by HyperlinkModelSchema
+        @property
+        def url(self):
+            return url_for('author', id=self.id)
+
     class Book(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(255))
         author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
         author = db.relationship('Author', backref='books')
+
+        @property
+        def url(self):
+            return url_for('book', id=self.id)
 
 
 Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
@@ -160,9 +170,34 @@ You can now use your schema to dump and load your ORM objects.
 
 `ModelSchema <flask_marshmallow.sqla.ModelSchema>` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
 
-- `ModelSchema <flask_marshmallow.sqla.ModelSchema>` uses the scoped session created by Flask-SQLAlchemy.
+- `ModelSchema <flask_marshmallow.sqla.ModelSchema>` uses the scoped session created by Flask-SQLAlchemy by default.
 - `ModelSchema <flask_marshmallow.sqla.ModelSchema>` subclasses `flask_marshmallow.Schema`, so it includes the `jsonify <flask_marshmallow.Schema.jsonify>` method.
 
+
+You can also use `ma.HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` if you want relationships to be represented by hyperlinks rather than primary keys. Models MUST have a ``url`` attribute or property.
+
+
+.. code-block:: python
+
+    class AuthorSchema(ma.HyperlinkModelSchema):
+        class Meta:
+            model = Author
+
+    class BookSchema(ma.HyperlinkModelSchema):
+        class Meta:
+            model = Book
+
+
+.. code-block:: python
+
+    >>> with app.test_request_context():
+    ...     print(author_schema.dump(author).data)
+    {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
+
+
+.. note::
+
+    By default, `HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` serializes to URLs based on an object's ``url`` attribute. You can override this attribute name by setting the ``MARSHMALLOW_LINK_ATTRIBUTE`` config option of your Flask app.
 
 API
 ===

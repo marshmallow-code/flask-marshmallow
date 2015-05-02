@@ -57,7 +57,8 @@ class HyperlinkSchemaOpts(SchemaOpts):
 
 class HyperlinkModelSchema(msqla.ModelSchema):
     """A `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` that serializes relationships
-    to hyperlinks. Related models MUST have a ``url`` attribute or property.
+    to hyperlinks. Related models MUST have a ``url`` attribute or property (unless the
+    ``MARSHMALLOW_LINK_ATTRIBUTE`` app config option is set).
 
     See `marshmallow_sqlalchemy.ModelSchema` for more details
     on the `ModelSchema` API.
