@@ -1,12 +1,12 @@
 Changelog
 =========
 
-0.6.0 (unreleased)
+0.6.0 (2015-05-02)
 ******************
 
 Features:
 
-- Add Flask-SQLAlchemy/marshmallow-sqlalchemy support via the ``ModelSchema`` class.
+- Add Flask-SQLAlchemy/marshmallow-sqlalchemy support via the ``ModelSchema`` and ``HyperlinkModelSchema`` classes.
 - ``Schema.jsonify`` now takes the same arguments as ``marshmallow.Schema.dump``. Additional keyword arguments are passed to ``flask.jsonify``.
 - ``Hyperlinks`` field supports serializing a list of hyperlinks (:issue:`11`). Thanks :user:`royrusso` for the suggestion.
 

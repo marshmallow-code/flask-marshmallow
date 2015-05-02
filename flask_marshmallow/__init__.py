@@ -35,7 +35,7 @@ else:
     else:
         has_sqla = True
 
-__version__ = '0.6.0.dev'
+__version__ = '0.6.0'
 __author__ = 'Steven Loria'
 __license__ = 'MIT'
 
