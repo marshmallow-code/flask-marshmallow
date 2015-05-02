@@ -4,7 +4,7 @@ import pytest
 from flask import Flask, url_for
 from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
-from flask_marshmallow import Marshmallow, sqla
+from flask_marshmallow import Marshmallow
 from flask_marshmallow.fields import _tpl
 
 from flask_sqlalchemy import SQLAlchemy

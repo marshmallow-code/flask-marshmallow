@@ -9,6 +9,7 @@
     :copyright: (c) 2014-2015 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
+import warnings
 
 from marshmallow import (
     fields as base_fields,
@@ -18,13 +19,21 @@ from marshmallow import (
 from . import fields
 from .schema import Schema
 
+has_sqla = False
 try:
     import flask_sqlalchemy  # flake8: noqa
-    from . import sqla
 except ImportError:
     has_sqla = False
 else:
-    has_sqla = True
+    try:
+        from . import sqla
+    except ImportError:
+        warnings.warn(
+            'Flask-SQLAlchemy integration requires '
+            'marshmallow-sqlalchemy to be installed.'
+        )
+    else:
+        has_sqla = True
 
 __version__ = '0.6.0.dev'
 __author__ = 'Steven Loria'
