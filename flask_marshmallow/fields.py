@@ -142,7 +142,7 @@ def _url_val(val, key, obj, **kwargs):
 
 class Hyperlinks(fields.Field):
     """Field that outputs a dictionary of hyperlinks,
-    given a dictionary schema with :class:`URL <flask_marshmallow.fields.URL>`
+    given a dictionary schema with :class:`URLFor <flask_marshmallow.fields.URLFor>`
     objects as values.
 
     Example: ::
@@ -153,7 +153,7 @@ class Hyperlinks(fields.Field):
             }
         })
 
-    `URL` objects can be nested within the dictionary. ::
+    `URLFor` objects can be nested within the dictionary. ::
 
         _links = Hyperlinks({
             'self': {
@@ -163,7 +163,7 @@ class Hyperlinks(fields.Field):
         })
 
     :param dict schema: A dict that maps names to
-        :class:`URL <flask_marshmallow.fields.URL>` endpoints.
+        :class:`URLFor <flask_marshmallow.fields.URLFor>` fields.
     """
     _CHECK_ATTRIBUTE = False
 

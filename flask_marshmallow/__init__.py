@@ -100,6 +100,7 @@ class Marshmallow(object):
         self.Schema = Schema
         if has_sqla:
             self.ModelSchema = sqla.ModelSchema
+            self.HyperlinkModelSchema = sqla.HyperlinkModelSchema
         _attach_fields(self)
         if app is not None:
             self.init_app(app)
@@ -115,4 +116,5 @@ class Marshmallow(object):
         if has_sqla and 'sqlalchemy' in app.extensions:
             db = app.extensions['sqlalchemy'].db
             self.ModelSchema.OPTIONS_CLASS.session = db.session
+            self.HyperlinkModelSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self

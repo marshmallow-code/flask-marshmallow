@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy."""
+"""Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
+`ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
+from Flask-SQLALchemy.
+"""
 
 import marshmallow_sqlalchemy as msqla
 from .schema import Schema
@@ -32,3 +35,29 @@ class ModelSchema(msqla.ModelSchema, Schema):
     on the `ModelSchema` API.
     """
     OPTIONS_CLASS = SchemaOpts
+
+def hyperlink_keygetter(obj):
+    if hasattr(obj, 'url'):
+        return obj.url
+    else:
+        raise AttributeError(
+            'Objects that get serialized by HyperlinkModelSchema must '
+            'have a "url" attribute.'
+        )
+
+class HyperlinkSchemaOpts(SchemaOpts):
+    def __init__(self, meta):
+        if not hasattr(meta, 'keygetter'):
+            meta.keygetter = hyperlink_keygetter
+        super(HyperlinkSchemaOpts, self).__init__(meta)
+
+
+class HyperlinkModelSchema(msqla.ModelSchema):
+    """A `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` that serializes relationships
+    to hyperlinks. Related models MUST have a ``url`` attribute or property.
+
+    See `marshmallow_sqlalchemy.ModelSchema` for more details
+    on the `ModelSchema` API.
+    """
+
+    OPTIONS_CLASS = HyperlinkSchemaOpts

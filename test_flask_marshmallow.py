@@ -4,7 +4,7 @@ import pytest
 from flask import Flask, url_for
 from werkzeug.routing import BuildError
 from werkzeug.wrappers import BaseResponse
-from flask_marshmallow import Marshmallow
+from flask_marshmallow import Marshmallow, sqla
 from flask_marshmallow.fields import _tpl
 
 from flask_sqlalchemy import SQLAlchemy
@@ -265,12 +265,20 @@ class TestSQLAlchemy:
             id = db.Column(db.Integer, primary_key=True)
             name = db.Column(db.String(255))
 
+            @property
+            def url(self):
+                return url_for('author', id=self.id)
+
         class BookModel(db.Model):
             __tablename__ = 'book'
             id = db.Column(db.Integer, primary_key=True)
             title = db.Column(db.String(255))
             author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
             author = db.relationship('AuthorModel', backref='books')
+
+            @property
+            def url(self):
+                return url_for('book', id=self.id)
 
         db.create_all()
 
@@ -281,21 +289,61 @@ class TestSQLAlchemy:
         yield _models()
         db.drop_all()
 
-    def test_can_declare_model(self, extma, models, db):
+    def test_can_declare_model_schemas(self, extma, models, db):
         class AuthorSchema(extma.ModelSchema):
             class Meta:
                 model = models.Author
 
+        class BookSchema(extma.ModelSchema):
+            class Meta:
+                model = models.Book
+
         author_schema = AuthorSchema()
+        book_schema = BookSchema()
 
         author = models.Author(name='Chuck Paluhniuk')
-
         db.session.add(author)
         db.session.commit()
-        result = author_schema.dump(author)
-        assert 'id' in result.data
-        assert 'name' in result.data
-        assert result.data['name'] == 'Chuck Paluhniuk'
+
+        author = models.Author(name='Chuck Paluhniuk')
+        book = models.Book(title='Fight Club', author=author)
+        db.session.add(author)
+        db.session.add(book)
+        db.session.commit()
+
+        author_result = author_schema.dump(author)
+        assert 'id' in author_result.data
+        assert 'name' in author_result.data
+        assert author_result.data['name'] == 'Chuck Paluhniuk'
+        assert author_result.data['books'][0] == book.id
+
+        book_result = book_schema.dump(book)
+        assert 'id' in book_result.data
+        assert book_result.data['author'] == author.id
 
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
+
+    def test_can_declare_hyperlinked_model_schemas(self, extma, models, db):
+        class AuthorSchema(extma.HyperlinkModelSchema):
+            class Meta:
+                model = models.Author
+
+        class BookSchema(extma.HyperlinkModelSchema):
+            class Meta:
+                model = models.Book
+
+        author_schema = AuthorSchema()
+        book_schema = BookSchema()
+
+        author = models.Author(name='Chuck Paluhniuk')
+        book = models.Book(title='Fight Club', author=author)
+        db.session.add(author)
+        db.session.add(book)
+        db.session.commit()
+
+        book_result = book_schema.dump(book)
+        assert book_result.data['author'] == author.url
+
+        author_result = author_schema.dump(author)
+        assert author_result.data['books'][0] == book.url
