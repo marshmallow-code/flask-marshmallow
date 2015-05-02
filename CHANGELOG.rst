@@ -17,7 +17,7 @@ Deprecation/Removal:
 
 Other changes:
 
-- Drop support for marshmallow==1.0.0-a. marshmallow==1.0.0 is the minimum supported version.
+- Drop support for marshmallow<1.2.0.
 
 0.5.1 (2015-04-27)
 ******************
