@@ -86,8 +86,8 @@ class Marshmallow(object):
             db = SQLAlchemy(app)
             ma = Marshmallow(app)
 
-    This gives you access to `ma.ModelSchema`, which generates a marshmallow
-    `Schema <marshmallow.Schmea>` based on the passed in model. ::
+    This gives you access to `ma.ModelSchema` and `ma.HyperlinkModelSchema`,
+    which generate a marshmallow `Schema <marshmallow.Schema>` based on the passed in model. ::
 
         class AuthorSchema(ma.ModelSchema):
             class Meta:
@@ -110,6 +110,7 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
+        app.config.setdefault('MARSHMALLOW_LINK_ATTRIBUTE', 'url')
         app.extensions = getattr(app, 'extensions', {})
 
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema

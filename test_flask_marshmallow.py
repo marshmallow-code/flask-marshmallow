@@ -243,7 +243,16 @@ class TestSQLAlchemy:
         app_.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         SQLAlchemy(app_)
         Marshmallow(app_)
-        ctx = _app.test_request_context()
+
+        @app_.route('/author/<int:id>')
+        def author(id):
+            return '...view for author {0}...'.format(id)
+
+        @app_.route('/book/<int:id>')
+        def book(id):
+            return '...view for book {0}...'.format(id)
+
+        ctx = app_.test_request_context()
         ctx.push()
 
         yield app_
@@ -269,6 +278,10 @@ class TestSQLAlchemy:
             def url(self):
                 return url_for('author', id=self.id)
 
+            @property
+            def absolute_url(self):
+                return url_for('author', id=self.id, _external=True)
+
         class BookModel(db.Model):
             __tablename__ = 'book'
             id = db.Column(db.Integer, primary_key=True)
@@ -279,6 +292,10 @@ class TestSQLAlchemy:
             @property
             def url(self):
                 return url_for('book', id=self.id)
+
+            @property
+            def absolute_url(self):
+                return url_for('book', id=self.id, _external=True)
 
         db.create_all()
 
@@ -324,7 +341,7 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
-    def test_can_declare_hyperlinked_model_schemas(self, extma, models, db):
+    def test_can_declare_hyperlinked_model_schemas(self, extma, models, db, extapp):
         class AuthorSchema(extma.HyperlinkModelSchema):
             class Meta:
                 model = models.Author
@@ -347,3 +364,11 @@ class TestSQLAlchemy:
 
         author_result = author_schema.dump(author)
         assert author_result.data['books'][0] == book.url
+
+        extapp.config['MARSHMALLOW_LINK_ATTRIBUTE'] = 'absolute_url'
+
+        book_result = book_schema.dump(book)
+        assert book_result.data['author'] == author.absolute_url
+
+        author_result = author_schema.dump(author)
+        assert author_result.data['books'][0] == book.absolute_url

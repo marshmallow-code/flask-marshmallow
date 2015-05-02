@@ -3,6 +3,7 @@
 `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
 from Flask-SQLALchemy.
 """
+from flask import current_app
 
 import marshmallow_sqlalchemy as msqla
 from .schema import Schema
@@ -37,12 +38,14 @@ class ModelSchema(msqla.ModelSchema, Schema):
     OPTIONS_CLASS = SchemaOpts
 
 def hyperlink_keygetter(obj):
-    if hasattr(obj, 'url'):
-        return obj.url
-    else:
+    link_attribute = current_app.config['MARSHMALLOW_LINK_ATTRIBUTE']
+    try:
+        return getattr(obj, link_attribute)
+    except AttributeError:
+        # Reraise with better error message
         raise AttributeError(
             'Objects that get serialized by HyperlinkModelSchema must '
-            'have a "url" attribute.'
+            'have a "{0}" attribute.'.format(link_attribute)
         )
 
 class HyperlinkSchemaOpts(SchemaOpts):
