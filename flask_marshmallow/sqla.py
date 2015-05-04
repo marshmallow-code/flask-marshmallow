@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
-`ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
-from Flask-SQLALchemy.
+"""
+    flask_marshmallow.sqla
+    ~~~~~~~~~~~~~~~~~~~~~~
+
+    Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
+    `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
+    from Flask-SQLALchemy.
 """
 from flask import current_app
 
@@ -17,7 +21,7 @@ class SchemaOpts(msqla.SchemaOpts):
     Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
     placeholder `DummySession` if ``sqla_session`` is not defined on
     class Meta. The actual session from `flask_sqlalchemy` gets bound
-    in `init_app`.
+    in `flask_marshmallow.Marshmallow.init_app`.
     """
     session = DummySession()
 

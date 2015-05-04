@@ -170,7 +170,7 @@ You can now use your schema to dump and load your ORM objects.
 
 `ModelSchema <flask_marshmallow.sqla.ModelSchema>` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
 
-- `ModelSchema <flask_marshmallow.sqla.ModelSchema>` uses the scoped session created by Flask-SQLAlchemy by default.
+- By default, `ModelSchema <flask_marshmallow.sqla.ModelSchema>` uses the scoped session created by Flask-SQLAlchemy.
 - `ModelSchema <flask_marshmallow.sqla.ModelSchema>` subclasses `flask_marshmallow.Schema`, so it includes the `jsonify <flask_marshmallow.Schema.jsonify>` method.
 
 
@@ -204,7 +204,6 @@ API
 
 .. automodule:: flask_marshmallow
     :members:
-
 
 .. automodule:: flask_marshmallow.fields
     :members:
