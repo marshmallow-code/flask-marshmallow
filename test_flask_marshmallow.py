@@ -372,3 +372,9 @@ class TestSQLAlchemy:
 
         author_result = author_schema.dump(author)
         assert author_result.data['books'][0] == book.absolute_url
+
+        author = author_schema.load(author_result.data).data
+        assert type(author) == models.Author
+        assert type(author.books[0]) == models.Book
+        assert author.books[0].title == book.title
+        assert author.books[0].id == book.id

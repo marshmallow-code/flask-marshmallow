@@ -81,7 +81,7 @@ class Marshmallow(object):
             class Meta:
                 fields = ('id', 'title', 'author', 'links')
 
-            author = ma.Nested(AuthorMarshal)
+            author = ma.Nested(AuthorSchema)
 
             links = ma.Hyperlinks({
                 'self': ma.URLFor('book_detail', id='<id>'),
