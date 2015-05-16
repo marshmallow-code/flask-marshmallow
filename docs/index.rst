@@ -56,6 +56,9 @@ Define your output format with marshmallow.
             'self': ma.URLFor('author_detail', id='<id>'),
             'collection': ma.URLFor('authors')
         })
+    
+    user_schema = UserSchema()
+    users_schema = UserSchema(many=True)
 
 
 Output the data in your views.
@@ -66,7 +69,7 @@ Output the data in your views.
     def users():
         all_users = User.all()
         result = users_schema.dump(all_users)
-        return jsonify(result.data)
+        return jsonify({"users": result.data})
         # OR
         # return user_schema.jsonify(all_users)
 
