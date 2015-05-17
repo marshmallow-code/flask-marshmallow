@@ -59,6 +59,9 @@ Define your output format with marshmallow.
             'collection': ma.URLFor('authors')
         })
 
+    user_schema = UserSchema()
+    users_schema = UserSchema(many=True)
+
 
 Output the data in your views.
 
