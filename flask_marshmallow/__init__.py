@@ -118,7 +118,6 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
-        app.config.setdefault('MARSHMALLOW_LINK_ATTRIBUTE', 'url')
         app.extensions = getattr(app, 'extensions', {})
 
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema

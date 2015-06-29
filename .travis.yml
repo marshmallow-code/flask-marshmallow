@@ -16,8 +16,8 @@ install:
   - travis_retry pip install -U -r dev-requirements.txt
   - travis_retry pip install -U .
   - travis_retry pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
-  - travis_retry pip install -U git+https://github.com/jmcarp/marshmallow@set-field-attrs
-  - travis_retry pip install -U git+https://github.com/jmcarp/marshmallow-sqlalchemy@refactor-related
+  - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow@dev
+  - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow-sqlalchemy@dev
 before_script:
   - flake8 .
 script:  py.test
