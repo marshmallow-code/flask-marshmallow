@@ -13,9 +13,11 @@ env:
   - MARSHMALLOW_VERSION=""
 
 install:
-  - pip install -U -r dev-requirements.txt
-  - pip install -U .
-  - pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
+  - travis_retry pip install -U -r dev-requirements.txt
+  - travis_retry pip install -U .
+  - travis_retry pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
+  - travis_retry pip install -U git+https://github.com/jmcarp/marshmallow@set-field-attrs
+  - travis_retry pip install -U git+https://github.com/jmcarp/marshmallow-sqlalchemy@refactor-related
 before_script:
   - flake8 .
 script:  py.test

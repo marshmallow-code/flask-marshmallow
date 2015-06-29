@@ -7,7 +7,8 @@
     `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
     from Flask-SQLALchemy.
 """
-from flask import current_app
+from flask import url_for, current_app
+from six.moves.urllib import parse
 
 import marshmallow_sqlalchemy as msqla
 from .schema import Schema
@@ -41,31 +42,30 @@ class ModelSchema(msqla.ModelSchema, Schema):
     """
     OPTIONS_CLASS = SchemaOpts
 
-def hyperlink_keygetter(obj):
-    link_attribute = current_app.config['MARSHMALLOW_LINK_ATTRIBUTE']
-    try:
-        return getattr(obj, link_attribute)
-    except AttributeError:
-        # Reraise with better error message
-        raise AttributeError(
-            'Objects that get serialized by HyperlinkModelSchema must '
-            'have a "{0}" attribute.'.format(link_attribute)
-        )
+class HyperlinkRelated(msqla.fields.Related):
 
-class HyperlinkSchemaOpts(SchemaOpts):
-    def __init__(self, meta):
-        if not hasattr(meta, 'keygetter'):
-            meta.keygetter = hyperlink_keygetter
-        super(HyperlinkSchemaOpts, self).__init__(meta)
+    def __init__(self, endpoint, url_key='id', external=False, **kwargs):
+        super(HyperlinkRelated, self).__init__(**kwargs)
+        self.endpoint = endpoint
+        self.url_key = url_key
+        self.external = external
 
+    def _serialize(self, value, attr, obj):
+        key = super(HyperlinkRelated, self)._serialize(value, attr, obj)
+        kwargs = {self.url_key: key}
+        return url_for(self.endpoint, _external=self.external, **kwargs)
 
-class HyperlinkModelSchema(msqla.ModelSchema):
-    """A `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` that serializes relationships
-    to hyperlinks. Related models MUST have a ``url`` attribute or property (unless the
-    ``MARSHMALLOW_LINK_ATTRIBUTE`` app config option is set).
+    def _deserialize(self, value):
+        if self.external:
+            parsed = parse.urlparse(value)
+            value = parsed.path
+        endpoint, kwargs = self.adapter.match(value)
+        if endpoint != self.endpoint:
+            raise
+        if self.url_key not in kwargs:
+            raise
+        return super(HyperlinkRelated, self)._deserialize(kwargs[self.url_key])
 
-    See `marshmallow_sqlalchemy.ModelSchema` for more details
-    on the `ModelSchema` API.
-    """
-
-    OPTIONS_CLASS = HyperlinkSchemaOpts
+    @property
+    def adapter(self):
+        return current_app.url_map.bind('')

@@ -8,6 +8,7 @@ from flask_marshmallow import Marshmallow
 from flask_marshmallow.fields import _tpl
 
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow.sqla import HyperlinkRelated
 
 import marshmallow
 
@@ -341,40 +342,62 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
-    def test_can_declare_hyperlinked_model_schemas(self, extma, models, db, extapp):
-        class AuthorSchema(extma.HyperlinkModelSchema):
-            class Meta:
-                model = models.Author
-
-        class BookSchema(extma.HyperlinkModelSchema):
+    def test_hyperlink_related_field(self, extma, models, db, extapp):
+        class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
+            author = HyperlinkRelated('author')
 
-        author_schema = AuthorSchema()
         book_schema = BookSchema()
 
         author = models.Author(name='Chuck Paluhniuk')
         book = models.Book(title='Fight Club', author=author)
         db.session.add(author)
         db.session.add(book)
-        db.session.commit()
+        db.session.flush()
 
         book_result = book_schema.dump(book)
         assert book_result.data['author'] == author.url
 
-        author_result = author_schema.dump(author)
-        assert author_result.data['books'][0] == book.url
+        deserialized = book_schema.load(book_result.data)
+        assert deserialized.data.author == author
 
-        extapp.config['MARSHMALLOW_LINK_ATTRIBUTE'] = 'absolute_url'
+    def test_hyperlink_related_field_external(self, extma, models, db, extapp):
+        class BookSchema(extma.ModelSchema):
+            class Meta:
+                model = models.Book
+            author = HyperlinkRelated('author', external=True)
+
+        book_schema = BookSchema()
+
+        author = models.Author(name='Chuck Paluhniuk')
+        book = models.Book(title='Fight Club', author=author)
+        db.session.add(author)
+        db.session.add(book)
+        db.session.flush()
 
         book_result = book_schema.dump(book)
         assert book_result.data['author'] == author.absolute_url
 
-        author_result = author_schema.dump(author)
-        assert author_result.data['books'][0] == book.absolute_url
+        deserialized = book_schema.load(book_result.data)
+        assert deserialized.data.author == author
 
-        author = author_schema.load(author_result.data).data
-        assert type(author) == models.Author
-        assert type(author.books[0]) == models.Book
-        assert author.books[0].title == book.title
-        assert author.books[0].id == book.id
+    def test_hyperlink_related_field_list(self, extma, models, db, extapp):
+        class AuthorSchema(extma.ModelSchema):
+            class Meta:
+                model = models.Author
+            books = extma.List(HyperlinkRelated('book'))
+
+        author_schema = AuthorSchema()
+
+        author = models.Author(name='Chuck Paluhniuk')
+        book = models.Book(title='Fight Club', author=author)
+        db.session.add(author)
+        db.session.add(book)
+        db.session.flush()
+
+        author_result = author_schema.dump(author)
+        assert author_result.data['books'][0] == book.url
+
+        deserialized = author_schema.load(author_result.data)
+        assert deserialized.data.books[0] == book
