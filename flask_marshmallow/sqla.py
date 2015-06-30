@@ -11,6 +11,7 @@ from flask import url_for, current_app
 from six.moves.urllib import parse
 
 import marshmallow_sqlalchemy as msqla
+from marshmallow.exceptions import ValidationError
 from .schema import Schema
 
 class DummySession(object):
@@ -61,9 +62,16 @@ class HyperlinkRelated(msqla.fields.Related):
             value = parsed.path
         endpoint, kwargs = self.adapter.match(value)
         if endpoint != self.endpoint:
-            raise
+            raise ValidationError(
+                (
+                    'Parsed endpoint "{endpoint}" from URL "{value}"; expected '
+                    '"{self.endpoint}"'
+                ).format(**locals())
+            )
         if self.url_key not in kwargs:
-            raise
+            raise ValidationError(
+                'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(**locals())
+            )
         return super(HyperlinkRelated, self)._deserialize(kwargs[self.url_key])
 
     @property
