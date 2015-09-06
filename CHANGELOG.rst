@@ -6,6 +6,10 @@ Changelog
 
 * Fix compatibility with marshmallow-sqlalchemy>=0.4.0 (:issue:`25`). Thanks :user:`svenstaro` for reporting.
 
+Support:
+
+* Include docs in release tarballs.
+
 0.6.0 (2015-05-02)
 ******************
 
