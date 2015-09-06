@@ -18,7 +18,7 @@ class DummySession(object):
     """Placeholder session object."""
     pass
 
-class SchemaOpts(msqla.SchemaOpts):
+class SchemaOpts(msqla.ModelSchemaOpts):
     """Schema options for `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
     Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
     placeholder `DummySession` if ``sqla_session`` is not defined on

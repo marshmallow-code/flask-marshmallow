@@ -380,14 +380,12 @@ class TestSQLAlchemy:
         book_result = book_schema.dump(book)
         book_result.data['author'] = book.url
         deserialized = book_schema.load(book_result.data)
-        assert deserialized.data.author is None
         assert 'expected "author"' in deserialized.errors['author'][0]
 
         # Deserialization fails on bad URL key
         book_result = book_schema.dump(book)
         book_schema.fields['author'].url_key = 'pk'
         deserialized = book_schema.load(book_result.data)
-        assert deserialized.data.author is None
         assert 'URL pattern "pk" not found' in deserialized.errors['author'][0]
 
     def test_hyperlink_related_field_external(self, extma, models, db, extapp):
