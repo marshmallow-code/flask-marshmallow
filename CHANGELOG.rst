@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.6.1 (unreleased)
+0.6.1 (2015-09-06)
 ******************
 
 * Fix compatibility with marshmallow-sqlalchemy>=0.4.0 (:issue:`25`). Thanks :user:`svenstaro` for reporting.
