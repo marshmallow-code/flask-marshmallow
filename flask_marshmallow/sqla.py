@@ -56,7 +56,7 @@ class HyperlinkRelated(msqla.fields.Related):
         kwargs = {self.url_key: key}
         return url_for(self.endpoint, _external=self.external, **kwargs)
 
-    def _deserialize(self, value):
+    def _deserialize(self, value, *args, **kwargs):
         if self.external:
             parsed = parse.urlparse(value)
             value = parsed.path
@@ -72,7 +72,7 @@ class HyperlinkRelated(msqla.fields.Related):
             raise ValidationError(
                 'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(**locals())
             )
-        return super(HyperlinkRelated, self)._deserialize(kwargs[self.url_key])
+        return super(HyperlinkRelated, self)._deserialize(kwargs[self.url_key], *args, **kwargs)
 
     @property
     def adapter(self):
