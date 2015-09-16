@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.6.2 (2015-09-16)
+******************
+
+* Fix compatibility with marshmallow>=2.0.0rc2.
+
+Support:
+
+* Tested against Python 3.5.
+
 0.6.1 (2015-09-06)
 ******************
 
