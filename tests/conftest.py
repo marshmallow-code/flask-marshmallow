@@ -2,8 +2,13 @@
 from flask import Flask
 from flask_marshmallow import Marshmallow
 import pytest
+import webtest
 
 _app = Flask(__name__)
+_app.config.update({
+    'DEBUG': True,
+    'TESTING': True
+})
 
 class Bunch(dict):
     def __init__(self, *args, **kwargs):
@@ -54,6 +59,10 @@ def app():
 
     ctx.pop()
 
+@pytest.fixture()
+def testapp():
+    return webtest.TestApp(_app)
+
 @pytest.fixture(scope='function')
 def ma(app):
     return Marshmallow(app)
@@ -61,6 +70,7 @@ def ma(app):
 @pytest.fixture
 def schemas(ma):
     class AuthorSchema(ma.Schema):
+        id = ma.Int()
         class Meta:
             fields = ('id', 'name', 'absolute_url', 'links')
 

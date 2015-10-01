@@ -18,6 +18,7 @@ from marshmallow import (
 )
 from . import fields
 from .schema import Schema
+from .io import marshal_with, use_schema
 
 has_sqla = False
 try:
@@ -45,7 +46,9 @@ __all__ = [
     'Schema',
     'fields',
     'exceptions',
-    'pprint'
+    'pprint',
+    'marshal_with'
+    'use_schmea',
 ]
 
 EXTENSION_NAME = 'flask-marshmallow'
