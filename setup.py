@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-import sys
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
 
 
 REQUIRES = [
@@ -10,18 +8,6 @@ REQUIRES = [
     'marshmallow>=1.2.0',
     'six>=1.9.0',
 ]
-
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-        errcode = pytest.main(self.test_args)
-        sys.exit(errcode)
-
 
 def find_version(fname):
     '''Attempts to find the version number in the file names fname.
@@ -76,7 +62,5 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    test_suite='test_flask_marshmallow',
-    tests_require=['pytest', 'mock'],
-    cmdclass={'test': PyTest}
+    test_suite='tests',
 )
