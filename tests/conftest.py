@@ -44,8 +44,6 @@ def books():
 def book(id):
     return 'Legend of Bagger Vance'
 
-mar = Marshmallow(_app)
-
 @pytest.yield_fixture(scope='function')
 def app():
 
@@ -62,26 +60,26 @@ def ma(app):
 
 @pytest.fixture
 def schemas(ma):
-    class AuthorSchema(mar.Schema):
+    class AuthorSchema(ma.Schema):
         class Meta:
             fields = ('id', 'name', 'absolute_url', 'links')
 
-        absolute_url = mar.AbsoluteURLFor('author', id='<id>')
+        absolute_url = ma.AbsoluteURLFor('author', id='<id>')
 
-        links = mar.Hyperlinks({
-            'self': mar.URLFor('author', id='<id>'),
-            'collection': mar.URLFor('authors')
+        links = ma.Hyperlinks({
+            'self': ma.URLFor('author', id='<id>'),
+            'collection': ma.URLFor('authors')
         })
 
-    class BookSchema(mar.Schema):
+    class BookSchema(ma.Schema):
         class Meta:
             fields = ('id', 'title', 'author', 'links')
 
-        author = mar.Nested(AuthorSchema)
+        author = ma.Nested(AuthorSchema)
 
-        links = mar.Hyperlinks({
-            'self': mar.URLFor('book', id='<id>'),
-            'collection': mar.URLFor('books'),
+        links = ma.Hyperlinks({
+            'self': ma.URLFor('book', id='<id>'),
+            'collection': ma.URLFor('books'),
         })
     # So we can access schemas.AuthorSchema, etc.
     return Bunch(**locals())
