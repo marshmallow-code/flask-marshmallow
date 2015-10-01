@@ -2,11 +2,11 @@
 Flask-Marshmallow
 *****************
 
-.. image:: https://img.shields.io/pypi/v/flask-marshmallow.svg
-    :target: https://pypi.python.org/pypi/flask-marshmallow
+.. image:: https://badge.fury.io/py/flask-marshmallow.png
+    :target: http://badge.fury.io/py/flask-marshmallow
     :alt: Latest version
 
-.. image:: https://img.shields.io/travis/marshmallow-code/flask-marshmallow/pypi.svg
+.. image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=pypi
     :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
     :alt: Travis-CI
 
