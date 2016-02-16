@@ -3,10 +3,10 @@
     flask_marshmallow.fields
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom, Flask-specific fields. See the following link for a list of all available
-    fields from the marshmallow library.
+    Custom, Flask-specific fields.
 
-    See the `marshmallow.fields` module for information about the available fields.
+    See the `marshmallow.fields` module for the list of all fields available from the
+    marshmallow library.
 """
 import re
 
