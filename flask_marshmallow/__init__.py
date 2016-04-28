@@ -109,6 +109,7 @@ class Marshmallow(object):
         self.Schema = Schema
         if has_sqla:
             self.ModelSchema = sqla.ModelSchema
+            self.HyperlinkRelated = sqla.HyperlinkRelated
         _attach_fields(self)
         if app is not None:
             self.init_app(app)

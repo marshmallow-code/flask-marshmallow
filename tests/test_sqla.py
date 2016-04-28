@@ -118,7 +118,7 @@ class TestSQLAlchemy:
         class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
-            author = HyperlinkRelated('author')
+            author = extma.HyperlinkRelated('author')
 
         book_schema = BookSchema()
 
