@@ -19,7 +19,7 @@ class DummySession(object):
     pass
 
 class SchemaOpts(msqla.ModelSchemaOpts):
-    """Schema options for `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
+    """Schema options for `~flask_marshmallow.sqla.ModelSchema`.
     Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
     placeholder `DummySession` if ``sqla_session`` is not defined on
     class Meta. The actual session from `flask_sqlalchemy` gets bound

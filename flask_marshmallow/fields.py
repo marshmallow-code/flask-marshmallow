@@ -142,7 +142,7 @@ def _url_val(val, key, obj, **kwargs):
 
 class Hyperlinks(fields.Field):
     """Field that outputs a dictionary of hyperlinks,
-    given a dictionary schema with :class:`URLFor <flask_marshmallow.fields.URLFor>`
+    given a dictionary schema with :class:`~flask_marshmallow.fields.URLFor`
     objects as values.
 
     Example: ::
@@ -163,7 +163,7 @@ class Hyperlinks(fields.Field):
         })
 
     :param dict schema: A dict that maps names to
-        :class:`URLFor <flask_marshmallow.fields.URLFor>` fields.
+        :class:`~flask_marshmallow.fields.URLFor` fields.
     """
     _CHECK_ATTRIBUTE = False
 

@@ -96,7 +96,7 @@ class Marshmallow(object):
             ma = Marshmallow(app)
 
     This gives you access to `ma.ModelSchema`, which generates a marshmallow
-    `Schema <marshmallow.Schema>` based on the passed in model. ::
+    `~marshmallow.Schema` based on the passed in model. ::
 
         class AuthorSchema(ma.ModelSchema):
             class Meta:
