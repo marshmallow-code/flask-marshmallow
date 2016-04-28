@@ -110,10 +110,10 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. _Flask: http://flask.pocoo.org
 .. _marshmallow: http://marshmallow.readthedocs.org
 
-.. |pypi-package| image:: https://badge.fury.io/py/flask-marshmallow.png
+.. |pypi-package| image:: https://badge.fury.io/py/flask-marshmallow.svg
     :target: http://badge.fury.io/py/flask-marshmallow
     :alt: Latest version
-.. |build-status| image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=pypi
+.. |build-status| image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.svg?branch=pypi
     :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
     :alt: Travis-CI
 .. |docs| image:: https://readthedocs.org/projects/flask-marshmallow/badge/
