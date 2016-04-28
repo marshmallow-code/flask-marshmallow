@@ -2,14 +2,7 @@
 Flask-Marshmallow
 *****************
 
-.. image:: https://badge.fury.io/py/flask-marshmallow.png
-    :target: http://badge.fury.io/py/flask-marshmallow
-    :alt: Latest version
-
-.. image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=pypi
-    :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
-    :alt: Travis-CI
-
+|pypi-package| |build-status|
 
 Flask + marshmallow for beautiful APIs
 ======================================
@@ -117,3 +110,9 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. _Flask: http://flask.pocoo.org
 .. _marshmallow: http://marshmallow.readthedocs.org
 
+.. |pypi-package| image:: https://badge.fury.io/py/flask-marshmallow.png
+    :target: http://badge.fury.io/py/flask-marshmallow
+    :alt: Latest version
+.. |build-status| image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.png?branch=pypi
+    :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
+    :alt: Travis-CI
