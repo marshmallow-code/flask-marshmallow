@@ -91,13 +91,13 @@ Output the data in your views.
 Optional Flask-SQLAlchemy Integration
 -------------------------------------
 
-Flask-Marshmallow includes useful extras for integrating with `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_ and `marshmallow-sqlalchemy <https://marshmallow-sqlalchemy.readthedocs.org>`_.
+Flask-Marshmallow includes useful extras for integrating with `Flask-SQLAlchemy <http://flask-sqlalchemy.pocoo.org/>`_ and `marshmallow-sqlalchemy <https://marshmallow-sqlalchemy.readthedocs.io>`_.
 
 To enable SQLAlchemy integration, make sure that both Flask-SQLAlchemy and marshmallow-sqlalchemy are installed.  ::
 
     pip install -U flask-sqlalchemy marshmallow-sqlalchemy
 
-Next, initialize the `SQLAlchemy <flask.ext.sqlalchemy.SQLAlchemy>` and `Marshmallow <flask_marshmallow.Marshmallow>` extensions, in that order.
+Next, initialize the `~flask_sqlalchemy.SQLAlchemy` and `~flask_marshmallow.Marshmallow` extensions, in that order.
 
 .. code-block:: python
 
@@ -126,23 +126,14 @@ Declare your models like normal.
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(255))
 
-        # Used by HyperlinkModelSchema
-        @property
-        def url(self):
-            return url_for('author', id=self.id)
-
     class Book(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(255))
         author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
         author = db.relationship('Author', backref='books')
 
-        @property
-        def url(self):
-            return url_for('book', id=self.id)
 
-
-Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
+Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.ModelSchema`.
 
 .. code-block:: python
 
@@ -171,25 +162,40 @@ You can now use your schema to dump and load your ORM objects.
     {'id': 1, 'name': 'Chuck Paluhniuk', 'books': [1]}
 
 
-`ModelSchema <flask_marshmallow.sqla.ModelSchema>` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
+`~flask_marshmallow.sqla.ModelSchema` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
 
-- By default, `ModelSchema <flask_marshmallow.sqla.ModelSchema>` uses the scoped session created by Flask-SQLAlchemy.
-- `ModelSchema <flask_marshmallow.sqla.ModelSchema>` subclasses `flask_marshmallow.Schema`, so it includes the `jsonify <flask_marshmallow.Schema.jsonify>` method. 
-Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override ``ordered=True`<https://marshmallow.readthedocs.org/en/latest/quickstart.html#ordering-output>`_ in the ModelSchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `ModelSchema <flask_marshmallow.sqla.ModelSchema>` in order to minimize generation time and maximize cachability of the results.
+- By default, `~flask_marshmallow.sqla.ModelSchema` uses the scoped session created by Flask-SQLAlchemy.
+- `~flask_marshmallow.sqla.ModelSchema` subclasses `flask_marshmallow.Schema`, so it includes the `~flask_marshmallow.Schema.jsonify` method.
+Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override ``ordered=True`<https://marshmallow.readthedocs.io/en/latest/quickstart.html#ordering-output>`_ in the ModelSchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `~flask_marshmallow.sqla.ModelSchema` in order to minimize generation time and maximize cachability of the results.
 
-You can also use `ma.HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` if you want relationships to be represented by hyperlinks rather than primary keys. Models MUST have a ``url`` attribute or property.
+You can also use `ma.HyperlinkRelated <flask_marshmallow.sqla.HyperlinkRelated>` fields if you want relationships to be represented by hyperlinks rather than primary keys.
 
 
 .. code-block:: python
 
-    class AuthorSchema(ma.HyperlinkModelSchema):
-        class Meta:
-            model = Author
-
-    class BookSchema(ma.HyperlinkModelSchema):
+    class BookSchema(ma.ModelSchema):
         class Meta:
             model = Book
+        author = ma.HyperlinkRelated('author_detail')
 
+.. code-block:: python
+
+    >>> with app.test_request_context():
+    ...     print(book_schema.dump(book).data)
+    {'id': 1, 'title': 'Fight Club', 'author': '/authors/1'}
+
+The first argument to the `~flask_marshmallow.sqla.HyperlinkRelated` constructor is the name of the view used to generate the URL, just as you would pass it to the `~flask.url_for` function. If your models and views use the ``id`` attribute
+as a primary key, you're done; otherwise, you must specify the name of the
+attribute used as the primary key.
+
+To represent a one-to-many relationship, wrap the `~flask_marshmallow.sqla.HyperlinkRelated` instance in a `marshmallow.fields.List` field, like this:
+
+.. code-block:: python
+
+    class AuthorSchema(ma.ModelSchema):
+        class Meta:
+            model = Author
+        books = ma.List(ma.HyperlinkRelated('book_detail'))
 
 .. code-block:: python
 
@@ -197,10 +203,6 @@ You can also use `ma.HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModel
     ...     print(author_schema.dump(author).data)
     {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
 
-
-.. note::
-
-    By default, `HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` serializes to URLs based on an object's ``url`` attribute. You can override this attribute name by setting the ``MARSHMALLOW_LINK_ATTRIBUTE`` config option of your Flask app.
 
 API
 ===
@@ -221,7 +223,7 @@ Useful Links
 - `Flask docs`_
 - `marshmallow docs`_
 
-.. _marshmallow docs: http://marshmallow.readthedocs.org
+.. _marshmallow docs: http://marshmallow.readthedocs.io
 
 .. _Flask docs: http://flask.pocoo.org/docs/
 
@@ -235,6 +237,6 @@ Project Info
    changelog
 
 
-.. _marshmallow: http://marshmallow.readthedocs.org
+.. _marshmallow: http://marshmallow.readthedocs.io
 
  .. _Flask: http://flask.pocoo.org

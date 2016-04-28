@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+**********
+
+* Updated documentation to reference `HyperlinkRelated` instead of `HyperlinkModelSchema`.
+
 0.6.2 (2015-09-16)
 ******************
 

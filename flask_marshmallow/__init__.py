@@ -6,7 +6,7 @@
     Integrates the marshmallow serialization/deserialization library
     with your Flask application.
 
-    :copyright: (c) 2014-2015 by Steven Loria
+    :copyright: (c) 2014-2016 by Steven Loria
     :license: MIT, see LICENSE for more details.
 """
 import warnings
@@ -95,8 +95,8 @@ class Marshmallow(object):
             db = SQLAlchemy(app)
             ma = Marshmallow(app)
 
-    This gives you access to `ma.ModelSchema` and `ma.HyperlinkModelSchema`,
-    which generate a marshmallow `Schema <marshmallow.Schema>` based on the passed in model. ::
+    This gives you access to `ma.ModelSchema`, which generates a marshmallow
+    `~marshmallow.Schema` based on the passed in model. ::
 
         class AuthorSchema(ma.ModelSchema):
             class Meta:

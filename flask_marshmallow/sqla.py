@@ -19,7 +19,7 @@ class DummySession(object):
     pass
 
 class SchemaOpts(msqla.ModelSchemaOpts):
-    """Schema options for `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
+    """Schema options for `~flask_marshmallow.sqla.ModelSchema`.
     Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
     placeholder `DummySession` if ``sqla_session`` is not defined on
     class Meta. The actual session from `flask_sqlalchemy` gets bound
@@ -44,7 +44,15 @@ class ModelSchema(msqla.ModelSchema, Schema):
     OPTIONS_CLASS = SchemaOpts
 
 class HyperlinkRelated(msqla.fields.Related):
+    """Field that generates hyperlinks to indicate references between models,
+    rather than primary keys.
 
+    :param str endpoint: Flask endpoint name for generated hyperlink.
+    :param str url_key: The attribute containing the reference's primary
+        key. Defaults to "id".
+    :param bool external: Set to `True` if absolute URLs should be used,
+        instead of relative URLs.
+    """
     def __init__(self, endpoint, url_key='id', external=False, **kwargs):
         super(HyperlinkRelated, self).__init__(**kwargs)
         self.endpoint = endpoint
