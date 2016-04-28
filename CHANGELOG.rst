@@ -1,10 +1,14 @@
 Changelog
 =========
 
-Unreleased
-**********
+0.6.3 (unreleased)
+******************
 
-* Updated documentation to reference `HyperlinkRelated` instead of `HyperlinkModelSchema`.
+* Attach `HyperlinkRelated` to `Marshmallow` instances. Thanks :user:`singingwolfboy` for reporting.
+
+Support:
+
+* Updated documentation to reference `HyperlinkRelated` instead of `HyperlinkModelSchema`. Thanks :user:`singingwolfboy`.
 
 0.6.2 (2015-09-16)
 ******************
