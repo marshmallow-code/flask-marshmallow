@@ -90,13 +90,13 @@ Output the data in your views.
     # }
 
 
-http://flask-marshmallow.readthedocs.org/
-=========================================
+http://flask-marshmallow.readthedocs.io/
+========================================
 
 Learn More
 ==========
 
-To learn more about marshmallow, check out its `docs <http://marshmallow.readthedocs.org/en/latest/>`_.
+To learn more about marshmallow, check out its `docs <http://marshmallow.readthedocs.io/en/latest/>`_.
 
 
 
@@ -104,7 +104,7 @@ Project Links
 =============
 
 - Docs: http://flask-marshmallow.rtfd.org/
-- Changelog: http://flask-marshmallow.readthedocs.org/en/latest/changelog.html
+- Changelog: http://flask-marshmallow.readthedocs.io/en/latest/changelog.html
 - PyPI: https://pypi.python.org/pypi/flask-marshmallow
 - Issues: https://github.com/marshmallow-code/flask-marshmallow/issues
 
@@ -115,5 +115,5 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 
 
 .. _Flask: http://flask.pocoo.org
-.. _marshmallow: http://marshmallow.readthedocs.org
+.. _marshmallow: http://marshmallow.readthedocs.io
 

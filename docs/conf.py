@@ -12,11 +12,11 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'python': ('http://python.readthedocs.org/en/latest/', None),
+    'python': ('http://python.readthedocs.io/en/latest/', None),
     'flask': ('http://flask.pocoo.org/docs/latest/', None),
     'flask-sqlalchemy': ('http://flask-sqlalchemy.pocoo.org/latest/', None),
-    'marshmallow': ('http://marshmallow.readthedocs.org/en/latest/', None),
-    'marshmallow-sqlalchemy': ('http://marshmallow-sqlalchemy.readthedocs.org/en/latest/', None),
+    'marshmallow': ('http://marshmallow.readthedocs.io/en/latest/', None),
+    'marshmallow-sqlalchemy': ('http://marshmallow-sqlalchemy.readthedocs.io/en/latest/', None),
 }
 
 primary_domain = 'py'
