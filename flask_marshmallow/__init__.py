@@ -95,8 +95,8 @@ class Marshmallow(object):
             db = SQLAlchemy(app)
             ma = Marshmallow(app)
 
-    This gives you access to `ma.ModelSchema` and `ma.HyperlinkModelSchema`,
-    which generate a marshmallow `Schema <marshmallow.Schema>` based on the passed in model. ::
+    This gives you access to `ma.ModelSchema`, which generates a marshmallow
+    `Schema <marshmallow.Schema>` based on the passed in model. ::
 
         class AuthorSchema(ma.ModelSchema):
             class Meta:

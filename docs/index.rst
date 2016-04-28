@@ -126,20 +126,11 @@ Declare your models like normal.
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(255))
 
-        # Used by HyperlinkModelSchema
-        @property
-        def url(self):
-            return url_for('author', id=self.id)
-
     class Book(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(255))
         author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
         author = db.relationship('Author', backref='books')
-
-        @property
-        def url(self):
-            return url_for('book', id=self.id)
 
 
 Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `ModelSchema <flask_marshmallow.sqla.ModelSchema>`.
@@ -177,19 +168,34 @@ You can now use your schema to dump and load your ORM objects.
 - `ModelSchema <flask_marshmallow.sqla.ModelSchema>` subclasses `flask_marshmallow.Schema`, so it includes the `jsonify <flask_marshmallow.Schema.jsonify>` method.
 Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override ``ordered=True`<https://marshmallow.readthedocs.io/en/latest/quickstart.html#ordering-output>`_ in the ModelSchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `ModelSchema <flask_marshmallow.sqla.ModelSchema>` in order to minimize generation time and maximize cachability of the results.
 
-You can also use `ma.HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` if you want relationships to be represented by hyperlinks rather than primary keys. Models MUST have a ``url`` attribute or property.
+You can also use `ma.HyperlinkRelated <flask_marshmallow.sqla.HyperlinkRelated>` fields if you want relationships to be represented by hyperlinks rather than primary keys.
 
 
 .. code-block:: python
 
-    class AuthorSchema(ma.HyperlinkModelSchema):
-        class Meta:
-            model = Author
-
-    class BookSchema(ma.HyperlinkModelSchema):
+    class BookSchema(ma.ModelSchema):
         class Meta:
             model = Book
+        author = ma.HyperlinkRelated('author_detail')
 
+.. code-block:: python
+
+    >>> with app.test_request_context():
+    ...     print(book_schema.dump(book).data)
+    {'id': 1, 'title': 'Fight Club', 'author': '/authors/1'}
+
+The first argument to the `~flask_marshmallow.sqla.HyperlinkRelated` constructor is the name of the view used to generate the URL, just as you would pass it to the `~flask.url_for` function. If your models and views use the ``id`` attribute
+as a primary key, you're done; otherwise, you must specify the name of the
+attribute used as the primary key.
+
+To represent a one-to-many relationship, wrap the `~flask_marshmallow.sqla.HyperlinkRelated` instance in a `marshmallow.fields.List` field, like this:
+
+.. code-block:: python
+
+    class AuthorSchema(ma.ModelSchema):
+        class Meta:
+            model = Author
+        books = ma.List(ma.HyperlinkRelated('book_detail'))
 
 .. code-block:: python
 
@@ -197,10 +203,6 @@ You can also use `ma.HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModel
     ...     print(author_schema.dump(author).data)
     {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
 
-
-.. note::
-
-    By default, `HyperlinkModelSchema <flask_marshmallow.sqla.HyperlinkModelSchema>` serializes to URLs based on an object's ``url`` attribute. You can override this attribute name by setting the ``MARSHMALLOW_LINK_ATTRIBUTE`` config option of your Flask app.
 
 API
 ===
