@@ -2,7 +2,7 @@
 Flask-Marshmallow
 *****************
 
-|pypi-package| |build-status| |docs|
+|pypi-package| |build-status| |coverage-status| |docs|
 
 Flask + marshmallow for beautiful APIs
 ======================================
@@ -116,6 +116,9 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. |build-status| image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.svg?branch=pypi
     :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
     :alt: Travis-CI
+.. |coverage-status| image:: http://codecov.io/github/marshmallow-code/flask-marshmallow/coverage.svg?branch=dev
+   :target: http://codecov.io/github/marshmallow-code/flask-marshmallow?branch=dev
+   :alt: Test coverage
 .. |docs| image:: https://readthedocs.org/projects/flask-marshmallow/badge/
    :target: http://flask-marshmallow.readthedocs.io/
    :alt: Documentation

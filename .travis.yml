@@ -19,6 +19,9 @@ install:
   - travis_retry pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
   - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow@dev
   - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow-sqlalchemy@dev
+  - travis_retry pip install -U codecov pytest-cov
 before_script:
   - flake8 .
-script:  py.test
+script:  py.test --cov=flask_marshmallow
+after_success:
+  - codecov
