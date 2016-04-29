@@ -41,6 +41,15 @@ def test_jsonify_collection(app, schemas, mockauthorlist):
     obj = json.loads(resp.get_data(as_text=True))
     assert isinstance(obj, list)
 
+@flask_1_req
+def test_jsonify_collection_via_schema_attr(app, schemas, mockauthorlist):
+    s = schemas.AuthorSchema(many=True)
+    resp = s.jsonify(mockauthorlist)
+    assert isinstance(resp, BaseResponse)
+    assert resp.content_type == 'application/json'
+    obj = json.loads(resp.get_data(as_text=True))
+    assert isinstance(obj, list)
+
 def test_links_within_nested_object(app, schemas, mockbook):
     s = schemas.BookSchema()
     result = s.dump(mockbook)
