@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7.0 (unreleased)
+******************
+
+* ``many`` argument to ``Schema.jsonify`` defaults to value of the ``Schema`` instance's ``many`` attribute (:issue:`42`). Thanks :user:`singingwolfboy`.
+
 0.6.3 (unreleased)
 ******************
 
