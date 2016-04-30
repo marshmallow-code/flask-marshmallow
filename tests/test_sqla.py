@@ -4,15 +4,13 @@ from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.wrappers import BaseResponse
-import marshmallow
 import pytest
 
 from tests.conftest import Bunch
+from tests.markers import marshmallow_2_req
 
-MARSHMALLOW_2 = int(marshmallow.__version__.split('.')[0]) >= 2
 
-@pytest.mark.skipif(not MARSHMALLOW_2, reason='marshmallow-sqlalchemy '
-                    'not supported in marshmallow<2.0')
+@marshmallow_2_req
 class TestSQLAlchemy:
 
     @pytest.yield_fixture()

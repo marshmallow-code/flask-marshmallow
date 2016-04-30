@@ -24,6 +24,13 @@ def mockauthor():
     return author
 
 @pytest.fixture
+def mockauthorlist():
+    a1 = Author(id=1, name="Alice")
+    a2 = Author(id=2, name="Bob")
+    a3 = Author(id=3, name="Carol")
+    return [a1, a2, a3]
+
+@pytest.fixture
 def mockbook(mockauthor):
     book = Book(id=42, author=mockauthor, title='Legend of Bagger Vance')
     return book
