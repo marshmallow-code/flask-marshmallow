@@ -96,7 +96,7 @@ To learn more about marshmallow, check out its `docs <http://marshmallow.readthe
 Project Links
 =============
 
-- Docs: http://flask-marshmallow.rtfd.org/
+- Docs: https://flask-marshmallow.readthedocs.io/
 - Changelog: http://flask-marshmallow.readthedocs.io/en/latest/changelog.html
 - PyPI: https://pypi.python.org/pypi/flask-marshmallow
 - Issues: https://github.com/marshmallow-code/flask-marshmallow/issues
