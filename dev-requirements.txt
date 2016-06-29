@@ -1,5 +1,5 @@
 # task runner
-invoke
+invoke>=0.13.0
 
 # testing
 pytest==2.8.0

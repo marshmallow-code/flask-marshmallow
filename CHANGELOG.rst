@@ -6,6 +6,10 @@ Changelog
 
 * ``many`` argument to ``Schema.jsonify`` defaults to value of the ``Schema`` instance's ``many`` attribute (:issue:`42`). Thanks :user:`singingwolfboy`.
 
+Support:
+
+* Upgrade to invoke>=0.13.0.
+
 0.6.3 (unreleased)
 ******************
 
