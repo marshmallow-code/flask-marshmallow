@@ -1,23 +1,17 @@
 Changelog
 =========
 
-0.7.0 (unreleased)
+0.7.0 (2016-06-28)
 ******************
 
 * ``many`` argument to ``Schema.jsonify`` defaults to value of the ``Schema`` instance's ``many`` attribute (:issue:`42`). Thanks :user:`singingwolfboy`.
-
-Support:
-
-* Upgrade to invoke>=0.13.0.
-
-0.6.3 (unreleased)
-******************
-
 * Attach `HyperlinkRelated` to `Marshmallow` instances. Thanks :user:`singingwolfboy` for reporting.
 
 Support:
 
+* Upgrade to invoke>=0.13.0.
 * Updated documentation to reference `HyperlinkRelated` instead of `HyperlinkModelSchema`. Thanks :user:`singingwolfboy`.
+* Updated documentation links to readthedocs.io subdomain. Thanks :user:`adamchainz`.
 
 0.6.2 (2015-09-16)
 ******************
