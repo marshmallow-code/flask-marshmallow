@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8.0 (unreleased)
+0.8.0 (2017-05-28)
 ******************
 
 * Fix compatibility with marshmallow>=3.0.
