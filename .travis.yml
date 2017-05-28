@@ -1,6 +1,7 @@
 language: python
 sudo: false
 python:
+  - "3.6"
   - "3.5"
   - "3.4"
   - "3.3"
@@ -9,7 +10,7 @@ python:
 
 env:
   # Lowest supported version
-  - MARSHMALLOW_VERSION="==1.2.0"
+  - MARSHMALLOW_VERSION="==2.0.0"
   # Latest release
   - MARSHMALLOW_VERSION=""
 
@@ -17,8 +18,6 @@ install:
   - travis_retry pip install -U -r dev-requirements.txt
   - travis_retry pip install -U .
   - travis_retry pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
-  - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow@dev
-  - travis_retry pip install -U git+https://github.com/marshmallow-code/marshmallow-sqlalchemy@dev
 before_script:
   - flake8 .
 script:  py.test

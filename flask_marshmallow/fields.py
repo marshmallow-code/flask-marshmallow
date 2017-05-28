@@ -11,21 +11,11 @@
 import re
 
 from flask import url_for
-from werkzeug.routing import BuildError
-from marshmallow import fields, utils
+from marshmallow import fields
 from marshmallow.compat import iteritems
-try:
-    from marshmallow import missing
-except ImportError:  # marshmallow 1.2 support
-    from marshmallow.fields import missing
+from marshmallow import missing
 
-try:
-    # marshmallow 1.2
-    from marshmallow.exceptions import ForcedError
-except ImportError:
-    has_forced_error = False
-else:  # marshmallow 2.0
-    has_forced_error = True
+from .compat import get_value
 
 
 _tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
@@ -79,27 +69,17 @@ class URLFor(fields.Field):
         for name, attr_tpl in iteritems(self.params):
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
-                attribute_value = utils.get_value(attr_name, obj, default=missing)
+                attribute_value = get_value(obj, attr_name, default=missing)
                 if attribute_value is not missing:
                     param_values[name] = attribute_value
                 else:
-                    err = AttributeError(
+                    raise AttributeError(
                         '{attr_name!r} is not a valid '
                         'attribute of {obj!r}'.format(attr_name=attr_name, obj=obj)
                     )
-                    if has_forced_error:
-                        raise ForcedError(err)
-                    else:
-                        raise err
             else:
                 param_values[name] = attr_tpl
-        try:
-            return url_for(self.endpoint, **param_values)
-        except BuildError as err:  # Make sure BuildErrors are raised
-            if has_forced_error:
-                raise ForcedError(err)
-            else:
-                raise err
+        return url_for(self.endpoint, **param_values)
 
 UrlFor = URLFor
 

@@ -15,4 +15,4 @@ flake8==2.4.1
 
 # Soft requirements
 flask-sqlalchemy
-marshmallow-sqlalchemy>=0.6.0
+marshmallow-sqlalchemy>=0.13.0

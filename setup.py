@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 REQUIRES = [
     'Flask',
-    'marshmallow>=1.2.0',
+    'marshmallow>=2.0.0',
     'six>=1.9.0',
 ]
 
@@ -60,6 +60,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     test_suite='tests',

@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.8.0 (unreleased)
+******************
+
+* Fix compatibility with marshmallow>=3.0.
+
+Support:
+
+* *Backwards-incompatible*: Drop support for marshmallow<=2.0.0. 
+* Test against Python 3.6.
+
 0.7.0 (2016-06-28)
 ******************
 

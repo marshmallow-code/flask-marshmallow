@@ -27,10 +27,10 @@ class SchemaOpts(msqla.ModelSchemaOpts):
     """
     session = DummySession()
 
-    def __init__(self, meta):
+    def __init__(self, meta, **kwargs):
         if not hasattr(meta, 'sqla_session'):
             meta.sqla_session = self.session
-        super(SchemaOpts, self).__init__(meta)
+        super(SchemaOpts, self).__init__(meta, **kwargs)
 
 class ModelSchema(msqla.ModelSchema, Schema):
     """ModelSchema that generates fields based on the
