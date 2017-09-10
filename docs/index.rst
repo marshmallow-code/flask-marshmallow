@@ -53,8 +53,8 @@ Define your output format with marshmallow.
             fields = ('email', 'date_created', '_links')
         # Smart hyperlinking
         _links = ma.Hyperlinks({
-            'self': ma.URLFor('author_detail', id='<id>'),
-            'collection': ma.URLFor('authors')
+            'self': ma.URLFor('user_detail', id='<id>'),
+            'collection': ma.URLFor('users')
         })
 
     user_schema = UserSchema()
@@ -81,8 +81,8 @@ Output the data in your views.
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
     #     "_links": {
-    #         "self": "/api/authors/42",
-    #         "collection": "/api/authors/"
+    #         "self": "/api/users/42",
+    #         "collection": "/api/users/"
     #     }
     # }
 

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Unreleased
+**********
+
+* Updated documentation to fix example ``ma.URLFor`` target.
+
 0.8.0 (2017-05-28)
 ******************
 
@@ -8,7 +13,7 @@ Changelog
 
 Support:
 
-* *Backwards-incompatible*: Drop support for marshmallow<=2.0.0. 
+* *Backwards-incompatible*: Drop support for marshmallow<=2.0.0.
 * Test against Python 3.6.
 
 0.7.0 (2016-06-28)
