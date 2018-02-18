@@ -8,6 +8,7 @@
     from Flask-SQLALchemy.
 """
 from flask import url_for, current_app
+from werkzeug.routing import BuildError
 from six.moves.urllib import parse
 
 import marshmallow_sqlalchemy as msqla
@@ -62,7 +63,13 @@ class HyperlinkRelated(msqla.fields.Related):
     def _serialize(self, value, attr, obj):
         key = super(HyperlinkRelated, self)._serialize(value, attr, obj)
         kwargs = {self.url_key: key}
-        return url_for(self.endpoint, _external=self.external, **kwargs)
+        try:
+            return url_for(self.endpoint, _external=self.external, **kwargs)
+        except BuildError as e:
+            if not self.required:
+                return self.missing if self.missing else None
+            else:
+                raise e
 
     def _deserialize(self, value, *args, **kwargs):
         if self.external:

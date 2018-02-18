@@ -3,6 +3,7 @@ import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.wrappers import BaseResponse
+from werkzeug.routing import BuildError
 
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
@@ -138,12 +139,16 @@ class TestSQLAlchemy:
         deserialized, errors = get_load_data(book_schema, book_result)
         assert deserialized.author == author
 
+        # Deserialization works on nullable / non-required relation
+        book.author = None
+        book_result = get_dump_data(book_schema, book)
+        assert book_result['author'] is None
+
     def test_hyperlink_related_field_errors(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
-
-            author = HyperlinkRelated('author')
+            author = HyperlinkRelated('author', required=True)
 
         book_schema = BookSchema()
 
@@ -165,6 +170,12 @@ class TestSQLAlchemy:
         book_schema.fields['author'].url_key = 'pk'
         deserialized, errors = get_load_data(book_schema, book_result)
         assert 'URL pattern "pk" not found' in errors['author'][0]
+
+        # Deserialization fails on empty required field
+        book.author = None
+        with pytest.raises(BuildError) as exc:
+            get_dump_data(book_schema, book)
+        assert "endpoint 'author'" in str(exc.value)
 
     def test_hyperlink_related_field_external(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
