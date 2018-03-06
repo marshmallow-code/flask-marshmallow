@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+import pytest
 from flask import Flask, url_for
-from flask_marshmallow import Marshmallow
-from flask_marshmallow.sqla import HyperlinkRelated
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.wrappers import BaseResponse
-import pytest
 
+from flask_marshmallow import Marshmallow
+from flask_marshmallow.sqla import HyperlinkRelated
 from tests.conftest import Bunch
 from tests.markers import marshmallow_2_req
 from tests.utils import get_dump_data, get_load_data

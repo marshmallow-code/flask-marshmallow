@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 import flask
 import marshmallow as ma
+
 from flask_marshmallow.compat import _MARSHMALLOW_VERSION_INFO
 
 sentinel = object()
-
-
 
 
 class Schema(ma.Schema):
