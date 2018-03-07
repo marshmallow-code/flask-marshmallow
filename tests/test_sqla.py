@@ -133,7 +133,7 @@ class TestSQLAlchemy:
 
         assert book_result['author'] == author.url
 
-        deserialized = get_load_data(book_schema, book_result)
+        deserialized, errors = get_load_data(book_schema, book_result)
         assert deserialized.author == author
 
     def test_hyperlink_related_field_errors(self, extma, models, db, extapp):
@@ -153,16 +153,16 @@ class TestSQLAlchemy:
 
         # Deserialization fails on bad endpoint
         book_result = get_dump_data(book_schema, book)
-
-        deserialized = get_load_data(book_schema, book_result)
-        assert 'expected "author"' in deserialized.errors['author'][0]
+        book_result['author'] = book.url
+        deserialized, errors = get_load_data(book_schema, book_result)
+        print(errors)
+        assert 'expected "author"' in errors['author'][0]
 
         # Deserialization fails on bad URL key
         book_result = get_dump_data(book_schema, book)
-
         book_schema.fields['author'].url_key = 'pk'
-        deserialized = get_load_data(book_schema, book_result)
-        assert 'URL pattern "pk" not found' in deserialized.errors['author'][0]
+        deserialized, errors = get_load_data(book_schema, book_result)
+        assert 'URL pattern "pk" not found' in errors['author'][0]
 
     def test_hyperlink_related_field_external(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
@@ -183,7 +183,7 @@ class TestSQLAlchemy:
 
         assert book_result['author'] == author.absolute_url
 
-        deserialized = get_load_data(book_schema, book_result)
+        deserialized, errors = get_load_data(book_schema, book_result)
         assert deserialized.author == author
 
     def test_hyperlink_related_field_list(self, extma, models, db, extapp):
@@ -201,8 +201,8 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        author_result = author_schema.dump(author)
+        author_result = get_dump_data(author_schema, author)
         assert author_result['books'][0] == book.url
 
-        deserialized = get_load_data(author_schema, author_result)
+        deserialized, errors = get_load_data(author_schema, author_result)
         assert deserialized.books[0] == book
