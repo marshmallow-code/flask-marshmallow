@@ -2,7 +2,10 @@
 import flask
 import marshmallow as ma
 
+from flask_marshmallow.compat import _MARSHMALLOW_VERSION_INFO
+
 sentinel = object()
+
 
 class Schema(ma.Schema):
     """Base serializer with which to define custom serializers.
@@ -32,5 +35,8 @@ class Schema(ma.Schema):
         """
         if many is sentinel:
             many = self.many
-        data = self.dump(obj, many=many).data
+        if _MARSHMALLOW_VERSION_INFO[0] >= 3:
+            data = self.dump(obj, many=many)
+        else:
+            data = self.dump(obj, many=many).data
         return flask.jsonify(data, *args, **kwargs)

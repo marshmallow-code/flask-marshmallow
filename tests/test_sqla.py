@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
+import pytest
 from flask import Flask, url_for
-from flask_marshmallow import Marshmallow
-from flask_marshmallow.sqla import HyperlinkRelated
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.wrappers import BaseResponse
-import pytest
 
+from flask_marshmallow import Marshmallow
+from flask_marshmallow.sqla import HyperlinkRelated
 from tests.conftest import Bunch
 from tests.markers import marshmallow_2_req
+from tests.utils import get_dump_data, get_load_data
 
 
 @marshmallow_2_req
@@ -99,15 +100,16 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.commit()
 
-        author_result = author_schema.dump(author)
-        assert 'id' in author_result.data
-        assert 'name' in author_result.data
-        assert author_result.data['name'] == 'Chuck Paluhniuk'
-        assert author_result.data['books'][0] == book.id
+        author_result = get_dump_data(author_schema, author)
 
-        book_result = book_schema.dump(book)
-        assert 'id' in book_result.data
-        assert book_result.data['author'] == author.id
+        assert 'id' in author_result
+        assert 'name' in author_result
+        assert author_result['name'] == 'Chuck Paluhniuk'
+        assert author_result['books'][0] == book.id
+        book_result = get_dump_data(book_schema, book)
+
+        assert 'id' in book_result
+        assert book_result['author'] == author.id
 
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
@@ -116,6 +118,7 @@ class TestSQLAlchemy:
         class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
+
             author = extma.HyperlinkRelated('author')
 
         book_schema = BookSchema()
@@ -126,16 +129,18 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        book_result = book_schema.dump(book)
-        assert book_result.data['author'] == author.url
+        book_result = get_dump_data(book_schema, book)
 
-        deserialized = book_schema.load(book_result.data)
-        assert deserialized.data.author == author
+        assert book_result['author'] == author.url
+
+        deserialized, errors = get_load_data(book_schema, book_result)
+        assert deserialized.author == author
 
     def test_hyperlink_related_field_errors(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
+
             author = HyperlinkRelated('author')
 
         book_schema = BookSchema()
@@ -147,21 +152,23 @@ class TestSQLAlchemy:
         db.session.flush()
 
         # Deserialization fails on bad endpoint
-        book_result = book_schema.dump(book)
-        book_result.data['author'] = book.url
-        deserialized = book_schema.load(book_result.data)
-        assert 'expected "author"' in deserialized.errors['author'][0]
+        book_result = get_dump_data(book_schema, book)
+        book_result['author'] = book.url
+        deserialized, errors = get_load_data(book_schema, book_result)
+        print(errors)
+        assert 'expected "author"' in errors['author'][0]
 
         # Deserialization fails on bad URL key
-        book_result = book_schema.dump(book)
+        book_result = get_dump_data(book_schema, book)
         book_schema.fields['author'].url_key = 'pk'
-        deserialized = book_schema.load(book_result.data)
-        assert 'URL pattern "pk" not found' in deserialized.errors['author'][0]
+        deserialized, errors = get_load_data(book_schema, book_result)
+        assert 'URL pattern "pk" not found' in errors['author'][0]
 
     def test_hyperlink_related_field_external(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
             class Meta:
                 model = models.Book
+
             author = HyperlinkRelated('author', external=True)
 
         book_schema = BookSchema()
@@ -172,16 +179,18 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        book_result = book_schema.dump(book)
-        assert book_result.data['author'] == author.absolute_url
+        book_result = get_dump_data(book_schema, book)
 
-        deserialized = book_schema.load(book_result.data)
-        assert deserialized.data.author == author
+        assert book_result['author'] == author.absolute_url
+
+        deserialized, errors = get_load_data(book_schema, book_result)
+        assert deserialized.author == author
 
     def test_hyperlink_related_field_list(self, extma, models, db, extapp):
         class AuthorSchema(extma.ModelSchema):
             class Meta:
                 model = models.Author
+
             books = extma.List(HyperlinkRelated('book'))
 
         author_schema = AuthorSchema()
@@ -192,8 +201,8 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        author_result = author_schema.dump(author)
-        assert author_result.data['books'][0] == book.url
+        author_result = get_dump_data(author_schema, author)
+        assert author_result['books'][0] == book.url
 
-        deserialized = author_schema.load(author_result.data)
-        assert deserialized.data.books[0] == book
+        deserialized, errors = get_load_data(author_schema, author_result)
+        assert deserialized.books[0] == book
