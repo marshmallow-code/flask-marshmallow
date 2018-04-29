@@ -1,9 +1,11 @@
 Changelog
 =========
 
-Unreleased
-**********
+0.9.0 (2018-04-29)
+******************
 
+* Add support for marshmallow 3 beta. Thanks :user:`SBillion` for the PR.
+* Drop support for Python 3.3. Only Python 2.7 and >=3.4 are supported.
 * Updated documentation to fix example ``ma.URLFor`` target.
 
 0.8.0 (2017-05-28)
