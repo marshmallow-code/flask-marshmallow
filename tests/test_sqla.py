@@ -17,7 +17,9 @@ class TestSQLAlchemy:
     @pytest.yield_fixture()
     def extapp(self):
         app_ = Flask('extapp')
+        app_.testing = True
         app_.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        app_.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         SQLAlchemy(app_)
         Marshmallow(app_)
 

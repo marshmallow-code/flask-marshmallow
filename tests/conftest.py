@@ -4,6 +4,7 @@ from flask_marshmallow import Marshmallow
 import pytest
 
 _app = Flask(__name__)
+_app.testing = True
 
 class Bunch(dict):
     def __init__(self, *args, **kwargs):
