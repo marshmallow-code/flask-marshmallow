@@ -6,10 +6,6 @@ pytest==2.8.0
 tox>=1.5.0
 mock
 
-# packaging
-wheel
-twine
-
 # Syntax checking
 flake8==2.4.1
 
