@@ -63,4 +63,8 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     test_suite='tests',
+    project_urls={
+        'Bug Reports': 'https://github.com/marshmallow-code/flask-marshmallow/issues',
+        'Funding': 'https://opencollective.com/marshmallow',
+    }
 )
