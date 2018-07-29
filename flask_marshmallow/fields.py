@@ -81,6 +81,7 @@ class URLFor(fields.Field):
                 param_values[name] = attr_tpl
         return url_for(self.endpoint, **param_values)
 
+
 UrlFor = URLFor
 
 
@@ -93,6 +94,7 @@ class AbsoluteURLFor(URLFor):
 
     def _format(self, val):
         return val
+
 
 AbsoluteUrlFor = AbsoluteURLFor
 

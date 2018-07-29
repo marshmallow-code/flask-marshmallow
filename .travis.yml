@@ -10,11 +10,8 @@ env:
 - MARSHMALLOW_VERSION=""
 install:
 - travis_retry pip install -U -r dev-requirements.txt
-- travis_retry pip install -U .
 - travis_retry pip install -U marshmallow"$MARSHMALLOW_VERSION" --pre
-before_script:
-- flake8 .
-script: pytest
+script: invoke test
 jobs:
   include:
   - stage: PyPI Release
