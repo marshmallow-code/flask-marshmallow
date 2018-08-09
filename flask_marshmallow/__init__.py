@@ -89,7 +89,7 @@ class Marshmallow(object):
             })
 
 
-    In order to integrate with Flask-SQLAlchemy, this extension must by initialized *after*
+    In order to integrate with Flask-SQLAlchemy, this extension must be initialized *after*
     `flask_sqlalchemy.SQLAlchemy`. ::
 
             db = SQLAlchemy(app)
