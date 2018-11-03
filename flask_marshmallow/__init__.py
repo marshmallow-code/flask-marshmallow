@@ -21,7 +21,7 @@ from .schema import Schema
 
 has_sqla = False
 try:
-    import flask_sqlalchemy  # flake8: noqa
+    import flask_sqlalchemy  # noqa: F401
 except ImportError:
     has_sqla = False
 else:
