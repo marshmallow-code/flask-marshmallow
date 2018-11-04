@@ -34,7 +34,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Flask-Marshmallow'
-copyright = u'2014-2016'
+copyright = u'2014-2018'
 
 version = release = flask_marshmallow.__version__
 exclude_patterns = ['_build']
