@@ -3,7 +3,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.abspath('..'))
-import flask_marshmallow
+import flask_marshmallow  # noqa: E402
 sys.path.append(os.path.abspath("_themes"))
 extensions = [
     'sphinx.ext.autodoc',
