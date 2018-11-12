@@ -2,7 +2,7 @@
 invoke==1.2.0
 
 # testing
-pytest==3.10.0
+pytest==3.10.1
 tox>=1.5.0
 mock
 
