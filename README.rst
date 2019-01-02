@@ -2,7 +2,7 @@
 Flask-Marshmallow
 *****************
 
-|pypi-package| |build-status| |docs| |marshmallow3|
+|pypi-package| |build-status| |docs| |marshmallow23|
 
 Flask + marshmallow for beautiful APIs
 ======================================
@@ -110,16 +110,16 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. _Flask: http://flask.pocoo.org
 .. _marshmallow: http://marshmallow.readthedocs.io
 
-.. |pypi-package| image:: https://badge.fury.io/py/flask-marshmallow.svg
+.. |pypi-package| image:: https://badgen.net/pypi/v/flask-marshmallow
     :target: http://badge.fury.io/py/flask-marshmallow
     :alt: Latest version
-.. |build-status| image:: https://travis-ci.org/marshmallow-code/flask-marshmallow.svg?branch=pypi
+.. |build-status| image:: https://badgen.net/travis/marshmallow-code/flask-marshmallow/dev
     :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
     :alt: Travis-CI
 .. |docs| image:: https://readthedocs.org/projects/flask-marshmallow/badge/
-   :target: http://flask-marshmallow.readthedocs.io/
+   :target: https://flask-marshmallow.readthedocs.io/
    :alt: Documentation
-.. |marshmallow3| image:: https://img.shields.io/badge/marshmallow-3-blue.svg
+.. |marshmallow23| image:: https://badgen.net/badge/marshmallow/2,3?list=1
     :target: https://marshmallow.readthedocs.io/en/latest/upgrading.html
     :alt: marshmallow 3 compatible
 
