@@ -7,7 +7,7 @@ tox>=1.5.0
 mock
 
 # Syntax checking
-flake8==3.7.0
+flake8==3.7.3
 
 # Soft requirements
 flask-sqlalchemy
