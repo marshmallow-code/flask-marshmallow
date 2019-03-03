@@ -124,5 +124,5 @@ class Marshmallow(object):
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema
         if has_sqla and 'sqlalchemy' in app.extensions:
             db = app.extensions['sqlalchemy'].db
-            self.ModelSchema.OPTIONS_CLASS.session = db.session
+            self.ModelSchema.session = db.session
         app.extensions[EXTENSION_NAME] = self
