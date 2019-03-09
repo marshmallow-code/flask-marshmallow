@@ -11,11 +11,7 @@
 """
 import warnings
 
-from marshmallow import (
-    fields as base_fields,
-    exceptions,
-    pprint
-)
+from marshmallow import fields as base_fields, exceptions, pprint
 from . import fields
 from .schema import Schema
 
@@ -29,26 +25,20 @@ else:
         from . import sqla
     except ImportError:
         warnings.warn(
-            'Flask-SQLAlchemy integration requires '
-            'marshmallow-sqlalchemy to be installed.'
+            "Flask-SQLAlchemy integration requires "
+            "marshmallow-sqlalchemy to be installed."
         )
     else:
         has_sqla = True
 
-__version__ = '0.9.0'
-__author__ = 'Steven Loria'
-__license__ = 'MIT'
+__version__ = "0.9.0"
+__author__ = "Steven Loria"
+__license__ = "MIT"
 
-__all__ = [
-    'EXTENSION_NAME',
-    'Marshmallow',
-    'Schema',
-    'fields',
-    'exceptions',
-    'pprint'
-]
+__all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 
-EXTENSION_NAME = 'flask-marshmallow'
+EXTENSION_NAME = "flask-marshmallow"
+
 
 def _attach_fields(obj):
     """Attach all the marshmallow fields classes to ``obj``, including
@@ -119,10 +109,10 @@ class Marshmallow(object):
 
         :param Flask app: The Flask application object.
         """
-        app.extensions = getattr(app, 'extensions', {})
+        app.extensions = getattr(app, "extensions", {})
 
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema
-        if has_sqla and 'sqlalchemy' in app.extensions:
-            db = app.extensions['sqlalchemy'].db
+        if has_sqla and "sqlalchemy" in app.extensions:
+            db = app.extensions["sqlalchemy"].db
             self.ModelSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self

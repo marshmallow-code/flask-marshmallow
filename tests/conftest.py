@@ -6,23 +6,29 @@ import pytest
 _app = Flask(__name__)
 _app.testing = True
 
+
 class Bunch(dict):
     def __init__(self, *args, **kwargs):
         super(Bunch, self).__init__(*args, **kwargs)
         self.__dict__ = self
 
+
 # Models
+
 
 class Author(Bunch):
     pass
 
+
 class Book(Bunch):
     pass
 
+
 @pytest.fixture
 def mockauthor():
-    author = Author(id=123, name='Fred Douglass')
+    author = Author(id=123, name="Fred Douglass")
     return author
+
 
 @pytest.fixture
 def mockauthorlist():
@@ -31,28 +37,34 @@ def mockauthorlist():
     a3 = Author(id=3, name="Carol")
     return [a1, a2, a3]
 
+
 @pytest.fixture
 def mockbook(mockauthor):
-    book = Book(id=42, author=mockauthor, title='Legend of Bagger Vance')
+    book = Book(id=42, author=mockauthor, title="Legend of Bagger Vance")
     return book
 
-@_app.route('/author/<int:id>')
+
+@_app.route("/author/<int:id>")
 def author(id):
-    return 'Steven Pressfield'
+    return "Steven Pressfield"
 
-@_app.route('/authors/')
+
+@_app.route("/authors/")
 def authors():
-    return 'Steven Pressfield, Chuck Paluhniuk'
+    return "Steven Pressfield, Chuck Paluhniuk"
 
-@_app.route('/books/')
+
+@_app.route("/books/")
 def books():
-    return 'Legend of Bagger Vance, Fight Club'
+    return "Legend of Bagger Vance, Fight Club"
 
-@_app.route('/books/<id>')
+
+@_app.route("/books/<id>")
 def book(id):
-    return 'Legend of Bagger Vance'
+    return "Legend of Bagger Vance"
 
-@pytest.yield_fixture(scope='function')
+
+@pytest.yield_fixture(scope="function")
 def app():
 
     ctx = _app.test_request_context()
@@ -62,32 +74,33 @@ def app():
 
     ctx.pop()
 
-@pytest.fixture(scope='function')
+
+@pytest.fixture(scope="function")
 def ma(app):
     return Marshmallow(app)
+
 
 @pytest.fixture
 def schemas(ma):
     class AuthorSchema(ma.Schema):
         class Meta:
-            fields = ('id', 'name', 'absolute_url', 'links')
+            fields = ("id", "name", "absolute_url", "links")
 
-        absolute_url = ma.AbsoluteURLFor('author', id='<id>')
+        absolute_url = ma.AbsoluteURLFor("author", id="<id>")
 
-        links = ma.Hyperlinks({
-            'self': ma.URLFor('author', id='<id>'),
-            'collection': ma.URLFor('authors')
-        })
+        links = ma.Hyperlinks(
+            {"self": ma.URLFor("author", id="<id>"), "collection": ma.URLFor("authors")}
+        )
 
     class BookSchema(ma.Schema):
         class Meta:
-            fields = ('id', 'title', 'author', 'links')
+            fields = ("id", "title", "author", "links")
 
         author = ma.Nested(AuthorSchema)
 
-        links = ma.Hyperlinks({
-            'self': ma.URLFor('book', id='<id>'),
-            'collection': ma.URLFor('books'),
-        })
+        links = ma.Hyperlinks(
+            {"self": ma.URLFor("book", id="<id>"), "collection": ma.URLFor("books")}
+        )
+
     # So we can access schemas.AuthorSchema, etc.
     return Bunch(**locals())

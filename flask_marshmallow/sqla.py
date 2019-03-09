@@ -14,9 +14,12 @@ import marshmallow_sqlalchemy as msqla
 from marshmallow.exceptions import ValidationError
 from .schema import Schema
 
+
 class DummySession(object):
     """Placeholder session object."""
+
     pass
+
 
 class SchemaOpts(msqla.ModelSchemaOpts):
     """Schema options for `~flask_marshmallow.sqla.ModelSchema`.
@@ -25,12 +28,14 @@ class SchemaOpts(msqla.ModelSchemaOpts):
     class Meta. The actual session from `flask_sqlalchemy` gets bound
     in `flask_marshmallow.Marshmallow.init_app`.
     """
+
     session = DummySession()
 
     def __init__(self, meta, **kwargs):
-        if not hasattr(meta, 'sqla_session'):
+        if not hasattr(meta, "sqla_session"):
             meta.sqla_session = self.session
         super(SchemaOpts, self).__init__(meta, **kwargs)
+
 
 class ModelSchema(msqla.ModelSchema, Schema):
     """ModelSchema that generates fields based on the
@@ -41,7 +46,9 @@ class ModelSchema(msqla.ModelSchema, Schema):
     See `marshmallow_sqlalchemy.ModelSchema` for more details
     on the `ModelSchema` API.
     """
+
     OPTIONS_CLASS = SchemaOpts
+
 
 class HyperlinkRelated(msqla.fields.Related):
     """Field that generates hyperlinks to indicate references between models,
@@ -53,7 +60,8 @@ class HyperlinkRelated(msqla.fields.Related):
     :param bool external: Set to `True` if absolute URLs should be used,
         instead of relative URLs.
     """
-    def __init__(self, endpoint, url_key='id', external=False, **kwargs):
+
+    def __init__(self, endpoint, url_key="id", external=False, **kwargs):
         super(HyperlinkRelated, self).__init__(**kwargs)
         self.endpoint = endpoint
         self.url_key = url_key
@@ -78,10 +86,14 @@ class HyperlinkRelated(msqla.fields.Related):
             )
         if self.url_key not in kwargs:
             raise ValidationError(
-                'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(**locals())
+                'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(
+                    **locals()
+                )
             )
-        return super(HyperlinkRelated, self)._deserialize(kwargs[self.url_key], *args, **kwargs)
+        return super(HyperlinkRelated, self)._deserialize(
+            kwargs[self.url_key], *args, **kwargs
+        )
 
     @property
     def adapter(self):
-        return current_app.url_map.bind('')
+        return current_app.url_map.bind("")

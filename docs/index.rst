@@ -36,6 +36,7 @@ Write your models.
 
     from your_orm import Model, Column, Integer, String, DateTime
 
+
     class User(Model):
         email = Column(String)
         password = Column(String)
@@ -50,12 +51,13 @@ Define your output format with marshmallow.
     class UserSchema(ma.Schema):
         class Meta:
             # Fields to expose
-            fields = ('email', 'date_created', '_links')
+            fields = ("email", "date_created", "_links")
+
         # Smart hyperlinking
-        _links = ma.Hyperlinks({
-            'self': ma.URLFor('user_detail', id='<id>'),
-            'collection': ma.URLFor('users')
-        })
+        _links = ma.Hyperlinks(
+            {"self": ma.URLFor("user_detail", id="<id>"), "collection": ma.URLFor("users")}
+        )
+
 
     user_schema = UserSchema()
     users_schema = UserSchema(many=True)
@@ -65,7 +67,7 @@ Output the data in your views.
 
 .. code-block:: python
 
-    @app.route('/api/users/')
+    @app.route("/api/users/")
     def users():
         all_users = User.all()
         result = users_schema.dump(all_users)
@@ -73,10 +75,13 @@ Output the data in your views.
         # OR
         # return users_schema.jsonify(all_users)
 
-    @app.route('/api/users/<id>')
+
+    @app.route("/api/users/<id>")
     def user_detail(id):
         user = User.get(id)
         return user_schema.jsonify(user)
+
+
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
@@ -106,7 +111,7 @@ Next, initialize the `~flask_sqlalchemy.SQLAlchemy` and `~flask_marshmallow.Mars
     from flask_marshmallow import Marshmallow
 
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/test.db"
 
     # Order matters: Initialize SQLAlchemy before Marshmallow
     db = SQLAlchemy(app)
@@ -126,11 +131,12 @@ Declare your models like normal.
         id = db.Column(db.Integer, primary_key=True)
         name = db.Column(db.String(255))
 
+
     class Book(db.Model):
         id = db.Column(db.Integer, primary_key=True)
         title = db.Column(db.String(255))
-        author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
-        author = db.relationship('Author', backref='books')
+        author_id = db.Column(db.Integer, db.ForeignKey("author.id"))
+        author = db.relationship("Author", backref="books")
 
 
 Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.ModelSchema`.
@@ -141,6 +147,7 @@ Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~fla
         class Meta:
             model = Author
 
+
     class BookSchema(ma.ModelSchema):
         class Meta:
             model = Book
@@ -150,16 +157,16 @@ You can now use your schema to dump and load your ORM objects.
 
 .. code-block:: python
 
-    >>> db.create_all()
-    >>> author_schema = AuthorSchema()
-    >>> book_schema = BookSchema()
-    >>> author = Author(name='Chuck Paluhniuk')
-    >>> book = Book(title='Fight Club', author=author)
-    >>> db.session.add(author)
-    >>> db.session.add(book)
-    >>> db.session.commit()
-    >>> author_schema.dump(author).data
-    {'id': 1, 'name': 'Chuck Paluhniuk', 'books': [1]}
+    db.create_all()
+    author_schema = AuthorSchema()
+    book_schema = BookSchema()
+    author = Author(name="Chuck Paluhniuk")
+    book = Book(title="Fight Club", author=author)
+    db.session.add(author)
+    db.session.add(book)
+    db.session.commit()
+    author_schema.dump(author).data
+    # {'id': 1, 'name': 'Chuck Paluhniuk', 'books': [1]}
 
 
 `~flask_marshmallow.sqla.ModelSchema` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
@@ -176,13 +183,14 @@ You can also use `ma.HyperlinkRelated <flask_marshmallow.sqla.HyperlinkRelated>`
     class BookSchema(ma.ModelSchema):
         class Meta:
             model = Book
-        author = ma.HyperlinkRelated('author_detail')
+
+        author = ma.HyperlinkRelated("author_detail")
 
 .. code-block:: python
 
-    >>> with app.test_request_context():
-    ...     print(book_schema.dump(book).data)
-    {'id': 1, 'title': 'Fight Club', 'author': '/authors/1'}
+    with app.test_request_context():
+        print(book_schema.dump(book).data)
+    # {'id': 1, 'title': 'Fight Club', 'author': '/authors/1'}
 
 The first argument to the `~flask_marshmallow.sqla.HyperlinkRelated` constructor is the name of the view used to generate the URL, just as you would pass it to the `~flask.url_for` function. If your models and views use the ``id`` attribute
 as a primary key, you're done; otherwise, you must specify the name of the
@@ -195,13 +203,14 @@ To represent a one-to-many relationship, wrap the `~flask_marshmallow.sqla.Hyper
     class AuthorSchema(ma.ModelSchema):
         class Meta:
             model = Author
-        books = ma.List(ma.HyperlinkRelated('book_detail'))
+
+        books = ma.List(ma.HyperlinkRelated("book_detail"))
 
 .. code-block:: python
 
-    >>> with app.test_request_context():
-    ...     print(author_schema.dump(author).data)
-    {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
+    with app.test_request_context():
+        print(author_schema.dump(author).data)
+    # {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
 
 
 API
