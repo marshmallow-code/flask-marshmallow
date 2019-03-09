@@ -50,6 +50,21 @@ class ModelSchema(msqla.ModelSchema, Schema):
     OPTIONS_CLASS = SchemaOpts
 
 
+class TableSchema(msqla.TableSchema, Schema):
+    """TableSchema that generates fields based on the
+    `table` class Meta option, which should be a
+    ``Table`` object from SQLAlchemy.
+    Example: ::
+
+        class UserSchema(ma.TableSchema):
+            class Meta:
+                table = models.User.__table__
+
+    See `marshmallow_sqlalchemy.TableSchema` for more details
+    on the `TableSchema` API.
+    """
+
+
 class HyperlinkRelated(msqla.fields.Related):
     """Field that generates hyperlinks to indicate references between models,
     rather than primary keys.

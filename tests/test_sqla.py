@@ -90,14 +90,7 @@ class TestSQLAlchemy:
         book_schema = BookSchema()
 
         author = models.Author(name="Chuck Paluhniuk")
-        db.session.add(author)
-        db.session.commit()
-
-        author = models.Author(name="Chuck Paluhniuk")
         book = models.Book(title="Fight Club", author=author)
-        db.session.add(author)
-        db.session.add(book)
-        db.session.commit()
 
         author_result = get_dump_data(author_schema, author)
 
@@ -109,6 +102,37 @@ class TestSQLAlchemy:
 
         assert "id" in book_result
         assert book_result["author"] == author.id
+
+        resp = author_schema.jsonify(author)
+        assert isinstance(resp, BaseResponse)
+
+    def test_can_declare_table_schemas(self, extma, models, db):
+        class AuthorSchema(extma.TableSchema):
+            class Meta:
+                table = models.Author.__table__
+
+        class BookSchema(extma.TableSchema):
+            class Meta:
+                table = models.Book.__table__
+
+        author_schema = AuthorSchema()
+        book_schema = BookSchema()
+
+        author = models.Author(name="Chuck Paluhniuk")
+        book = models.Book(title="Fight Club", author=author)
+
+        author_result = get_dump_data(author_schema, author)
+
+        assert "id" in author_result
+        assert "name" in author_result
+        assert author_result["id"] == author.id
+        assert author_result["name"] == "Chuck Paluhniuk"
+        book_result = get_dump_data(book_schema, book)
+
+        assert "id" in book_result
+        assert "title" in book_result
+        assert book_result["id"] == book.id
+        assert book_result["title"] == book.title
 
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)

@@ -85,8 +85,8 @@ class Marshmallow(object):
             db = SQLAlchemy(app)
             ma = Marshmallow(app)
 
-    This gives you access to `ma.ModelSchema`, which generates a marshmallow
-    `~marshmallow.Schema` based on the passed in model. ::
+    This gives you access to `ma.ModelSchema` and `ma.TableSchema`, which generate
+    marshmallow `~marshmallow.Schema` classes based on the passed in model or table. ::
 
         class AuthorSchema(ma.ModelSchema):
             class Meta:
@@ -99,6 +99,7 @@ class Marshmallow(object):
         self.Schema = Schema
         if has_sqla:
             self.ModelSchema = sqla.ModelSchema
+            self.TableSchema = sqla.TableSchema
             self.HyperlinkRelated = sqla.HyperlinkRelated
         _attach_fields(self)
         if app is not None:
