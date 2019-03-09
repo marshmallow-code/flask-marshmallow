@@ -2,7 +2,7 @@
 Flask-Marshmallow
 *****************
 
-|pypi-package| |build-status| |docs| |marshmallow23|
+|pypi-package| |build-status| |docs| |marshmallow23| |black|
 
 Flask + marshmallow for beautiful APIs
 ======================================
@@ -32,6 +32,7 @@ Write your models.
 
     from your_orm import Model, Column, Integer, String, DateTime
 
+
     class User(Model):
         email = Column(String)
         password = Column(String)
@@ -46,12 +47,13 @@ Define your output format with marshmallow.
     class UserSchema(ma.Schema):
         class Meta:
             # Fields to expose
-            fields = ('email', 'date_created', '_links')
+            fields = ("email", "date_created", "_links")
+
         # Smart hyperlinking
-        _links = ma.Hyperlinks({
-            'self': ma.URLFor('user_detail', id='<id>'),
-            'collection': ma.URLFor('users')
-        })
+        _links = ma.Hyperlinks(
+            {"self": ma.URLFor("user_detail", id="<id>"), "collection": ma.URLFor("users")}
+        )
+
 
     user_schema = UserSchema()
     users_schema = UserSchema(many=True)
@@ -61,7 +63,7 @@ Output the data in your views.
 
 .. code-block:: python
 
-    @app.route('/api/users/')
+    @app.route("/api/users/")
     def users():
         all_users = User.all()
         result = users_schema.dump(all_users)
@@ -69,10 +71,13 @@ Output the data in your views.
         # OR
         # return user_schema.jsonify(all_users)
 
-    @app.route('/api/users/<id>')
+
+    @app.route("/api/users/<id>")
     def user_detail(id):
         user = User.get(id)
         return user_schema.jsonify(user)
+
+
     # {
     #     "email": "fred@queen.com",
     #     "date_created": "Fri, 25 Apr 2014 06:02:56 -0000",
@@ -122,4 +127,6 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. |marshmallow23| image:: https://badgen.net/badge/marshmallow/2,3?list=1
     :target: https://marshmallow.readthedocs.io/en/latest/upgrading.html
     :alt: marshmallow 3 compatible
-
+.. |black| image:: https://badgen.net/badge/code%20style/black/000
+    :target: https://github.com/ambv/black
+    :alt: code style: black

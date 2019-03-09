@@ -18,15 +18,10 @@ from marshmallow import missing
 from .compat import get_value
 
 
-_tpl_pattern = re.compile(r'\s*<\s*(\S*)\s*>\s*')
+_tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
 
-__all__ = [
-    'URLFor',
-    'UrlFor',
-    'AbsoluteURLFor',
-    'AbsoluteUrlFor',
-    'Hyperlinks',
-]
+__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks"]
+
 
 def _tpl(val):
     """Return value within ``< >`` if possible, else return ``None``."""
@@ -51,6 +46,7 @@ class URLFor(fields.Field):
         arguments enclosed in `< >` will be interpreted as attributes to pull
         from the object.
     """
+
     _CHECK_ATTRIBUTE = False
 
     def __init__(self, endpoint, **kwargs):
@@ -74,8 +70,8 @@ class URLFor(fields.Field):
                     param_values[name] = attribute_value
                 else:
                     raise AttributeError(
-                        '{attr_name!r} is not a valid '
-                        'attribute of {obj!r}'.format(attr_name=attr_name, obj=obj)
+                        "{attr_name!r} is not a valid "
+                        "attribute of {obj!r}".format(attr_name=attr_name, obj=obj)
                     )
             else:
                 param_values[name] = attr_tpl
@@ -89,7 +85,7 @@ class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
     def __init__(self, endpoint, **kwargs):
-        kwargs['_external'] = True
+        kwargs["_external"] = True
         URLFor.__init__(self, endpoint=endpoint, **kwargs)
 
     def _format(self, val):
@@ -105,8 +101,7 @@ def _rapply(d, func, *args, **kwargs):
         return [_rapply(each, func, *args, **kwargs) for each in d]
     if isinstance(d, dict):
         return {
-            key: _rapply(value, func, *args, **kwargs)
-            for key, value in iteritems(d)
+            key: _rapply(value, func, *args, **kwargs) for key, value in iteritems(d)
         }
     else:
         return func(d, *args, **kwargs)
@@ -147,6 +142,7 @@ class Hyperlinks(fields.Field):
     :param dict schema: A dict that maps names to
         :class:`~flask_marshmallow.fields.URLFor` fields.
     """
+
     _CHECK_ATTRIBUTE = False
 
     def __init__(self, schema, **kwargs):

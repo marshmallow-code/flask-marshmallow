@@ -3,18 +3,26 @@ import re
 from setuptools import setup, find_packages
 
 
-REQUIRES = [
-    'Flask',
-    'marshmallow>=2.0.0',
-    'six>=1.9.0',
-]
+EXTRAS_REQUIRE = {
+    "sqlalchemy": ["flask-sqlalchemy", "marshmallow-sqlalchemy>=0.13.0"],
+    "lint": [
+        "flake8==3.7.7",
+        'flake8-bugbear==18.8.0; python_version >= "3.5"',
+        "pre-commit==1.14.4",
+    ],
+}
+EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
+EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["lint"] + ["tox"]
+
+REQUIRES = ["Flask", "marshmallow>=2.0.0", "six>=1.9.0"]
+
 
 def find_version(fname):
-    '''Attempts to find the version number in the file names fname.
+    """Attempts to find the version number in the file names fname.
     Raises RuntimeError if not found.
-    '''
-    version = ''
-    with open(fname, 'r') as fp:
+    """
+    version = ""
+    with open(fname, "r") as fp:
         reg = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
         for line in fp:
             m = reg.match(line)
@@ -22,11 +30,8 @@ def find_version(fname):
                 version = m.group(1)
                 break
     if not version:
-        raise RuntimeError('Cannot find version information')
+        raise RuntimeError("Cannot find version information")
     return version
-
-
-__version__ = find_version("flask_marshmallow/__init__.py")
 
 
 def read(fname):
@@ -36,36 +41,38 @@ def read(fname):
 
 
 setup(
-    name='flask-marshmallow',
-    version=__version__,
-    description='Flask + marshmallow for beautiful APIs',
-    long_description=read('README.rst'),
-    author='Steven Loria',
-    author_email='sloria1@gmail.com',
-    url='https://github.com/marshmallow-code/flask-marshmallow',
-    packages=find_packages(exclude=("test*", )),
-    package_dir={'flask-marshmallow': 'flask-marshmallow'},
+    name="flask-marshmallow",
+    version=find_version("flask_marshmallow/__init__.py"),
+    description="Flask + marshmallow for beautiful APIs",
+    long_description=read("README.rst"),
+    author="Steven Loria",
+    author_email="sloria1@gmail.com",
+    url="https://github.com/marshmallow-code/flask-marshmallow",
+    packages=find_packages(exclude=("test*",)),
+    package_dir={"flask-marshmallow": "flask-marshmallow"},
     include_package_data=True,
     install_requires=REQUIRES,
-    license=read("LICENSE"),
+    extras_require=EXTRAS_REQUIRE,
+    license="MIT",
     zip_safe=False,
-    keywords='flask-marshmallow',
+    keywords="flask-marshmallow",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        "Development Status :: 4 - Beta",
+        "Environment :: Web Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
-    test_suite='tests',
+    test_suite="tests",
     project_urls={
-        'Bug Reports': 'https://github.com/marshmallow-code/flask-marshmallow/issues',
-        'Funding': 'https://opencollective.com/marshmallow',
-    }
+        "Issues": "https://github.com/marshmallow-code/flask-marshmallow/issues",
+        "Funding": "https://opencollective.com/marshmallow",
+    },
 )
