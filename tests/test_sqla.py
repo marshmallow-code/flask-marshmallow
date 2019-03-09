@@ -7,11 +7,9 @@ from werkzeug.wrappers import BaseResponse
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
 from tests.conftest import Bunch
-from tests.markers import marshmallow_2_req
 from tests.utils import get_dump_data, get_load_data
 
 
-@marshmallow_2_req
 class TestSQLAlchemy:
 
     @pytest.yield_fixture()
