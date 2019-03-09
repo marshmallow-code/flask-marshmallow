@@ -4,6 +4,14 @@ Changelog
 0.10.0 (unreleased)
 *******************
 
+Features:
+
+* Add `ma.TableSchema`.
+* SQLAlchemy requirements can be installed with ``pip install
+  'flask-marshmallow[sqlalchemy]'``.
+
+Support:
+
 * Test against Python 3.7.
 * Drop support for Python 3.4. Only Python 2.7 and >=3.5 are supported.
 

@@ -139,7 +139,7 @@ Declare your models like normal.
         author = db.relationship("Author", backref="books")
 
 
-Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.ModelSchema`.
+Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.ModelSchema` or `~flask_marshmallow.sqla.TableSchema`.
 
 .. code-block:: python
 
@@ -148,9 +148,9 @@ Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~fla
             model = Author
 
 
-    class BookSchema(ma.ModelSchema):
+    class BookSchema(ma.TableSchema):
         class Meta:
-            model = Book
+            table = Book.__table__
 
 You can now use your schema to dump and load your ORM objects.
 
