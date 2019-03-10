@@ -83,6 +83,8 @@ class HyperlinkRelated(msqla.fields.Related):
         self.external = external
 
     def _serialize(self, value, attr, obj):
+        if value is None:
+            return None
         key = super(HyperlinkRelated, self)._serialize(value, attr, obj)
         kwargs = {self.url_key: key}
         return url_for(self.endpoint, _external=self.external, **kwargs)

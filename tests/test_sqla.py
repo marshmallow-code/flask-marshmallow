@@ -159,6 +159,18 @@ class TestSQLAlchemy:
         deserialized, errors = get_load_data(book_schema, book_result)
         assert deserialized.author == author
 
+    def test_hyperlink_related_field_serializes_none(self, extma, models):
+        class BookSchema(extma.ModelSchema):
+            class Meta:
+                model = models.Book
+
+            author = extma.HyperlinkRelated("author")
+
+        book_schema = BookSchema()
+        book = models.Book(title="Fight Club", author=None)
+        book_result = get_dump_data(book_schema, book)
+        assert book_result["author"] is None
+
     def test_hyperlink_related_field_errors(self, extma, models, db, extapp):
         class BookSchema(extma.ModelSchema):
             class Meta:
@@ -178,7 +190,6 @@ class TestSQLAlchemy:
         book_result = get_dump_data(book_schema, book)
         book_result["author"] = book.url
         deserialized, errors = get_load_data(book_schema, book_result)
-        print(errors)
         assert 'expected "author"' in errors["author"][0]
 
         # Deserialization fails on bad URL key

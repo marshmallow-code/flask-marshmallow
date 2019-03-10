@@ -127,7 +127,6 @@ class Hyperlinks(fields.Field):
         _links = Hyperlinks({
             'self': URLFor('author', id='<id>'),
             'collection': URLFor('author_list'),
-            }
         })
 
     `URLFor` objects can be nested within the dictionary. ::
