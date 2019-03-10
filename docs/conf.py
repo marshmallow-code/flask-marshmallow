@@ -3,7 +3,7 @@ import datetime as dt
 import sys
 import os
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 import flask_marshmallow  # noqa: E402
 
 sys.path.append(os.path.abspath("_themes"))

@@ -42,14 +42,14 @@ def read(fname):
 
 setup(
     name="flask-marshmallow",
-    version=find_version("flask_marshmallow/__init__.py"),
+    version=find_version("src/flask_marshmallow/__init__.py"),
     description="Flask + marshmallow for beautiful APIs",
     long_description=read("README.rst"),
     author="Steven Loria",
     author_email="sloria1@gmail.com",
     url="https://github.com/marshmallow-code/flask-marshmallow",
-    packages=find_packages(exclude=("test*",)),
-    package_dir={"flask-marshmallow": "flask-marshmallow"},
+    packages=find_packages("src"),
+    package_dir={"": "src"},
     include_package_data=True,
     install_requires=REQUIRES,
     extras_require=EXTRAS_REQUIRE,
