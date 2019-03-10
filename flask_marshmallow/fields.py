@@ -85,9 +85,6 @@ class URLFor(fields.Field):
         self.params = kwargs
         fields.Field.__init__(self, **kwargs)
 
-    def _format(self, val):
-        return val
-
     def _serialize(self, value, key, obj):
         """Output the URL for the endpoint, given the kwargs passed to
         ``__init__``.
@@ -120,9 +117,6 @@ class AbsoluteURLFor(URLFor):
     def __init__(self, endpoint, **kwargs):
         kwargs["_external"] = True
         URLFor.__init__(self, endpoint=endpoint, **kwargs)
-
-    def _format(self, val):
-        return val
 
 
 AbsoluteUrlFor = AbsoluteURLFor
@@ -180,9 +174,6 @@ class Hyperlinks(fields.Field):
     def __init__(self, schema, **kwargs):
         self.schema = schema
         fields.Field.__init__(self, **kwargs)
-
-    def _format(self, val):
-        return val
 
     def _serialize(self, value, attr, obj):
         return _rapply(self.schema, _url_val, key=attr, obj=obj)
