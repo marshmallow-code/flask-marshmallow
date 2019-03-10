@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime as dt
 import sys
 import os
 
@@ -34,7 +35,10 @@ master_doc = "index"
 
 # General information about the project.
 project = u"Flask-Marshmallow"
-copyright = u"2014-2018"
+copyright = u"2014-{:%Y}".format(
+    dt.datetime.utcfromtimestamp(os.path.getmtime("../CHANGELOG.rst"))
+)
+
 
 version = release = flask_marshmallow.__version__
 exclude_patterns = ["_build"]
