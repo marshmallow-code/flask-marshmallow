@@ -13,9 +13,8 @@ Features:
 
 Bug fixes:
 
-* ``URLFor`` serializes to ``None`` if a passed attribute value is
-  ``None`` (:issue:`18`, :issue:`68`). Thanks :user:`RobinRamuel` and
-  :user:`ocervell` for reporting.
+* ``URLFor``, ``AbsoluteURLFor``, and ``HyperlinkRelated`` serialize to ``None`` if a passed attribute value is ``None`` (:issue:`18`, :issue:`68`, :pr:`72`).
+  Thanks :user:`RobinRamuel`, :user:`ocervell`, and :user:`feigner` for reporting.
 
 Support:
 
