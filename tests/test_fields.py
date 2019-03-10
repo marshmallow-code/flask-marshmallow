@@ -26,12 +26,11 @@ def test_url_field(ma, mockauthor):
 
 def test_url_field_with_invalid_attribute(ma, mockauthor):
     field = ma.URLFor("author", id="<not-an-attr>")
-    with pytest.raises(AttributeError) as excinfo:
-        field.serialize("url", mockauthor)
     expected_msg = "{!r} is not a valid attribute of {!r}".format(
         "not-an-attr", mockauthor
     )
-    assert expected_msg in str(excinfo)
+    with pytest.raises(AttributeError, match=expected_msg):
+        field.serialize("url", mockauthor)
 
 
 def test_url_field_handles_nested_attribute(ma, mockbook, mockauthor):
