@@ -32,8 +32,6 @@ else:
 
 __version__ = "0.9.0"
 __version_info__ = tuple(LooseVersion(__version__).version)
-__license__ = "MIT"
-
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 
 EXTENSION_NAME = "flask-marshmallow"
