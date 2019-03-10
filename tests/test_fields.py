@@ -34,6 +34,24 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
     assert expected_msg in str(excinfo)
 
 
+def test_url_field_handles_nested_attribute(ma, mockbook, mockauthor):
+    field = ma.URLFor("author", id="<author.id>")
+    result = field.serialize("url", mockbook)
+    assert result == url_for("author", id=mockauthor.id)
+
+
+def test_url_field_handles_none_attribute(ma, mockbook, mockauthor):
+    mockbook.author = None
+
+    field = ma.URLFor("author", id="<author>")
+    result = field.serialize("url", mockbook)
+    assert result is None
+
+    field = ma.URLFor("author", id="<author.id>")
+    result = field.serialize("url", mockbook)
+    assert result is None
+
+
 def test_url_field_deserialization(ma):
     field = ma.URLFor("author", id="<not-an-attr>", allow_none=True)
     # noop
