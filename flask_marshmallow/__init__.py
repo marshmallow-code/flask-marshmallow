@@ -5,13 +5,12 @@
 
     Integrates the marshmallow serialization/deserialization library
     with your Flask application.
-
-    :copyright: (c) 2014-2018 by Steven Loria
-    :license: MIT, see LICENSE for more details.
 """
 import warnings
+from distutils.version import LooseVersion
 
 from marshmallow import fields as base_fields, exceptions, pprint
+
 from . import fields
 from .schema import Schema
 
@@ -32,7 +31,7 @@ else:
         has_sqla = True
 
 __version__ = "0.9.0"
-__author__ = "Steven Loria"
+__version_info__ = tuple(LooseVersion(__version__).version)
 __license__ = "MIT"
 
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
