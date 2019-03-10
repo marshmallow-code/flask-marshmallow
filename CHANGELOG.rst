@@ -1,12 +1,12 @@
 Changelog
 =========
 
-0.10.0 (unreleased)
+0.10.0 (2019-03-09)
 *******************
 
 Features:
 
-* Add `ma.TableSchema`.
+* Add `ma.TableSchema` (:pr:`124`).
 * SQLAlchemy requirements can be installed with ``pip install
   'flask-marshmallow[sqlalchemy]'``.
 
