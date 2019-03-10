@@ -10,6 +10,13 @@ Features:
 * SQLAlchemy requirements can be installed with ``pip install
   'flask-marshmallow[sqlalchemy]'``.
 
+
+Bug fixes:
+
+* ``URLFor`` serializes to ``None`` if a passed attribute value is
+  ``None`` (:issue:`18`, :issue:`68`). Thanks :user:`RobinRamuel` and
+  :user:`ocervell` for reporting.
+
 Support:
 
 * Test against Python 3.7.

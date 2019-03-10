@@ -15,12 +15,11 @@ from marshmallow import fields
 from marshmallow.compat import iteritems
 from marshmallow import missing
 
-from .compat import get_value
+
+__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks"]
 
 
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
-
-__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks"]
 
 
 def _tpl(val):
@@ -29,6 +28,38 @@ def _tpl(val):
     if match:
         return match.groups()[0]
     return None
+
+
+def _get_value(obj, key, default=missing):
+    """Slightly-modified version of marshmallow.utils.get_value.
+    If a dot-delimited ``key`` is passed and any attribute in the
+    path is `None`, return `None`.
+    """
+    if "." in key:
+        return _get_value_for_keys(obj, key.split("."), default)
+    else:
+        return _get_value_for_key(obj, key, default)
+
+
+def _get_value_for_keys(obj, keys, default):
+    if len(keys) == 1:
+        return _get_value_for_key(obj, keys[0], default)
+    else:
+        value = _get_value_for_key(obj, keys[0], default)
+        # XXX This differs from the marshmallow implementation
+        if value is None:
+            return None
+        return _get_value_for_keys(value, keys[1:], default)
+
+
+def _get_value_for_key(obj, key, default):
+    if not hasattr(obj, "__getitem__"):
+        return getattr(obj, key, default)
+
+    try:
+        return obj[key]
+    except (KeyError, IndexError, TypeError, AttributeError):
+        return getattr(obj, key, default)
 
 
 class URLFor(fields.Field):
@@ -65,7 +96,9 @@ class URLFor(fields.Field):
         for name, attr_tpl in iteritems(self.params):
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
-                attribute_value = get_value(obj, attr_name, default=missing)
+                attribute_value = _get_value(obj, attr_name, default=missing)
+                if attribute_value is None:
+                    return None
                 if attribute_value is not missing:
                     param_values[name] = attribute_value
                 else:
@@ -127,7 +160,6 @@ class Hyperlinks(fields.Field):
         _links = Hyperlinks({
             'self': URLFor('author', id='<id>'),
             'collection': URLFor('author_list'),
-            }
         })
 
     `URLFor` objects can be nested within the dictionary. ::
