@@ -30,7 +30,7 @@ else:
     else:
         has_sqla = True
 
-__version__ = "0.10.0"
+__version__ = "0.10.1"
 __version_info__ = tuple(LooseVersion(__version__).version)
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 
