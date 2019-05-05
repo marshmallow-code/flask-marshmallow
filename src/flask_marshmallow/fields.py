@@ -12,7 +12,6 @@ import re
 
 from flask import url_for
 from marshmallow import fields
-from marshmallow.compat import iteritems
 from marshmallow import missing
 
 
@@ -90,7 +89,7 @@ class URLFor(fields.Field):
         ``__init__``.
         """
         param_values = {}
-        for name, attr_tpl in iteritems(self.params):
+        for name, attr_tpl in self.params.items():
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
                 attribute_value = _get_value(obj, attr_name, default=missing)
@@ -127,9 +126,7 @@ def _rapply(d, func, *args, **kwargs):
     if isinstance(d, (tuple, list)):
         return [_rapply(each, func, *args, **kwargs) for each in d]
     if isinstance(d, dict):
-        return {
-            key: _rapply(value, func, *args, **kwargs) for key, value in iteritems(d)
-        }
+        return {key: _rapply(value, func, *args, **kwargs) for key, value in d.items()}
     else:
         return func(d, *args, **kwargs)
 
