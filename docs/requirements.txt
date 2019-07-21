@@ -1,3 +1,0 @@
-marshmallow_sqlalchemy
-sphinx
-sphinx-issues
