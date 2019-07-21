@@ -118,9 +118,9 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
 .. |pypi-package| image:: https://badgen.net/pypi/v/flask-marshmallow
     :target: https://pypi.org/project/flask-marshmallow/
     :alt: Latest version
-.. |build-status| image:: https://badgen.net/travis/marshmallow-code/flask-marshmallow/dev
-    :target: https://travis-ci.org/marshmallow-code/flask-marshmallow
-    :alt: Travis-CI
+.. |build-status| image:: https://dev.azure.com/sloria/sloria/_apis/build/status/marshmallow-code.flask-marshmallow?branchName=dev
+    :target: https://dev.azure.com/sloria/sloria/_build/latest?definitionId=14&branchName=dev
+    :alt: Build status
 .. |docs| image:: https://readthedocs.org/projects/flask-marshmallow/badge/
    :target: https://flask-marshmallow.readthedocs.io/
    :alt: Documentation
