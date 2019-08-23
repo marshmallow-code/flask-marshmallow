@@ -24,7 +24,7 @@ Create your app.
 
 .. code-block:: python
 
-    from flask import Flask, jsonify
+    from flask import Flask
     from flask_marshmallow import Marshmallow
 
     app = Flask(__name__)
@@ -70,16 +70,13 @@ Output the data in your views.
     @app.route("/api/users/")
     def users():
         all_users = User.all()
-        result = users_schema.dump(all_users)
-        return jsonify(result.data)
-        # OR
-        # return users_schema.jsonify(all_users)
+        return users_schema.dump(all_users)
 
 
     @app.route("/api/users/<id>")
     def user_detail(id):
         user = User.get(id)
-        return user_schema.jsonify(user)
+        return user_schema.dump(user)
 
 
     # {
@@ -165,7 +162,7 @@ You can now use your schema to dump and load your ORM objects.
     db.session.add(author)
     db.session.add(book)
     db.session.commit()
-    author_schema.dump(author).data
+    author_schema.dump(author)
     # {'id': 1, 'name': 'Chuck Paluhniuk', 'books': [1]}
 
 
@@ -189,7 +186,7 @@ You can also use `ma.HyperlinkRelated <flask_marshmallow.sqla.HyperlinkRelated>`
 .. code-block:: python
 
     with app.test_request_context():
-        print(book_schema.dump(book).data)
+        print(book_schema.dump(book))
     # {'id': 1, 'title': 'Fight Club', 'author': '/authors/1'}
 
 The first argument to the `~flask_marshmallow.sqla.HyperlinkRelated` constructor is the name of the view used to generate the URL, just as you would pass it to the `~flask.url_for` function. If your models and views use the ``id`` attribute
@@ -209,7 +206,7 @@ To represent a one-to-many relationship, wrap the `~flask_marshmallow.sqla.Hyper
 .. code-block:: python
 
     with app.test_request_context():
-        print(author_schema.dump(author).data)
+        print(author_schema.dump(author))
     # {'id': 1, 'name': 'Chuck Paluhniuk', 'books': ['/books/1']}
 
 

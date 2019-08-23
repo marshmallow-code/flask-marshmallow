@@ -20,7 +20,7 @@ Create your app.
 
 .. code-block:: python
 
-    from flask import Flask, jsonify
+    from flask import Flask
     from flask_marshmallow import Marshmallow
 
     app = Flask(__name__)
@@ -66,16 +66,13 @@ Output the data in your views.
     @app.route("/api/users/")
     def users():
         all_users = User.all()
-        result = users_schema.dump(all_users)
-        return jsonify(result.data)
-        # OR
-        # return user_schema.jsonify(all_users)
+        return users_schema.dump(all_users)
 
 
     @app.route("/api/users/<id>")
     def user_detail(id):
         user = User.get(id)
-        return user_schema.jsonify(user)
+        return user_schema.dump(user)
 
 
     # {
