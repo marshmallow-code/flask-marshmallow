@@ -9,7 +9,7 @@ EXTRAS_REQUIRE = {
     "lint": [
         "flake8==3.7.8",
         'flake8-bugbear==19.8.0; python_version >= "3.5"',
-        "pre-commit~=1.17",
+        "pre-commit~=1.20",
     ],
 }
 EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
