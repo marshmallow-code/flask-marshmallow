@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.10.2 (unreleased)
+*******************
+
+Bug fixes:
+
+* Properly restrict marshmallow-sqlalchemy version based on Python version (:pr:`158`).
+
 0.10.1 (2019-05-05)
 *******************
 
