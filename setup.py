@@ -11,7 +11,7 @@ EXTRAS_REQUIRE = {
     ],
     "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==2.2.0", "sphinx-issues==1.2.0"],
     "lint": [
-        "flake8==3.7.8",
+        "flake8==3.7.9",
         'flake8-bugbear==19.8.0; python_version >= "3.5"',
         "pre-commit~=1.20",
     ],
