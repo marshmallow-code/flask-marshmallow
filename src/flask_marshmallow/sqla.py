@@ -9,9 +9,9 @@
 """
 from flask import url_for, current_app
 from six.moves.urllib import parse
-
 import marshmallow_sqlalchemy as msqla
 from marshmallow.exceptions import ValidationError
+
 from .schema import Schema
 
 

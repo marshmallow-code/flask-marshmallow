@@ -9,6 +9,13 @@ from flask_marshmallow.sqla import HyperlinkRelated
 from tests.conftest import Bunch
 from tests.utils import get_dump_data, get_load_data
 
+try:
+    from marshmallow_sqlalchemy import SQLALchemySchema  # noqa: F401
+except ImportError:
+    has_sqlalchemyschema = False
+else:
+    has_sqlalchemyschema = False
+
 
 class TestSQLAlchemy:
     @pytest.yield_fixture()
@@ -137,6 +144,9 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemySchema not available"
+    )
     def test_can_declare_sqla_schemas(self, extma, models, db):
         class AuthorSchema(extma.SQLAlchemySchema):
             class Meta:
@@ -176,6 +186,9 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
     def test_can_declare_sqla_auto_schemas(self, extma, models, db):
         class AuthorSchema(extma.SQLAlchemyAutoSchema):
             class Meta:
