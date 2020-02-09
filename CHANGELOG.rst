@@ -8,6 +8,10 @@ Bug fixes:
 
 * Properly restrict marshmallow-sqlalchemy version based on Python version (:pr:`158`).
 
+Other changes:
+
+* Test against Python 3.8.
+
 0.10.1 (2019-05-05)
 *******************
 
