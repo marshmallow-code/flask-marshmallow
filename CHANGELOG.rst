@@ -1,8 +1,13 @@
 Changelog
 =========
 
-0.10.2 (unreleased)
+0.11.0 (unreleased)
 *******************
+
+Features:
+
+* Add support for ``SQLAlchemySchema``, ``SQLAlchemyAutoSchema``, and ``auto_field``
+  from marshmallow-sqlalchemy>=0.22.0 (:pr:`166`).
 
 Bug fixes:
 

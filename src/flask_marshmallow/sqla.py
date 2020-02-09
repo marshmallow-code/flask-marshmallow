@@ -21,7 +21,7 @@ class DummySession(object):
     pass
 
 
-class FlaskSQLAlchemyOptsMixin:
+class FlaskSQLAlchemyOptsMixin(object):
     session = DummySession()
 
     def __init__(self, meta, **kwargs):
