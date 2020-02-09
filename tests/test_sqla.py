@@ -9,6 +9,13 @@ from flask_marshmallow.sqla import HyperlinkRelated
 from tests.conftest import Bunch
 from tests.utils import get_dump_data, get_load_data
 
+try:
+    from marshmallow_sqlalchemy import SQLALchemySchema  # noqa: F401
+except ImportError:
+    has_sqlalchemyschema = False
+else:
+    has_sqlalchemyschema = False
+
 
 class TestSQLAlchemy:
     @pytest.yield_fixture()
@@ -133,6 +140,88 @@ class TestSQLAlchemy:
         assert "title" in book_result
         assert book_result["id"] == book.id
         assert book_result["title"] == book.title
+
+        resp = author_schema.jsonify(author)
+        assert isinstance(resp, BaseResponse)
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemySchema not available"
+    )
+    def test_can_declare_sqla_schemas(self, extma, models, db):
+        class AuthorSchema(extma.SQLAlchemySchema):
+            class Meta:
+                model = models.Author
+
+            id = extma.auto_field()
+            name = extma.auto_field()
+
+        class BookSchema(extma.SQLAlchemySchema):
+            class Meta:
+                model = models.Book
+
+            id = extma.auto_field()
+            title = extma.auto_field()
+            author_id = extma.auto_field()
+
+        author_schema = AuthorSchema()
+        book_schema = BookSchema()
+
+        author = models.Author(name="Chuck Paluhniuk")
+        book = models.Book(title="Fight Club", author=author)
+
+        author_result = get_dump_data(author_schema, author)
+
+        assert "id" in author_result
+        assert "name" in author_result
+        assert author_result["id"] == author.id
+        assert author_result["name"] == "Chuck Paluhniuk"
+        book_result = get_dump_data(book_schema, book)
+
+        assert "id" in book_result
+        assert "title" in book_result
+        assert book_result["id"] == book.id
+        assert book_result["title"] == book.title
+        assert book_result["author_id"] == book.author_id
+
+        resp = author_schema.jsonify(author)
+        assert isinstance(resp, BaseResponse)
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
+    def test_can_declare_sqla_auto_schemas(self, extma, models, db):
+        class AuthorSchema(extma.SQLAlchemyAutoSchema):
+            class Meta:
+                model = models.Author
+
+        class BookSchema(extma.SQLAlchemyAutoSchema):
+            class Meta:
+                model = models.Book
+                include_fk = True
+
+            id = extma.auto_field()
+            title = extma.auto_field()
+            author_id = extma.auto_field()
+
+        author_schema = AuthorSchema()
+        book_schema = BookSchema()
+
+        author = models.Author(name="Chuck Paluhniuk")
+        book = models.Book(title="Fight Club", author=author)
+
+        author_result = get_dump_data(author_schema, author)
+
+        assert "id" in author_result
+        assert "name" in author_result
+        assert author_result["id"] == author.id
+        assert author_result["name"] == "Chuck Paluhniuk"
+        book_result = get_dump_data(book_schema, book)
+
+        assert "id" in book_result
+        assert "title" in book_result
+        assert book_result["id"] == book.id
+        assert book_result["title"] == book.title
+        assert book_result["author_id"] == book.author_id
 
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)

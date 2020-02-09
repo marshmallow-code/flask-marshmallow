@@ -9,9 +9,9 @@
 """
 from flask import url_for, current_app
 from six.moves.urllib import parse
-
 import marshmallow_sqlalchemy as msqla
 from marshmallow.exceptions import ValidationError
+
 from .schema import Schema
 
 
@@ -21,7 +21,16 @@ class DummySession(object):
     pass
 
 
-class SchemaOpts(msqla.ModelSchemaOpts):
+class FlaskSQLAlchemyOptsMixin(object):
+    session = DummySession()
+
+    def __init__(self, meta, **kwargs):
+        if not hasattr(meta, "sqla_session"):
+            meta.sqla_session = self.session
+        super(FlaskSQLAlchemyOptsMixin, self).__init__(meta, **kwargs)
+
+
+class SchemaOpts(FlaskSQLAlchemyOptsMixin, msqla.ModelSchemaOpts):
     """Schema options for `~flask_marshmallow.sqla.ModelSchema`.
     Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
     placeholder `DummySession` if ``sqla_session`` is not defined on
@@ -29,12 +38,54 @@ class SchemaOpts(msqla.ModelSchemaOpts):
     in `flask_marshmallow.Marshmallow.init_app`.
     """
 
-    session = DummySession()
+    pass
 
-    def __init__(self, meta, **kwargs):
-        if not hasattr(meta, "sqla_session"):
-            meta.sqla_session = self.session
-        super(SchemaOpts, self).__init__(meta, **kwargs)
+
+# SQLAlchemySchema and SQLAlchemyAutoSchema are available in newer ma-sqla versions
+if hasattr(msqla, "SQLAlchemySchema"):
+
+    class SQLAlchemySchemaOpts(FlaskSQLAlchemyOptsMixin, msqla.SQLAlchemySchemaOpts):
+        pass
+
+    class SQLAlchemySchema(msqla.SQLAlchemySchema, Schema):
+        """SQLAlchemySchema that associates a schema with a model via the
+        `model` class Meta option, which should be a
+        ``db.Model`` class from `flask_sqlalchemy`. Uses the
+        scoped session from Flask-SQLAlchemy by default.
+
+        See `marshmallow_sqlalchemy.SQLAlchemySchema` for more details
+        on the `SQLAlchemySchema` API.
+        """
+
+        OPTIONS_CLASS = SQLAlchemySchemaOpts
+
+
+else:
+    SQLAlchemySchema = None
+
+if hasattr(msqla, "SQLAlchemyAutoSchema"):
+
+    class SQLAlchemyAutoSchemaOpts(
+        FlaskSQLAlchemyOptsMixin, msqla.SQLAlchemyAutoSchemaOpts
+    ):
+        pass
+
+    class SQLAlchemyAutoSchema(msqla.SQLAlchemyAutoSchema, Schema):
+        """SQLAlchemyAutoSchema that automatically generates marshmallow fields
+        from a SQLAlchemy model's or table's column.
+        Uses the scoped session from Flask-SQLAlchemy by default.
+
+        See `marshmallow_sqlalchemy.SQLAlchemyAutoSchema` for more details
+        on the `SQLAlchemyAutoSchema` API.
+        """
+
+        OPTIONS_CLASS = SQLAlchemyAutoSchemaOpts
+
+
+else:
+    SQLAlchemyAutoSchema = None
+
+auto_field = getattr(msqla, "auto_field", None)
 
 
 class ModelSchema(msqla.ModelSchema, Schema):
