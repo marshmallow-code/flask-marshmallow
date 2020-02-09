@@ -136,18 +136,23 @@ Declare your models like normal.
         author = db.relationship("Author", backref="books")
 
 
-Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.ModelSchema` or `~flask_marshmallow.sqla.TableSchema`.
+Generate marshmallow `Schemas <marshmallow.Schema>` from your models using `~flask_marshmallow.sqla.SQLAlchemySchema` or `~flask_marshmallow.sqla.SQLAlchemyAutoSchema`.
 
 .. code-block:: python
 
-    class AuthorSchema(ma.ModelSchema):
+    class AuthorSchema(ma.SQLAlchemySchema):
         class Meta:
             model = Author
 
+        id = ma.auto_field()
+        name = ma.auto_field()
+        books = ma.auto_field()
 
-    class BookSchema(ma.TableSchema):
+
+    class BookSchema(ma.SQLAlchemyAutoSchema):
         class Meta:
-            table = Book.__table__
+            model = Book
+            include_fk = True
 
 You can now use your schema to dump and load your ORM objects.
 
@@ -166,18 +171,19 @@ You can now use your schema to dump and load your ORM objects.
     # {'id': 1, 'name': 'Chuck Paluhniuk', 'books': [1]}
 
 
-`~flask_marshmallow.sqla.ModelSchema` is nearly identical in API to `marshmallow_sqlalchemy.ModelSchema` with the following exceptions:
+`~flask_marshmallow.sqla.SQLAlchemySchema` is nearly identical in API to `marshmallow_sqlalchemy.SQLAlchemySchema` with the following exceptions:
 
-- By default, `~flask_marshmallow.sqla.ModelSchema` uses the scoped session created by Flask-SQLAlchemy.
-- `~flask_marshmallow.sqla.ModelSchema` subclasses `flask_marshmallow.Schema`, so it includes the `~flask_marshmallow.Schema.jsonify` method.
-Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override `ordered=True <https://marshmallow.readthedocs.io/en/latest/quickstart.html#ordering-output>`_ in the ModelSchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `~flask_marshmallow.sqla.ModelSchema` in order to minimize generation time and maximize cachability of the results.
+- By default, `~flask_marshmallow.sqla.SQLAlchemySchema` uses the scoped session created by Flask-SQLAlchemy.
+- `~flask_marshmallow.sqla.SQLAlchemySchema` subclasses `flask_marshmallow.Schema`, so it includes the `~flask_marshmallow.Schema.jsonify` method.
+Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override `ordered=True <https://marshmallow.readthedocs.io/en/latest/quickstart.html#ordering-output>`_ 
+in the SQLAlchemySchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `~flask_marshmallow.sqla.SQLAlchemySchema` in order to minimize generation time and maximize cachability of the results.
 
 You can also use `ma.HyperlinkRelated <flask_marshmallow.sqla.HyperlinkRelated>` fields if you want relationships to be represented by hyperlinks rather than primary keys.
 
 
 .. code-block:: python
 
-    class BookSchema(ma.ModelSchema):
+    class BookSchema(ma.SQLAlchemyAutoSchema):
         class Meta:
             model = Book
 
@@ -197,7 +203,7 @@ To represent a one-to-many relationship, wrap the `~flask_marshmallow.sqla.Hyper
 
 .. code-block:: python
 
-    class AuthorSchema(ma.ModelSchema):
+    class AuthorSchema(ma.SQLAlchemyAutoSchema):
         class Meta:
             model = Author
 
