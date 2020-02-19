@@ -9,7 +9,7 @@ EXTRAS_REQUIRE = {
         'marshmallow-sqlalchemy>=0.13.0; python_version >= "3.6"',
         'marshmallow-sqlalchemy>=0.13.0,<0.19.0; python_version < "3.6"',
     ],
-    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==2.4.1", "sphinx-issues==1.2.0"],
+    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==2.4.2", "sphinx-issues==1.2.0"],
     "lint": [
         "flake8==3.7.9",
         'flake8-bugbear==20.1.4; python_version >= "3.5"',
