@@ -192,25 +192,6 @@ if sys.version_info >= (3, 7):
 
         raise AttributeError("module {} has no attribute {}".format(__name__, name))
 
-    def __dir__():
-        return [
-            "DummySession",
-            "FlaskSQLAlchemyOptsMixin",
-            "HyperlinkRelated",
-            "SQLAlchemyAutoSchema",
-            "SQLAlchemyAutoSchemaOpts",
-            "SQLAlchemySchema",
-            "SQLAlchemySchemaOpts",
-            "Schema",
-            "SchemaOpts",
-            "ValidationError",
-            "auto_field",
-            "current_app",
-            "msqla",
-            "parse",
-            "url_for",
-        ]
-
 
 else:
 
@@ -222,25 +203,6 @@ else:
         SQLAlchemyAutoSchema = SQLAlchemyAutoSchema
         auto_field = staticmethod(auto_field)
         HyperlinkRelated = HyperlinkRelated
-
-        def __dir__(self):
-            return [
-                "DummySession",
-                "FlaskSQLAlchemyOptsMixin",
-                "HyperlinkRelated",
-                "SQLAlchemyAutoSchema",
-                "SQLAlchemyAutoSchemaOpts",
-                "SQLAlchemySchema",
-                "SQLAlchemySchemaOpts",
-                "Schema",
-                "SchemaOpts",
-                "ValidationError",
-                "auto_field",
-                "current_app",
-                "msqla",
-                "parse",
-                "url_for",
-            ]
 
         def __getattr__(self, name):
             if name == "ModelSchema":
