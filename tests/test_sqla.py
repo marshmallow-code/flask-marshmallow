@@ -10,11 +10,11 @@ from tests.conftest import Bunch
 from tests.utils import get_dump_data, get_load_data
 
 try:
-    from marshmallow_sqlalchemy import SQLALchemySchema  # noqa: F401
+    from marshmallow_sqlalchemy import SQLAlchemySchema  # noqa: F401
 except ImportError:
     has_sqlalchemyschema = False
 else:
-    has_sqlalchemyschema = False
+    has_sqlalchemyschema = True
 
 
 class TestSQLAlchemy:
