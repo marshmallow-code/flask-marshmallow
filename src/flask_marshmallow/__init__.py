@@ -95,8 +95,6 @@ class Marshmallow(object):
     def __init__(self, app=None):
         self.Schema = Schema
         if has_sqla:
-            self.ModelSchema = sqla.ModelSchema
-            self.TableSchema = sqla.TableSchema
             self.SQLAlchemySchema = sqla.SQLAlchemySchema
             self.SQLAlchemyAutoSchema = sqla.SQLAlchemyAutoSchema
             self.auto_field = sqla.auto_field
@@ -115,5 +113,17 @@ class Marshmallow(object):
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema
         if has_sqla and "sqlalchemy" in app.extensions:
             db = app.extensions["sqlalchemy"].db
-            self.ModelSchema.OPTIONS_CLASS.session = db.session
+            sqla.FlaskSQLAlchemyOptsMixin.session = db.session
         app.extensions[EXTENSION_NAME] = self
+
+    @property
+    def ModelSchema(self):
+        if has_sqla:
+            return sqla.ModelSchema
+        raise AttributeError("'%s' object has no attribute 'ModelSchema'" % type(self))
+
+    @property
+    def TableSchema(self):
+        if has_sqla:
+            return sqla.TableSchema
+        raise AttributeError("'%s' object has no attribute 'TableSchema'" % type(self))

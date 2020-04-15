@@ -7,6 +7,9 @@
     `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
     from Flask-SQLALchemy.
 """
+import sys
+from types import ModuleType
+
 from flask import url_for, current_app
 from six.moves.urllib import parse
 import marshmallow_sqlalchemy as msqla
@@ -88,34 +91,6 @@ else:
 auto_field = getattr(msqla, "auto_field", None)
 
 
-class ModelSchema(msqla.ModelSchema, Schema):
-    """ModelSchema that generates fields based on the
-    `model` class Meta option, which should be a
-    ``db.Model`` class from `flask_sqlalchemy`. Uses the
-    scoped session from Flask-SQLAlchemy by default.
-
-    See `marshmallow_sqlalchemy.ModelSchema` for more details
-    on the `ModelSchema` API.
-    """
-
-    OPTIONS_CLASS = SchemaOpts
-
-
-class TableSchema(msqla.TableSchema, Schema):
-    """TableSchema that generates fields based on the
-    `table` class Meta option, which should be a
-    ``Table`` object from SQLAlchemy.
-    Example: ::
-
-        class UserSchema(ma.TableSchema):
-            class Meta:
-                table = models.User.__table__
-
-    See `marshmallow_sqlalchemy.TableSchema` for more details
-    on the `TableSchema` API.
-    """
-
-
 class HyperlinkRelated(msqla.fields.Related):
     """Field that generates hyperlinks to indicate references between models,
     rather than primary keys.
@@ -165,3 +140,120 @@ class HyperlinkRelated(msqla.fields.Related):
     @property
     def adapter(self):
         return current_app.url_map.bind("")
+
+
+# Avoid spurious depreciation warnings by delaying the subclassing of
+# ModelSchema and TableSchema so that the __init_subclass__ hook isn't
+# triggered unless either are accessed.
+
+
+def _make_model_schema():
+    class ModelSchema(msqla.ModelSchema, Schema):
+        """ModelSchema that generates fields based on the
+        `model` class Meta option, which should be a
+        ``db.Model`` class from `flask_sqlalchemy`. Uses the
+        scoped session from Flask-SQLAlchemy by default.
+
+        See `marshmallow_sqlalchemy.ModelSchema` for more details
+        on the `ModelSchema` API.
+        """
+
+        OPTIONS_CLASS = SchemaOpts
+
+    return ModelSchema
+
+
+def _make_table_schema():
+    class TableSchema(msqla.TableSchema, Schema):
+        """TableSchema that generates fields based on the
+        `table` class Meta option, which should be a
+        ``Table`` object from SQLAlchemy.
+        Example: ::
+
+            class UserSchema(ma.TableSchema):
+                class Meta:
+                    table = models.User.__table__
+
+        See `marshmallow_sqlalchemy.TableSchema` for more details
+        on the `TableSchema` API.
+        """
+
+    return TableSchema
+
+
+if sys.version_info >= (3, 7):
+
+    def __getattr__(name):
+        if name == "ModelSchema":
+            return _make_model_schema()
+
+        if name == "TableSchema":
+            return _make_table_schema()
+
+        raise AttributeError("module {} has no attribute {}".format(__name__, name))
+
+    def __dir__():
+        return [
+            "DummySession",
+            "FlaskSQLAlchemyOptsMixin",
+            "HyperlinkRelated",
+            "SQLAlchemyAutoSchema",
+            "SQLAlchemyAutoSchemaOpts",
+            "SQLAlchemySchema",
+            "SQLAlchemySchemaOpts",
+            "Schema",
+            "SchemaOpts",
+            "ValidationError",
+            "auto_field",
+            "current_app",
+            "msqla",
+            "parse",
+            "url_for",
+        ]
+
+
+else:
+
+    class module(ModuleType):
+        DummySession = DummySession
+        FlaskSQLAlchemyOptsMixin = FlaskSQLAlchemyOptsMixin
+        SchemaOpts = SchemaOpts
+        SQLAlchemySchema = SQLAlchemySchema
+        SQLAlchemyAutoSchema = SQLAlchemyAutoSchema
+        auto_field = staticmethod(auto_field)
+        HyperlinkRelated = HyperlinkRelated
+
+        def __dir__(self):
+            return [
+                "DummySession",
+                "FlaskSQLAlchemyOptsMixin",
+                "HyperlinkRelated",
+                "SQLAlchemyAutoSchema",
+                "SQLAlchemyAutoSchemaOpts",
+                "SQLAlchemySchema",
+                "SQLAlchemySchemaOpts",
+                "Schema",
+                "SchemaOpts",
+                "ValidationError",
+                "auto_field",
+                "current_app",
+                "msqla",
+                "parse",
+                "url_for",
+            ]
+
+        def __getattr__(self, name):
+            if name == "ModelSchema":
+                return _make_model_schema()
+
+            if name == "TableSchema":
+                return _make_table_schema()
+
+            raise AttributeError("module {} has no attribute {}".format(__name__, name))
+
+    # keep ref to module so can continue to access globals.
+    old_module = sys.modules[__name__]
+    # overwrite module with class so can use __getattr__()
+    new_module = sys.modules[__name__] = module(__name__)
+    # make new module look like old one
+    new_module.__dict__.update({"__file__": __file__, "__doc__": __doc__})

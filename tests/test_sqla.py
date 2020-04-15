@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import warnings
+
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -329,3 +331,73 @@ class TestSQLAlchemy:
 
         deserialized, errors = get_load_data(author_schema, author_result)
         assert deserialized.books[0] == book
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
+    def test_no_warn_sqla_schemas(self, extma, models):
+        warnings.simplefilter("always")
+
+        with pytest.warns(None) as record:
+
+            class AuthorSchema(extma.SQLAlchemySchema):
+                class Meta:
+                    model = models.Author
+
+            class BookSchema(extma.SQLAlchemySchema):
+                class Meta:
+                    model = models.Book
+
+        assert len(record) == 0
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
+    def test_no_warn_sqla_auto_schemas(self, extma, models):
+        warnings.simplefilter("always")
+
+        with pytest.warns(None) as record:
+
+            class AuthorSchema(extma.SQLAlchemyAutoSchema):
+                class Meta:
+                    model = models.Author
+
+            class BookSchema(extma.SQLAlchemyAutoSchema):
+                class Meta:
+                    model = models.Book
+
+        assert len(record) == 0
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
+    def test_warns_model_schema(self, extma, models):
+
+        with pytest.deprecated_call():
+
+            class AuthorSchema(extma.ModelSchema):
+                class Meta:
+                    model = models.Author
+
+        with pytest.deprecated_call():
+
+            class BookSchema(extma.ModelSchema):
+                class Meta:
+                    model = models.Book
+
+    @pytest.mark.skipif(
+        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
+    )
+    def test_warns_table_schema(self, extma, models):
+
+        with pytest.deprecated_call():
+
+            class AuthorSchema(extma.TableSchema):
+                class Meta:
+                    table = models.Author.__table__
+
+        with pytest.deprecated_call():
+
+            class BookSchema(extma.TableSchema):
+                class Meta:
+                    table = models.Book.__table__
