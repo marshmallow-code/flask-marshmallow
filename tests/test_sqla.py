@@ -17,6 +17,11 @@ else:
     has_sqlalchemyschema = True
 
 
+requires_sqlalchemyschema = pytest.mark.skipif(
+    not has_sqlalchemyschema, reason="SQLAlchemySchema not available"
+)
+
+
 class TestSQLAlchemy:
     @pytest.yield_fixture()
     def extapp(self):
@@ -84,69 +89,7 @@ class TestSQLAlchemy:
         yield Bunch(Author=AuthorModel, Book=BookModel)
         db.drop_all()
 
-    def test_can_declare_model_schemas(self, extma, models, db):
-        class AuthorSchema(extma.ModelSchema):
-            class Meta:
-                model = models.Author
-
-        class BookSchema(extma.ModelSchema):
-            class Meta:
-                model = models.Book
-
-        author_schema = AuthorSchema()
-        book_schema = BookSchema()
-
-        author = models.Author(name="Chuck Paluhniuk")
-        book = models.Book(title="Fight Club", author=author)
-
-        author_result = get_dump_data(author_schema, author)
-
-        assert "id" in author_result
-        assert "name" in author_result
-        assert author_result["name"] == "Chuck Paluhniuk"
-        assert author_result["books"][0] == book.id
-        book_result = get_dump_data(book_schema, book)
-
-        assert "id" in book_result
-        assert book_result["author"] == author.id
-
-        resp = author_schema.jsonify(author)
-        assert isinstance(resp, BaseResponse)
-
-    def test_can_declare_table_schemas(self, extma, models, db):
-        class AuthorSchema(extma.TableSchema):
-            class Meta:
-                table = models.Author.__table__
-
-        class BookSchema(extma.TableSchema):
-            class Meta:
-                table = models.Book.__table__
-
-        author_schema = AuthorSchema()
-        book_schema = BookSchema()
-
-        author = models.Author(name="Chuck Paluhniuk")
-        book = models.Book(title="Fight Club", author=author)
-
-        author_result = get_dump_data(author_schema, author)
-
-        assert "id" in author_result
-        assert "name" in author_result
-        assert author_result["id"] == author.id
-        assert author_result["name"] == "Chuck Paluhniuk"
-        book_result = get_dump_data(book_schema, book)
-
-        assert "id" in book_result
-        assert "title" in book_result
-        assert book_result["id"] == book.id
-        assert book_result["title"] == book.title
-
-        resp = author_schema.jsonify(author)
-        assert isinstance(resp, BaseResponse)
-
-    @pytest.mark.skipif(
-        not has_sqlalchemyschema, reason="SQLAlchemySchema not available"
-    )
+    @requires_sqlalchemyschema
     def test_can_declare_sqla_schemas(self, extma, models, db):
         class AuthorSchema(extma.SQLAlchemySchema):
             class Meta:
@@ -186,9 +129,7 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
-    @pytest.mark.skipif(
-        not has_sqlalchemyschema, reason="SQLAlchemyAutoSchema not available"
-    )
+    @requires_sqlalchemyschema
     def test_can_declare_sqla_auto_schemas(self, extma, models, db):
         class AuthorSchema(extma.SQLAlchemyAutoSchema):
             class Meta:
@@ -226,8 +167,9 @@ class TestSQLAlchemy:
         resp = author_schema.jsonify(author)
         assert isinstance(resp, BaseResponse)
 
+    @requires_sqlalchemyschema
     def test_hyperlink_related_field(self, extma, models, db, extapp):
-        class BookSchema(extma.ModelSchema):
+        class BookSchema(extma.SQLAlchemySchema):
             class Meta:
                 model = models.Book
 
@@ -246,10 +188,11 @@ class TestSQLAlchemy:
         assert book_result["author"] == author.url
 
         deserialized, errors = get_load_data(book_schema, book_result)
-        assert deserialized.author == author
+        assert deserialized["author"] == author
 
+    @requires_sqlalchemyschema
     def test_hyperlink_related_field_serializes_none(self, extma, models):
-        class BookSchema(extma.ModelSchema):
+        class BookSchema(extma.SQLAlchemySchema):
             class Meta:
                 model = models.Book
 
@@ -260,8 +203,9 @@ class TestSQLAlchemy:
         book_result = get_dump_data(book_schema, book)
         assert book_result["author"] is None
 
+    @requires_sqlalchemyschema
     def test_hyperlink_related_field_errors(self, extma, models, db, extapp):
-        class BookSchema(extma.ModelSchema):
+        class BookSchema(extma.SQLAlchemySchema):
             class Meta:
                 model = models.Book
 
@@ -287,8 +231,9 @@ class TestSQLAlchemy:
         deserialized, errors = get_load_data(book_schema, book_result)
         assert 'URL pattern "pk" not found' in errors["author"][0]
 
+    @requires_sqlalchemyschema
     def test_hyperlink_related_field_external(self, extma, models, db, extapp):
-        class BookSchema(extma.ModelSchema):
+        class BookSchema(extma.SQLAlchemySchema):
             class Meta:
                 model = models.Book
 
@@ -307,10 +252,11 @@ class TestSQLAlchemy:
         assert book_result["author"] == author.absolute_url
 
         deserialized, errors = get_load_data(book_schema, book_result)
-        assert deserialized.author == author
+        assert deserialized["author"] == author
 
+    @requires_sqlalchemyschema
     def test_hyperlink_related_field_list(self, extma, models, db, extapp):
-        class AuthorSchema(extma.ModelSchema):
+        class AuthorSchema(extma.SQLAlchemySchema):
             class Meta:
                 model = models.Author
 
@@ -328,4 +274,4 @@ class TestSQLAlchemy:
         assert author_result["books"][0] == book.url
 
         deserialized, errors = get_load_data(author_schema, author_result)
-        assert deserialized.books[0] == book
+        assert deserialized["books"][0] == book

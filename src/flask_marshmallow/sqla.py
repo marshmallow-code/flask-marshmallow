@@ -4,8 +4,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
     Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
-    `ModelSchema <marshmallow_sqlalchemy.ModelSchema>` classes that use the scoped session
-    from Flask-SQLALchemy.
+    `SQLAlchemySchema <marshmallow_sqlalchemy.SQLAlchemySchema>` and
+    `SQLAlchemyAutoSchema <marshmallow_sqlalchemy.SQLAlchemyAutoSchema>` classes
+    that use the scoped session from Flask-SQLAlchemy.
 """
 from flask import url_for, current_app
 from six.moves.urllib import parse
@@ -86,34 +87,6 @@ else:
     SQLAlchemyAutoSchema = None
 
 auto_field = getattr(msqla, "auto_field", None)
-
-
-class ModelSchema(msqla.ModelSchema, Schema):
-    """ModelSchema that generates fields based on the
-    `model` class Meta option, which should be a
-    ``db.Model`` class from `flask_sqlalchemy`. Uses the
-    scoped session from Flask-SQLAlchemy by default.
-
-    See `marshmallow_sqlalchemy.ModelSchema` for more details
-    on the `ModelSchema` API.
-    """
-
-    OPTIONS_CLASS = SchemaOpts
-
-
-class TableSchema(msqla.TableSchema, Schema):
-    """TableSchema that generates fields based on the
-    `table` class Meta option, which should be a
-    ``Table`` object from SQLAlchemy.
-    Example: ::
-
-        class UserSchema(ma.TableSchema):
-            class Meta:
-                table = models.User.__table__
-
-    See `marshmallow_sqlalchemy.TableSchema` for more details
-    on the `TableSchema` API.
-    """
 
 
 class HyperlinkRelated(msqla.fields.Related):
