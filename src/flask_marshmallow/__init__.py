@@ -30,7 +30,7 @@ else:
     else:
         has_sqla = True
 
-__version__ = "0.11.0"
+__version__ = "0.12.0.dev0"
 __version_info__ = tuple(LooseVersion(__version__).version)
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 
@@ -95,8 +95,6 @@ class Marshmallow(object):
     def __init__(self, app=None):
         self.Schema = Schema
         if has_sqla:
-            self.ModelSchema = sqla.ModelSchema
-            self.TableSchema = sqla.TableSchema
             self.SQLAlchemySchema = sqla.SQLAlchemySchema
             self.SQLAlchemyAutoSchema = sqla.SQLAlchemyAutoSchema
             self.auto_field = sqla.auto_field
@@ -115,5 +113,6 @@ class Marshmallow(object):
         # If using Flask-SQLAlchemy, attach db.session to ModelSchema
         if has_sqla and "sqlalchemy" in app.extensions:
             db = app.extensions["sqlalchemy"].db
-            self.ModelSchema.OPTIONS_CLASS.session = db.session
+            self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
+            self.SQLAlchemyAutoSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self

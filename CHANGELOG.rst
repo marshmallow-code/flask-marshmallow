@@ -1,6 +1,62 @@
 Changelog
 =========
 
+0.12.0 (unreleased)
+*******************
+
+* *Breaking change*: ``ma.ModelSchema`` and ``ma.TableSchema`` are removed, since these are deprecated upstream.
+
+.. warning::
+  It is highly recommended that you use the newer ``ma.SQLAlchemySchema`` and ``ma.SQLAlchemyAutoSchema``  classes
+  instead of ``ModelSchema`` and ``TableSchema``. See the release notes for `marshmallow-sqlalchemy 0.22.0 <https://marshmallow-sqlalchemy.readthedocs.io/en/latest/changelog.html>`_ 
+  for instructions on how to migrate. 
+
+If you need to use ``ModelSchema`` and ``TableSchema`` for the time being, you'll need to import these directly from ``marshmallow_sqlalchemy``.
+
+.. code-block:: python
+
+    from flask import Flask
+    from flask_sqlalchemy import SQLAlchemy
+    from flask_marshmallow import Marshmallow
+
+    app = Flask(__name__)
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////tmp/test.db"
+
+    db = SQLAlchemy(app)
+    ma = Marshmallow(app)
+
+    # flask-marshmallow<0.12.0
+
+
+    class AuthorSchema(ma.ModelSchema):
+        class Meta:
+            model = Author
+
+
+    # flask-marshmallow>=0.12.0 (recommended)
+
+
+    class AuthorSchema(ma.SQLAlchemySchema):
+        class Meta:
+            model = Author
+            load_instance = True
+
+
+    # flask-marshmallow>=0.12.0 (not recommended)
+
+    from marshmallow_sqlalchemy import ModelSchema
+
+
+    class AuthorSchema(ModelSchema):
+        class Meta:
+            model = Author
+            sql_session = db.session
+
+Bug fixes:
+
+* Fix binding Flask-SQLAlchemy's scoped session to ``ma.SQLAlchemySchema`` and ``ma.SQLAlchemyAutoSchema``.
+  (:issue:`180`). Thanks :user:`fnalonso` for reporting.
+
 0.11.0 (2020-02-09)
 *******************
 
