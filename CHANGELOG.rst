@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.12.0 (unreleased)
+0.12.0 (2020-04-26)
 *******************
 
 * *Breaking change*: ``ma.ModelSchema`` and ``ma.TableSchema`` are removed, since these are deprecated upstream.
