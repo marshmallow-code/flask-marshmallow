@@ -1,6 +1,11 @@
 Changelog
 =========
 
+(unreleased)
+************
+
+* Remove unused ``flask_marshmallow.sqla.SchemaOpts``.
+
 0.12.0 (2020-04-26)
 *******************
 

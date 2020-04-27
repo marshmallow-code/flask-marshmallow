@@ -31,17 +31,6 @@ class FlaskSQLAlchemyOptsMixin(object):
         super(FlaskSQLAlchemyOptsMixin, self).__init__(meta, **kwargs)
 
 
-class SchemaOpts(FlaskSQLAlchemyOptsMixin, msqla.ModelSchemaOpts):
-    """Schema options for `~flask_marshmallow.sqla.ModelSchema`.
-    Same as `marshmallow_sqlalchemy.SchemaOpts`, except that we add a
-    placeholder `DummySession` if ``sqla_session`` is not defined on
-    class Meta. The actual session from `flask_sqlalchemy` gets bound
-    in `flask_marshmallow.Marshmallow.init_app`.
-    """
-
-    pass
-
-
 # SQLAlchemySchema and SQLAlchemyAutoSchema are available in newer ma-sqla versions
 if hasattr(msqla, "SQLAlchemySchema"):
 
