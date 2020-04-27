@@ -36,7 +36,7 @@ If you need to use ``ModelSchema`` and ``TableSchema`` for the time being, you'l
     # flask-marshmallow>=0.12.0 (recommended)
 
 
-    class AuthorSchema(ma.SQLAlchemySchema):
+    class AuthorSchema(ma.SQLAlchemyAutoSchema):
         class Meta:
             model = Author
             load_instance = True
