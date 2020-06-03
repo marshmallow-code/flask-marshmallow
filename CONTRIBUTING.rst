@@ -115,7 +115,7 @@ To run syntax checks: ::
 Documentation
 *************
 
-Contributions to the documentation are welcome. Documentation is written in `reStructured Text`_ (rST). A quick rST reference can be found `here <https://docutils.sourceforge.io/docs/user/rst/quickref.html>`_. Builds are powered by Sphinx_.
+Contributions to the documentation are welcome. Documentation is written in `reStructuredText`_ (rST). A quick rST reference can be found `here <https://docutils.sourceforge.io/docs/user/rst/quickref.html>`_. Builds are powered by Sphinx_.
 
 To build the docs in "watch" mode: ::
 
@@ -130,5 +130,5 @@ Have a usage example you'd like to share? Feel free to add it to the `examples <
 
 
 .. _Sphinx: http://sphinx.pocoo.org/
-.. _`reStructured Text`: https://docutils.sourceforge.io/rst.html
+.. _`reStructuredText`: https://docutils.sourceforge.io/rst.html
 .. _flask-marshmallow: https://github.com/marshmallow-code/flask-marshmallow
