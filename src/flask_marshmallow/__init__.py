@@ -110,9 +110,11 @@ class Marshmallow(object):
         """
         app.extensions = getattr(app, "extensions", {})
 
-        # If using Flask-SQLAlchemy, attach db.session to ModelSchema
+        # If using Flask-SQLAlchemy, attach db.session to SQLAlchemySchema
         if has_sqla and "sqlalchemy" in app.extensions:
             db = app.extensions["sqlalchemy"].db
-            self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
-            self.SQLAlchemyAutoSchema.OPTIONS_CLASS.session = db.session
+            if self.SQLAlchemySchema:
+                self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
+            if self.SQLAlchemyAutoSchema:
+                self.SQLAlchemyAutoSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self

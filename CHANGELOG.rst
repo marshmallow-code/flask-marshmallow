@@ -1,8 +1,15 @@
 Changelog
 =========
 
-(unreleased)
-************
+0.13.0 (unreleased)
+*******************
+
+Bug fixes:
+
+* Fix compatibility with marshmallow-sqlalchemy<0.22.0 (:issue:`189`).
+  Thanks :user:`PatrickRic` for reporting.
+
+Other changes:
 
 * Remove unused ``flask_marshmallow.sqla.SchemaOpts``.
 

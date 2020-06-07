@@ -89,6 +89,10 @@ class TestSQLAlchemy:
         yield Bunch(Author=AuthorModel, Book=BookModel)
         db.drop_all()
 
+    def test_can_initialize_extensions(self, extapp):
+        assert "flask-marshmallow" in extapp.extensions
+        assert "sqlalchemy" in extapp.extensions
+
     @requires_sqlalchemyschema
     def test_can_declare_sqla_schemas(self, extma, models, db):
         class AuthorSchema(extma.SQLAlchemySchema):
