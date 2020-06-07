@@ -38,6 +38,7 @@ jobs:
       - py38-marshmallow2
       - py38-marshmallow3
 
+      - py38-lowest
       - py38-marshmallowdev
 
       - docs
