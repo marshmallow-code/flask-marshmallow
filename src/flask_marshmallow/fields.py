@@ -64,17 +64,19 @@ def _get_value_for_key(obj, key, default):
 class URLFor(fields.Field):
     """Field that outputs the URL for an endpoint. Acts identically to
     Flask's ``url_for`` function, except that arguments can be pulled from the
-    object to be serialized.
+    object to be serialized, and ``**values`` should be passed to the ``values``
+    parameter.
 
     Usage: ::
 
-        url = URLFor('author_get', id='<id>')
-        https_url = URLFor('author_get', id='<id>', _scheme='https', _external=True)
+        url = URLFor('author_get', values=dict(id='<id>'))
+        https_url = URLFor('author_get', values=dict(id='<id>', _scheme='https', _external=True))
 
     :param str endpoint: Flask endpoint name.
-    :param kwargs: Same keyword arguments as Flask's url_for, except string
+    :param dict values: Same keyword arguments as Flask's url_for, except string
         arguments enclosed in `< >` will be interpreted as attributes to pull
         from the object.
+    :param kwargs: keyword arguments to pass to marshmallow field (e.g. ``required``).
     """
 
     _CHECK_ATTRIBUTE = False
