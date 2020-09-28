@@ -17,21 +17,24 @@ Deprecation:
 
     # flask-marshmallow<0.14.0
 
+
     class UserSchema(ma.Schema):
-      _links = ma.Hyperlinks(
-          {
-              "self": ma.URLFor("user_detail", id="<id>"),
-          }
-      )
+        _links = ma.Hyperlinks(
+            {
+                "self": ma.URLFor("user_detail", id="<id>"),
+            }
+        )
+
 
     # flask-marshmallow>=0.14.0
 
+
     class UserSchema(ma.Schema):
-      _links = ma.Hyperlinks(
-          {
-              "self": ma.URLFor("user_detail", values=dict(id="<id>")),
-          }
-      )
+        _links = ma.Hyperlinks(
+            {
+                "self": ma.URLFor("user_detail", values=dict(id="<id>")),
+            }
+        )
 
 0.13.0 (2020-06-07)
 *******************
