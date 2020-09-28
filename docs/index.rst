@@ -55,7 +55,10 @@ Define your output format with marshmallow.
 
         # Smart hyperlinking
         _links = ma.Hyperlinks(
-            {"self": ma.URLFor("user_detail", id="<id>"), "collection": ma.URLFor("users")}
+            {
+                "self": ma.URLFor("user_detail", values=dict(id="<id>")),
+                "collection": ma.URLFor("users"),
+            }
         )
 
 

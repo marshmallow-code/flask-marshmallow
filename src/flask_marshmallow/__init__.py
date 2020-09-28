@@ -71,7 +71,7 @@ class Marshmallow(object):
             author = ma.Nested(AuthorSchema)
 
             links = ma.Hyperlinks({
-                'self': ma.URLFor('book_detail', id='<id>'),
+                'self': ma.URLFor('book_detail', values=dict(id='<id>')),
                 'collection': ma.URLFor('book_list')
             })
 

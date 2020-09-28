@@ -154,7 +154,7 @@ class Hyperlinks(fields.Field):
     Example: ::
 
         _links = Hyperlinks({
-            'self': URLFor('author', id='<id>'),
+            'self': URLFor('author', values=dict(id='<id>')),
             'collection': URLFor('author_list'),
         })
 
@@ -162,7 +162,7 @@ class Hyperlinks(fields.Field):
 
         _links = Hyperlinks({
             'self': {
-                'href': URLFor('book', id='<id>'),
+                'href': URLFor('book', values=dict(id='<id>')),
                 'title': 'book detail'
             }
         })
