@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.14.0 (unreleased)
+0.14.0 (2020-09-27)
 *******************
 
 * Add ``values`` argument to ``URLFor`` and ``AbsoluteURLFor`` for passing values to ``flask.url_for``.
