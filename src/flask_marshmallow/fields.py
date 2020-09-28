@@ -64,24 +64,26 @@ def _get_value_for_key(obj, key, default):
 class URLFor(fields.Field):
     """Field that outputs the URL for an endpoint. Acts identically to
     Flask's ``url_for`` function, except that arguments can be pulled from the
-    object to be serialized.
+    object to be serialized, and ``**values`` should be passed to the ``values``
+    parameter.
 
     Usage: ::
 
-        url = URLFor('author_get', id='<id>')
-        https_url = URLFor('author_get', id='<id>', _scheme='https', _external=True)
+        url = URLFor('author_get', values=dict(id='<id>'))
+        https_url = URLFor('author_get', values=dict(id='<id>', _scheme='https', _external=True))
 
     :param str endpoint: Flask endpoint name.
-    :param kwargs: Same keyword arguments as Flask's url_for, except string
+    :param dict values: Same keyword arguments as Flask's url_for, except string
         arguments enclosed in `< >` will be interpreted as attributes to pull
         from the object.
+    :param kwargs: keyword arguments to pass to marshmallow field (e.g. ``required``).
     """
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, endpoint, **kwargs):
+    def __init__(self, endpoint, values=None, **kwargs):
         self.endpoint = endpoint
-        self.params = kwargs
+        self.values = values or kwargs  # kwargs for backward compatibility
         fields.Field.__init__(self, **kwargs)
 
     def _serialize(self, value, key, obj):
@@ -89,7 +91,7 @@ class URLFor(fields.Field):
         ``__init__``.
         """
         param_values = {}
-        for name, attr_tpl in self.params.items():
+        for name, attr_tpl in self.values.items():
             attr_name = _tpl(str(attr_tpl))
             if attr_name:
                 attribute_value = _get_value(obj, attr_name, default=missing)
@@ -113,9 +115,12 @@ UrlFor = URLFor
 class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
-    def __init__(self, endpoint, **kwargs):
-        kwargs["_external"] = True
-        URLFor.__init__(self, endpoint=endpoint, **kwargs)
+    def __init__(self, endpoint, values=None, **kwargs):
+        if values:  # for backward compatibility
+            values["_external"] = True
+        else:
+            kwargs["_external"] = True
+        URLFor.__init__(self, endpoint=endpoint, values=values, **kwargs)
 
 
 AbsoluteUrlFor = AbsoluteURLFor
@@ -149,7 +154,7 @@ class Hyperlinks(fields.Field):
     Example: ::
 
         _links = Hyperlinks({
-            'self': URLFor('author', id='<id>'),
+            'self': URLFor('author', values=dict(id='<id>')),
             'collection': URLFor('author_list'),
         })
 
@@ -157,7 +162,7 @@ class Hyperlinks(fields.Field):
 
         _links = Hyperlinks({
             'self': {
-                'href': URLFor('book', id='<id>'),
+                'href': URLFor('book', values=dict(id='<id>')),
                 'title': 'book detail'
             }
         })

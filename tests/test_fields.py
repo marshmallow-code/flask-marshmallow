@@ -19,6 +19,10 @@ def test_url_field(ma, mockauthor):
     result = field.serialize("url", mockauthor)
     assert result == url_for("author", id=mockauthor.id)
 
+    field = ma.URLFor("author", values=dict(id="<id>"))
+    result = field.serialize("url", mockauthor)
+    assert result == url_for("author", id=mockauthor.id)
+
     mockauthor.id = 0
     result = field.serialize("url", mockauthor)
     assert result == url_for("author", id=0)
@@ -32,9 +36,20 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
     with pytest.raises(AttributeError, match=expected_msg):
         field.serialize("url", mockauthor)
 
+    field = ma.URLFor("author", values=dict(id="<not-an-attr>"))
+    expected_msg = "{!r} is not a valid attribute of {!r}".format(
+        "not-an-attr", mockauthor
+    )
+    with pytest.raises(AttributeError, match=expected_msg):
+        field.serialize("url", mockauthor)
+
 
 def test_url_field_handles_nested_attribute(ma, mockbook, mockauthor):
     field = ma.URLFor("author", id="<author.id>")
+    result = field.serialize("url", mockbook)
+    assert result == url_for("author", id=mockauthor.id)
+
+    field = ma.URLFor("author", values=dict(id="<author.id>"))
     result = field.serialize("url", mockbook)
     assert result == url_for("author", id=mockauthor.id)
 
@@ -50,9 +65,22 @@ def test_url_field_handles_none_attribute(ma, mockbook, mockauthor):
     result = field.serialize("url", mockbook)
     assert result is None
 
+    field = ma.URLFor("author", values=dict(id="<author>"))
+    result = field.serialize("url", mockbook)
+    assert result is None
+
+    field = ma.URLFor("author", values=dict(id="<author.id>"))
+    result = field.serialize("url", mockbook)
+    assert result is None
+
 
 def test_url_field_deserialization(ma):
     field = ma.URLFor("author", id="<not-an-attr>", allow_none=True)
+    # noop
+    assert field.deserialize("foo") == "foo"
+    assert field.deserialize(None) is None
+
+    field = ma.URLFor("author", values=dict(id="<not-an-attr>"), allow_none=True)
     # noop
     assert field.deserialize("foo") == "foo"
     assert field.deserialize(None) is None

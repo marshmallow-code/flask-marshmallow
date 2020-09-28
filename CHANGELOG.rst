@@ -1,6 +1,41 @@
 Changelog
 =========
 
+0.14.0 (unreleased)
+*******************
+
+* Add ``values`` argument to ``URLFor`` and ``AbsoluteURLFor`` for passing values to ``flask.url_for``.
+ This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
+ Thanks :user:`AlrasheedA` for the PR.
+
+Deprecation:
+
+* Passing params to ``flask.url_for`` via ``URLFor``'s and ``AbsoluteURLFor``'s constructor
+  params is deprecated. Pass ``values`` instead.
+
+.. code-block:: python
+
+    # flask-marshmallow<0.14.0
+
+
+    class UserSchema(ma.Schema):
+        _links = ma.Hyperlinks(
+            {
+                "self": ma.URLFor("user_detail", id="<id>"),
+            }
+        )
+
+
+    # flask-marshmallow>=0.14.0
+
+
+    class UserSchema(ma.Schema):
+        _links = ma.Hyperlinks(
+            {
+                "self": ma.URLFor("user_detail", values=dict(id="<id>")),
+            }
+        )
+
 0.13.0 (2020-06-07)
 *******************
 
@@ -20,8 +55,8 @@ Other changes:
 
 .. warning::
   It is highly recommended that you use the newer ``ma.SQLAlchemySchema`` and ``ma.SQLAlchemyAutoSchema``  classes
-  instead of ``ModelSchema`` and ``TableSchema``. See the release notes for `marshmallow-sqlalchemy 0.22.0 <https://marshmallow-sqlalchemy.readthedocs.io/en/latest/changelog.html>`_ 
-  for instructions on how to migrate. 
+  instead of ``ModelSchema`` and ``TableSchema``. See the release notes for `marshmallow-sqlalchemy 0.22.0 <https://marshmallow-sqlalchemy.readthedocs.io/en/latest/changelog.html>`_
+  for instructions on how to migrate.
 
 If you need to use ``ModelSchema`` and ``TableSchema`` for the time being, you'll need to import these directly from ``marshmallow_sqlalchemy``.
 
