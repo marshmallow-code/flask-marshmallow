@@ -4,8 +4,6 @@ Changelog
 0.14.0 (unreleased)
 *******************
 
-Other changes:
-
 * Add ``values`` argument to ``URLFor`` and ``AbsoluteURLFor`` for passing values to ``flask.url_for``.
  This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
  Thanks :user:`AlrasheedA` for the PR.
