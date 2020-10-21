@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 
 from flask import Flask, url_for
@@ -6,7 +5,6 @@ from werkzeug.wrappers import BaseResponse
 
 from flask_marshmallow import Marshmallow
 from tests.markers import flask_1_req
-from tests.utils import get_dump_data
 
 
 def test_deferred_initialization():
@@ -19,7 +17,7 @@ def test_deferred_initialization():
 
 def test_schema(app, schemas, mockauthor):
     s = schemas.AuthorSchema()
-    result = get_dump_data(s, mockauthor)
+    result = s.dump(mockauthor)
     assert result["id"] == mockauthor.id
     assert result["name"] == mockauthor.name
     assert result["absolute_url"] == url_for("author", id=mockauthor.id, _external=True)
@@ -59,7 +57,7 @@ def test_jsonify_collection_via_schema_attr(app, schemas, mockauthorlist):
 
 def test_links_within_nested_object(app, schemas, mockbook):
     s = schemas.BookSchema()
-    result = get_dump_data(s, mockbook)
+    result = s.dump(mockbook)
     assert result["title"] == mockbook.title
     author = result["author"]
     assert author["links"]["self"] == url_for("author", id=mockbook.author.id)

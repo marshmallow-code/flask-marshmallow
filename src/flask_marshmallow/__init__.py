@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     flask_marshmallow
     ~~~~~~~~~~~~~~~~~
@@ -48,7 +47,7 @@ def _attach_fields(obj):
         setattr(obj, attr, getattr(fields, attr))
 
 
-class Marshmallow(object):
+class Marshmallow:
     """Wrapper class that integrates Marshmallow with a Flask application.
 
     To use it, instantiate with an application::

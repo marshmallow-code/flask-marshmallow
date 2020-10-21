@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.15.0 (unreleased)
+*******************
+
+* Only support Python>=3.6, marshmallow>=3.0.0, and marshmallow-sqlalchemy>=0.24.0.
+
 0.14.0 (2020-09-27)
 *******************
 
