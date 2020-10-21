@@ -2,7 +2,7 @@
 Flask-Marshmallow
 *****************
 
-|pypi-package| |build-status| |docs| |marshmallow23| |black|
+|pypi-package| |build-status| |docs| |marshmallow3| |black|
 
 Flask + marshmallow for beautiful APIs
 ======================================
