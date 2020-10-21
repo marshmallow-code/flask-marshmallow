@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 
 from flask import Flask, url_for

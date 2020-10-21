@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 import flask
 import marshmallow as ma
 
-from flask_marshmallow.compat import _MARSHMALLOW_VERSION_INFO
 
 sentinel = object()
 
@@ -35,8 +33,5 @@ class Schema(ma.Schema):
         """
         if many is sentinel:
             many = self.many
-        if _MARSHMALLOW_VERSION_INFO[0] >= 3:
-            data = self.dump(obj, many=many)
-        else:
-            data = self.dump(obj, many=many).data
+        data = self.dump(obj, many=many)
         return flask.jsonify(data, *args, **kwargs)

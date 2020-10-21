@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import datetime as dt
 import sys
 import os
@@ -34,8 +33,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"Flask-Marshmallow"
-copyright = u"2014-{:%Y}".format(
+project = "Flask-Marshmallow"
+copyright = "2014-{:%Y}".format(
     dt.datetime.utcfromtimestamp(os.path.getmtime("../CHANGELOG.rst"))
 )
 

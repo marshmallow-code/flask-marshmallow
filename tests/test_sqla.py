@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -34,11 +33,11 @@ class TestSQLAlchemy:
 
         @app_.route("/author/<int:id>")
         def author(id):
-            return "...view for author {}...".format(id)
+            return f"...view for author {id}..."
 
         @app_.route("/book/<int:id>")
         def book(id):
-            return "...view for book {}...".format(id)
+            return f"...view for book {id}..."
 
         ctx = app_.test_request_context()
         ctx.push()
