@@ -301,6 +301,3 @@ class TestFlaskConfig:
         deser = TestSchema().load(data)
         assert current_app.config["ACME_FOO"] == "incoming value"
         assert deser == {}
-
-    # TODO
-    # - [ ] loading
