@@ -91,6 +91,58 @@ Output the data in your views.
     #     }
     # }
 
+Flask Configuration Integration
+-------------------------------
+
+You can include values from the configuration of the current Flask app into your serialized output, e.g.:
+
+.. code-block:: python
+
+    from flask import Flask
+    from flask_marshmallow import Marshmallow
+
+    app = Flask(__name__)
+    ma = Marshmallow(app)
+
+
+    class Config:
+        ACME_MONTY_PRESET = 42
+        ACME_VIKING_PRESET = 81
+        SOME_API_ACCESS_TOKEN = "deadbeef"
+
+
+    class ItemPresets(Schema):
+        monty = ma.FlaskConfig(ma.Integer, "ACME_MONTY_PRESET")
+        viking = ma.FlaskConfig(ma.Integer, "ACME_VIKING_PRESET")
+
+
+    class AcmeConfig(Schema):
+        some_api_access_token = ma.FlaskConfig()
+        acme_presets = ma.Nested(ItemPresets, default=dict)
+The above ``AcmeConfig()`` schema does not pull data from the object being dumped; if there are no other non-``FlaskConfig`` fields, you need to pass in an empty object:
+
+.. code-block:: python
+
+    @app.route("/some_config")
+    def some_config():
+        return AcmeConfig().dumps({})
+
+
+    # {
+    #     "some_api_access_token": "deadbeaf",
+    #     "acme_presets": {
+    #         "monty": 42,
+    #         "viking": 81
+    #     }
+    # }
+
+By default, ``FlaskConfig()`` fields set the ``dump_only`` field option to ``True``; they are assumed to be read-only. You can override this by setting ``dump_only=False`` on a field. On loading (deserialisation) the field sets the configured Flask configuration field.
+
+.. warning::
+    Deserialisation with ``dump_only=False`` doesn't handle partial updates of nested
+    datastructures; a ``FlaskConfig(Nested(OtherSchema, only=["name"]),
+    dump_only=False)`` field will replace the Flask configuration value entirely, not
+    just the ``name`` field.
 
 
 Optional Flask-SQLAlchemy Integration

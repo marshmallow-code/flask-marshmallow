@@ -7,14 +7,23 @@
     See the `marshmallow.fields` module for the list of all fields available from the
     marshmallow library.
 """
+import copy
+import typing
 import re
 
-from flask import url_for
+from flask import current_app, url_for
 from marshmallow import fields
 from marshmallow import missing
 
 
-__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks"]
+__all__ = [
+    "URLFor",
+    "UrlFor",
+    "AbsoluteURLFor",
+    "AbsoluteUrlFor",
+    "Hyperlinks",
+    "FlaskConfig",
+]
 
 
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
@@ -178,3 +187,85 @@ class Hyperlinks(fields.Field):
 
     def _serialize(self, value, attr, obj):
         return _rapply(self.schema, _url_val, key=attr, obj=obj)
+
+
+class FlaskConfig(fields.Field):
+    """Field that outputs the value of a Flask configuration entry
+
+    Takes a field instance or type to serialise to, and an optional configuration
+    name. If the name is not given, the current field name, uppercased, is used:
+
+    Example: ::
+
+        class SomeSchema(Schema):
+            # serialize the SESSION_COOKIE_NAME configuration variable, as a
+            # string.
+            session_cookie_name = FlaskConfig()
+
+            # serialize APPLICATION_ROOT as a string, under the name cookie_path
+            cookie_path = FlaskConfig(config_name="APPLICATION_ROOT")
+
+            # serialize the SESSION_COOKIE_HTTPONLY configuration variable,
+            # as a boolean flag, using the name 'cookie_httponly'
+            cookie_httponly = FlaskConfig(fields.Boolean, "SESSION_COOKIE_HTTPONLY")
+
+    .. warning::
+        Deserialisation with ``dump_only=False`` doesn't handle partial updates of nested
+        datastructures; a ``FlaskConfig(Nested(OtherSchema, only=["name"]),
+        dump_only=False)`` field will replace the Flask configuration value entirely, not
+        just the ``name`` field.
+
+    :param marshmallow.fields.Field cls_or_instance: A field class or instance.
+        If ``None``, defaults to :class:`marshmallow.fields.String`.
+    :param str config_name: The name of the :ref:`Flask config variable <flask:config>`
+        to serialize. If ``None``, the name of the field converted to uppercase will be
+        used.
+    :param bool dump_only: By default, FlaskConfig fields are "read-only" fields. Set
+        this option to ``False`` to automatically update the flask configuration when
+        deserialising.
+    :param kwargs: The same keyword arguments that :class:`marshmallow.fields.Field`
+        receives.
+
+    """
+
+    _CHECK_ATTRIBUTE = False
+
+    def __init__(
+        self,
+        cls_or_instance: typing.Union[fields.Field, type] = fields.String,
+        config_name: typing.Optional[str] = None,
+        dump_only: bool = True,
+        **kwargs
+    ) -> None:
+        super().__init__(dump_only=dump_only, **kwargs)
+        try:
+            self.inner = fields.resolve_field_instance(cls_or_instance)
+        except fields.FieldInstanceResolutionError as error:
+            raise ValueError(
+                "The Flask config field must be a subclass or instance of "
+                "marshmallow.base.FieldABC."
+            ) from error
+        if isinstance(self.inner, fields.Nested):
+            self.only = self.inner.only
+            self.exclude = self.inner.exclude
+        self.config_name = config_name
+
+    def _bind_to_schema(self, field_name, schema):
+        super()._bind_to_schema(field_name, schema)
+        if self.config_name is None:
+            self.config_name = field_name.upper()
+        self.inner = copy.deepcopy(self.inner)
+        self.inner._bind_to_schema(field_name, self)
+        if isinstance(self.inner, fields.Nested):
+            self.inner.only = self.only
+            self.inner.exclude = self.exclude
+
+    def _serialize(self, value, *args, **kwargs) -> typing.Optional[typing.Any]:
+        value = current_app.config[self.config_name]
+        return self.inner._serialize(value, *args, **kwargs)
+
+    def _deserialize(self, value, *args, **kwargs) -> typing.Any:
+        current_app.config[self.config_name] = self.inner.deserialize(
+            value, *args, **kwargs
+        )
+        return missing
