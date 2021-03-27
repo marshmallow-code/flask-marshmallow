@@ -7,7 +7,7 @@ Changelog
 Features:
 
 * Add new ``FlaskConfig()`` field type, to automatically serialise values from the
-  :ref:`Flask configuration object <flask:config>`.
+  :ref:`Flask configuration object <flask:config>` (:issue:`212`, :pr:`222`).
 
 Other changes:
 
