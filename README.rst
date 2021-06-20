@@ -69,7 +69,7 @@ Output the data in your views.
     @app.route("/api/users/")
     def users():
         all_users = User.all()
-        return users_schema.dump(all_users)
+        return users_schema.dumps(all_users)
 
 
     @app.route("/api/users/<id>")
