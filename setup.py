@@ -7,7 +7,7 @@ EXTRAS_REQUIRE = {
         "flask-sqlalchemy",
         "marshmallow-sqlalchemy>=0.24.0",
     ],
-    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==3.5.4", "sphinx-issues==1.2.0"],
+    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==4.1.0", "sphinx-issues==1.2.0"],
     "lint": [
         "flake8==3.9.2",
         "flake8-bugbear==20.11.1",
