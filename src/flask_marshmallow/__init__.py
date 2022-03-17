@@ -7,7 +7,7 @@
     with your Flask application.
 """
 import warnings
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 from marshmallow import fields as base_fields, exceptions, pprint
 
@@ -31,7 +31,7 @@ else:
         has_sqla = True
 
 __version__ = "0.14.0"
-__version_info__ = tuple(LooseVersion(__version__).version)
+__version_info__ = Version(__version__).release
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 
 EXTENSION_NAME = "flask-marshmallow"
