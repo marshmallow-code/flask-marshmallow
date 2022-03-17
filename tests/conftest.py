@@ -9,7 +9,7 @@ _app.testing = True
 
 class Bunch(dict):
     def __init__(self, *args, **kwargs):
-        super(Bunch, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.__dict__ = self
 
 

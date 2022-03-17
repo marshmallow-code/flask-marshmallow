@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
     flask_marshmallow.sqla
     ~~~~~~~~~~~~~~~~~~~~~~
@@ -9,26 +8,26 @@
     that use the scoped session from Flask-SQLAlchemy.
 """
 from flask import url_for, current_app
-from six.moves.urllib import parse
+from urllib import parse
 import marshmallow_sqlalchemy as msqla
 from marshmallow.exceptions import ValidationError
 
 from .schema import Schema
 
 
-class DummySession(object):
+class DummySession:
     """Placeholder session object."""
 
     pass
 
 
-class FlaskSQLAlchemyOptsMixin(object):
+class FlaskSQLAlchemyOptsMixin:
     session = DummySession()
 
     def __init__(self, meta, **kwargs):
         if not hasattr(meta, "sqla_session"):
             meta.sqla_session = self.session
-        super(FlaskSQLAlchemyOptsMixin, self).__init__(meta, **kwargs)
+        super().__init__(meta, **kwargs)
 
 
 # SQLAlchemySchema and SQLAlchemyAutoSchema are available in newer ma-sqla versions
@@ -48,7 +47,6 @@ if hasattr(msqla, "SQLAlchemySchema"):
         """
 
         OPTIONS_CLASS = SQLAlchemySchemaOpts
-
 
 else:
     SQLAlchemySchema = None
@@ -71,7 +69,6 @@ if hasattr(msqla, "SQLAlchemyAutoSchema"):
 
         OPTIONS_CLASS = SQLAlchemyAutoSchemaOpts
 
-
 else:
     SQLAlchemyAutoSchema = None
 
@@ -90,7 +87,7 @@ class HyperlinkRelated(msqla.fields.Related):
     """
 
     def __init__(self, endpoint, url_key="id", external=False, **kwargs):
-        super(HyperlinkRelated, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.endpoint = endpoint
         self.url_key = url_key
         self.external = external
@@ -98,7 +95,7 @@ class HyperlinkRelated(msqla.fields.Related):
     def _serialize(self, value, attr, obj):
         if value is None:
             return None
-        key = super(HyperlinkRelated, self)._serialize(value, attr, obj)
+        key = super()._serialize(value, attr, obj)
         kwargs = {self.url_key: key}
         return url_for(self.endpoint, _external=self.external, **kwargs)
 
@@ -109,20 +106,14 @@ class HyperlinkRelated(msqla.fields.Related):
         endpoint, kwargs = self.adapter.match(value)
         if endpoint != self.endpoint:
             raise ValidationError(
-                (
-                    'Parsed endpoint "{endpoint}" from URL "{value}"; expected '
-                    '"{self.endpoint}"'
-                ).format(**locals())
+                f'Parsed endpoint "{endpoint}" from URL "{value}"; expected '
+                f'"{self.endpoint}"'
             )
         if self.url_key not in kwargs:
             raise ValidationError(
-                'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(
-                    **locals()
-                )
+                f'URL pattern "{self.url_key}" not found in {kwargs!r}'
             )
-        return super(HyperlinkRelated, self)._deserialize(
-            kwargs[self.url_key], *args, **kwargs
-        )
+        return super()._deserialize(kwargs[self.url_key], *args, **kwargs)
 
     @property
     def adapter(self):

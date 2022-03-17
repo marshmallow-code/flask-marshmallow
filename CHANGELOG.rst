@@ -4,6 +4,10 @@ Changelog
 0.15.0 (unreleased)
 *******************
 
+* Only support Python>=3.6, marshmallow>=3.0.0, and marshmallow-sqlalchemy>=0.24.0.
+
+Bug fixes:
+
 * Address distutils deprecation warning in Python 3.10 (:pr:`242`).
   Thanks :user:`GabrielLins64` for the PR.
 

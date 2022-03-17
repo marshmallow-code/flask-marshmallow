@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -6,8 +5,8 @@ from werkzeug.wrappers import BaseResponse
 
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
+from marshmallow import ValidationError
 from tests.conftest import Bunch
-from tests.utils import get_dump_data, get_load_data
 
 try:
     from marshmallow_sqlalchemy import SQLAlchemySchema  # noqa: F401
@@ -34,11 +33,11 @@ class TestSQLAlchemy:
 
         @app_.route("/author/<int:id>")
         def author(id):
-            return "...view for author {}...".format(id)
+            return f"...view for author {id}..."
 
         @app_.route("/book/<int:id>")
         def book(id):
-            return "...view for book {}...".format(id)
+            return f"...view for book {id}..."
 
         ctx = app_.test_request_context()
         ctx.push()
@@ -116,13 +115,13 @@ class TestSQLAlchemy:
         author = models.Author(name="Chuck Paluhniuk")
         book = models.Book(title="Fight Club", author=author)
 
-        author_result = get_dump_data(author_schema, author)
+        author_result = author_schema.dump(author)
 
         assert "id" in author_result
         assert "name" in author_result
         assert author_result["id"] == author.id
         assert author_result["name"] == "Chuck Paluhniuk"
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
 
         assert "id" in book_result
         assert "title" in book_result
@@ -154,13 +153,13 @@ class TestSQLAlchemy:
         author = models.Author(name="Chuck Paluhniuk")
         book = models.Book(title="Fight Club", author=author)
 
-        author_result = get_dump_data(author_schema, author)
+        author_result = author_schema.dump(author)
 
         assert "id" in author_result
         assert "name" in author_result
         assert author_result["id"] == author.id
         assert author_result["name"] == "Chuck Paluhniuk"
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
 
         assert "id" in book_result
         assert "title" in book_result
@@ -187,11 +186,11 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
 
         assert book_result["author"] == author.url
 
-        deserialized, errors = get_load_data(book_schema, book_result)
+        deserialized = book_schema.load(book_result)
         assert deserialized["author"] == author
 
     @requires_sqlalchemyschema
@@ -204,7 +203,7 @@ class TestSQLAlchemy:
 
         book_schema = BookSchema()
         book = models.Book(title="Fight Club", author=None)
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
         assert book_result["author"] is None
 
     @requires_sqlalchemyschema
@@ -224,15 +223,19 @@ class TestSQLAlchemy:
         db.session.flush()
 
         # Deserialization fails on bad endpoint
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
         book_result["author"] = book.url
-        deserialized, errors = get_load_data(book_schema, book_result)
+        with pytest.raises(ValidationError) as excinfo:
+            book_schema.load(book_result)
+        errors = excinfo.value.messages
         assert 'expected "author"' in errors["author"][0]
 
         # Deserialization fails on bad URL key
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
         book_schema.fields["author"].url_key = "pk"
-        deserialized, errors = get_load_data(book_schema, book_result)
+        with pytest.raises(ValidationError) as excinfo:
+            book_schema.load(book_result)
+        errors = excinfo.value.messages
         assert 'URL pattern "pk" not found' in errors["author"][0]
 
     @requires_sqlalchemyschema
@@ -251,11 +254,11 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        book_result = get_dump_data(book_schema, book)
+        book_result = book_schema.dump(book)
 
         assert book_result["author"] == author.absolute_url
 
-        deserialized, errors = get_load_data(book_schema, book_result)
+        deserialized = book_schema.load(book_result)
         assert deserialized["author"] == author
 
     @requires_sqlalchemyschema
@@ -274,8 +277,8 @@ class TestSQLAlchemy:
         db.session.add(book)
         db.session.flush()
 
-        author_result = get_dump_data(author_schema, author)
+        author_result = author_schema.dump(author)
         assert author_result["books"][0] == book.url
 
-        deserialized, errors = get_load_data(author_schema, author_result)
+        deserialized = author_schema.load(author_result)
         assert deserialized["books"][0] == book
