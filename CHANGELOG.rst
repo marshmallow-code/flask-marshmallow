@@ -7,6 +7,11 @@ Changelog
 * Only support Python>=3.6, marshmallow>=3.0.0, and marshmallow-sqlalchemy>=0.24.0.
 * Add support for python3.11
 
+Bug fixes:
+
+* Address distutils deprecation warning in Python 3.10 (:pr:`242`).
+  Thanks :user:`GabrielLins64` for the PR.
+
 0.14.0 (2020-09-27)
 *******************
 

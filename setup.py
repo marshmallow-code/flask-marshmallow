@@ -17,7 +17,7 @@ EXTRAS_REQUIRE = {
 EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
 EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["lint"] + ["tox"]
 
-REQUIRES = ["Flask", "marshmallow>=3.0.0"]
+REQUIRES = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
 
 
 def find_version(fname):
