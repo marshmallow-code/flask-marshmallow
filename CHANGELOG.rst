@@ -8,7 +8,7 @@ Changelog
 
 Bug fixes:
 
-* Address distutils deprecation warning in Python 3.10 (:pr:`242`).
+* Removes distutils deprecation warning in Python 3.10 (:pr:`242`).
   Thanks :user:`GabrielLins64` for the PR.
 
 0.14.0 (2020-09-27)
