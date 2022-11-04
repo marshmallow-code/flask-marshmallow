@@ -48,7 +48,6 @@ if hasattr(msqla, "SQLAlchemySchema"):
 
         OPTIONS_CLASS = SQLAlchemySchemaOpts
 
-
 else:
     SQLAlchemySchema = None
 
@@ -69,7 +68,6 @@ if hasattr(msqla, "SQLAlchemyAutoSchema"):
         """
 
         OPTIONS_CLASS = SQLAlchemyAutoSchemaOpts
-
 
 else:
     SQLAlchemyAutoSchema = None
@@ -108,16 +106,12 @@ class HyperlinkRelated(msqla.fields.Related):
         endpoint, kwargs = self.adapter.match(value)
         if endpoint != self.endpoint:
             raise ValidationError(
-                (
-                    'Parsed endpoint "{endpoint}" from URL "{value}"; expected '
-                    '"{self.endpoint}"'
-                ).format(**locals())
+                f'Parsed endpoint "{endpoint}" from URL "{value}"; expected '
+                f'"{self.endpoint}"'
             )
         if self.url_key not in kwargs:
             raise ValidationError(
-                'URL pattern "{self.url_key}" not found in {kwargs!r}'.format(
-                    **locals()
-                )
+                f'URL pattern "{self.url_key}" not found in {kwargs!r}'
             )
         return super()._deserialize(kwargs[self.url_key], *args, **kwargs)
 
