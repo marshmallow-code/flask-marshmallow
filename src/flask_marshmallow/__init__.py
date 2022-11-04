@@ -111,7 +111,7 @@ class Marshmallow:
 
         # If using Flask-SQLAlchemy, attach db.session to SQLAlchemySchema
         if has_sqla and "sqlalchemy" in app.extensions:
-            db = app.extensions["sqlalchemy"].db
+            db = app.extensions["sqlalchemy"]
             if self.SQLAlchemySchema:
                 self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
             if self.SQLAlchemyAutoSchema:
