@@ -1,7 +1,7 @@
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.wrappers import BaseResponse
+from werkzeug.wrappers import Response
 
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
@@ -130,7 +130,7 @@ class TestSQLAlchemy:
         assert book_result["author_id"] == book.author_id
 
         resp = author_schema.jsonify(author)
-        assert isinstance(resp, BaseResponse)
+        assert isinstance(resp, Response)
 
     @requires_sqlalchemyschema
     def test_can_declare_sqla_auto_schemas(self, extma, models, db):
@@ -168,7 +168,7 @@ class TestSQLAlchemy:
         assert book_result["author_id"] == book.author_id
 
         resp = author_schema.jsonify(author)
-        assert isinstance(resp, BaseResponse)
+        assert isinstance(resp, Response)
 
     @requires_sqlalchemyschema
     def test_hyperlink_related_field(self, extma, models, db, extapp):
