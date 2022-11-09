@@ -59,7 +59,7 @@ setup(
     license="MIT",
     zip_safe=False,
     keywords="flask-marshmallow",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
