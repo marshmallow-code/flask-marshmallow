@@ -80,9 +80,9 @@ class URLFor(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, endpoint, values=None, **kwargs):
+    def __init__(self, endpoint, values=None, id=None, **kwargs):
         self.endpoint = endpoint
-        self.values = values or kwargs  # kwargs for backward compatibility
+        self.values = values or {}
         fields.Field.__init__(self, **kwargs)
 
     def _serialize(self, value, key, obj):
@@ -115,10 +115,10 @@ class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
     def __init__(self, endpoint, values=None, **kwargs):
-        if values:  # for backward compatibility
+        if values:
             values["_external"] = True
         else:
-            kwargs["_external"] = True
+            values = {"_external": True}
         URLFor.__init__(self, endpoint=endpoint, values=values, **kwargs)
 
 

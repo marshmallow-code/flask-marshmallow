@@ -22,7 +22,7 @@ requires_sqlalchemyschema = pytest.mark.skipif(
 
 
 class TestSQLAlchemy:
-    @pytest.yield_fixture()
+    @pytest.fixture
     def extapp(self):
         app_ = Flask("extapp")
         app_.testing = True
@@ -46,15 +46,15 @@ class TestSQLAlchemy:
 
         ctx.pop()
 
-    @pytest.fixture()
+    @pytest.fixture
     def db(self, extapp):
-        return extapp.extensions["sqlalchemy"].db
+        return extapp.extensions["sqlalchemy"]
 
-    @pytest.fixture()
+    @pytest.fixture
     def extma(self, extapp):
         return extapp.extensions["flask-marshmallow"]
 
-    @pytest.yield_fixture()
+    @pytest.fixture
     def models(self, db):
         class AuthorModel(db.Model):
             __tablename__ = "author"
