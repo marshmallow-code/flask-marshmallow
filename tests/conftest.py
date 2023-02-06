@@ -1,7 +1,7 @@
 """Pytest fixtures for the test suite."""
+import pytest
 from flask import Flask
 from flask_marshmallow import Marshmallow
-import pytest
 
 _app = Flask(__name__)
 _app.testing = True
@@ -64,7 +64,7 @@ def book(id):
     return "Legend of Bagger Vance"
 
 
-@pytest.yield_fixture(scope="function")
+@pytest.fixture(scope="function")
 def app():
     ctx = _app.test_request_context()
     ctx.push()
@@ -85,10 +85,13 @@ def schemas(ma):
         class Meta:
             fields = ("id", "name", "absolute_url", "links")
 
-        absolute_url = ma.AbsoluteURLFor("author", id="<id>")
+        absolute_url = ma.AbsoluteURLFor("author", values={"id": "<id>"})
 
         links = ma.Hyperlinks(
-            {"self": ma.URLFor("author", id="<id>"), "collection": ma.URLFor("authors")}
+            {
+                "self": ma.URLFor("author", values={"id": "<id>"}),
+                "collection": ma.URLFor("authors"),
+            }
         )
 
     class BookSchema(ma.Schema):
@@ -98,7 +101,10 @@ def schemas(ma):
         author = ma.Nested(AuthorSchema)
 
         links = ma.Hyperlinks(
-            {"self": ma.URLFor("book", id="<id>"), "collection": ma.URLFor("books")}
+            {
+                "self": ma.URLFor("book", values={"id": "<id>"}),
+                "collection": ma.URLFor("books"),
+            }
         )
 
     # So we can access schemas.AuthorSchema, etc.

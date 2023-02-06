@@ -1,7 +1,7 @@
-from flask import url_for
-from werkzeug.routing import BuildError
 import pytest
+from flask import url_for
 from flask_marshmallow.fields import _tpl
+from werkzeug.routing import BuildError
 
 
 @pytest.mark.parametrize(
@@ -14,10 +14,6 @@ def test_tpl(template):
 
 
 def test_url_field(ma, mockauthor):
-    field = ma.URLFor("author", id="<id>")
-    result = field.serialize("url", mockauthor)
-    assert result == url_for("author", id=mockauthor.id)
-
     field = ma.URLFor("author", values=dict(id="<id>"))
     result = field.serialize("url", mockauthor)
     assert result == url_for("author", id=mockauthor.id)
@@ -28,13 +24,6 @@ def test_url_field(ma, mockauthor):
 
 
 def test_url_field_with_invalid_attribute(ma, mockauthor):
-    field = ma.URLFor("author", id="<not-an-attr>")
-    expected_msg = "{!r} is not a valid attribute of {!r}".format(
-        "not-an-attr", mockauthor
-    )
-    with pytest.raises(AttributeError, match=expected_msg):
-        field.serialize("url", mockauthor)
-
     field = ma.URLFor("author", values=dict(id="<not-an-attr>"))
     expected_msg = "{!r} is not a valid attribute of {!r}".format(
         "not-an-attr", mockauthor
@@ -44,10 +33,6 @@ def test_url_field_with_invalid_attribute(ma, mockauthor):
 
 
 def test_url_field_handles_nested_attribute(ma, mockbook, mockauthor):
-    field = ma.URLFor("author", id="<author.id>")
-    result = field.serialize("url", mockbook)
-    assert result == url_for("author", id=mockauthor.id)
-
     field = ma.URLFor("author", values=dict(id="<author.id>"))
     result = field.serialize("url", mockbook)
     assert result == url_for("author", id=mockauthor.id)
@@ -55,14 +40,6 @@ def test_url_field_handles_nested_attribute(ma, mockbook, mockauthor):
 
 def test_url_field_handles_none_attribute(ma, mockbook, mockauthor):
     mockbook.author = None
-
-    field = ma.URLFor("author", id="<author>")
-    result = field.serialize("url", mockbook)
-    assert result is None
-
-    field = ma.URLFor("author", id="<author.id>")
-    result = field.serialize("url", mockbook)
-    assert result is None
 
     field = ma.URLFor("author", values=dict(id="<author>"))
     result = field.serialize("url", mockbook)
@@ -74,11 +51,6 @@ def test_url_field_handles_none_attribute(ma, mockbook, mockauthor):
 
 
 def test_url_field_deserialization(ma):
-    field = ma.URLFor("author", id="<not-an-attr>", allow_none=True)
-    # noop
-    assert field.deserialize("foo") == "foo"
-    assert field.deserialize(None) is None
-
     field = ma.URLFor("author", values=dict(id="<not-an-attr>"), allow_none=True)
     # noop
     assert field.deserialize("foo") == "foo"
@@ -93,7 +65,10 @@ def test_invalid_endpoint_raises_build_error(ma, mockauthor):
 
 def test_hyperlinks_field(ma, mockauthor):
     field = ma.Hyperlinks(
-        {"self": ma.URLFor("author", id="<id>"), "collection": ma.URLFor("authors")}
+        {
+            "self": ma.URLFor("author", values={"id": "<id>"}),
+            "collection": ma.URLFor("authors"),
+        }
     )
 
     result = field.serialize("_links", mockauthor)
@@ -106,7 +81,10 @@ def test_hyperlinks_field(ma, mockauthor):
 def test_hyperlinks_field_recurses(ma, mockauthor):
     field = ma.Hyperlinks(
         {
-            "self": {"href": ma.URLFor("author", id="<id>"), "title": "The author"},
+            "self": {
+                "href": ma.URLFor("author", values={"id": "<id>"}),
+                "title": "The author",
+            },
             "collection": {"href": ma.URLFor("authors"), "title": "Authors list"},
         }
     )
@@ -121,7 +99,7 @@ def test_hyperlinks_field_recurses(ma, mockauthor):
 def test_hyperlinks_field_recurses_into_list(ma, mockauthor):
     field = ma.Hyperlinks(
         [
-            {"rel": "self", "href": ma.URLFor("author", id="<id>")},
+            {"rel": "self", "href": ma.URLFor("author", values={"id": "<id>"})},
             {"rel": "collection", "href": ma.URLFor("authors")},
         ]
     )
@@ -134,7 +112,9 @@ def test_hyperlinks_field_recurses_into_list(ma, mockauthor):
 
 
 def test_hyperlinks_field_deserialization(ma):
-    field = ma.Hyperlinks({"href": ma.URLFor("author", id="<id>")}, allow_none=True)
+    field = ma.Hyperlinks(
+        {"href": ma.URLFor("author", values={"id": "<id>"})}, allow_none=True
+    )
     # noop
     assert field.deserialize("/author") == "/author"
     assert field.deserialize(None) is None
@@ -153,7 +133,7 @@ def test_absolute_url_deserialization(ma):
 
 
 def test_aliases(ma):
-    from flask_marshmallow.fields import UrlFor, AbsoluteUrlFor, URLFor, AbsoluteURLFor
+    from flask_marshmallow.fields import AbsoluteUrlFor, AbsoluteURLFor, UrlFor, URLFor
 
     assert UrlFor is URLFor
     assert AbsoluteUrlFor is AbsoluteURLFor
