@@ -1,6 +1,6 @@
 import re
-from setuptools import setup, find_packages
 
+from setuptools import find_packages, setup
 
 EXTRAS_REQUIRE = {
     "sqlalchemy": [
@@ -8,14 +8,9 @@ EXTRAS_REQUIRE = {
         "marshmallow-sqlalchemy>=0.24.0",
     ],
     "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==4.5.0", "sphinx-issues==3.0.1"],
-    "lint": [
-        "flake8==3.9.2",
-        "flake8-bugbear==20.11.1",
-        "pre-commit~=2.4",
-    ],
 }
 EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
-EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + EXTRAS_REQUIRE["lint"] + ["tox"]
+EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit"]
 
 REQUIRES = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
 
