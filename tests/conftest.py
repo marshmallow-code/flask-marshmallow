@@ -66,7 +66,6 @@ def book(id):
 
 @pytest.yield_fixture(scope="function")
 def app():
-
     ctx = _app.test_request_context()
     ctx.push()
 
