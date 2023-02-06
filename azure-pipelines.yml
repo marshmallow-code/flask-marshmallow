@@ -27,13 +27,14 @@ jobs:
     toxenvs:
       - lint
 
-      - py37-marshmallow3
-      - py38-marshmallow3
-      - py39-marshmallow3
-      - py310-marshmallow3
+      - py37
+      - py38
+      - py39
+      - py310
+      - py311
 
-      - py39-lowest
-      - py39-marshmallowdev
+      - py37-lowest
+      - py311-marshmallowdev
 
       - docs
     os: linux
