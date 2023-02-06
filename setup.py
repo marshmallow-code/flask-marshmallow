@@ -4,10 +4,10 @@ from setuptools import setup, find_packages
 
 EXTRAS_REQUIRE = {
     "sqlalchemy": [
-        "flask-sqlalchemy",
+        "flask-sqlalchemy>=3.0.0",
         "marshmallow-sqlalchemy>=0.24.0",
     ],
-    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==3.5.4", "sphinx-issues==1.2.0"],
+    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==4.5.0", "sphinx-issues==3.0.1"],
     "lint": [
         "flake8==3.9.2",
         "flake8-bugbear==20.11.1",
@@ -59,7 +59,7 @@ setup(
     license="MIT",
     zip_safe=False,
     keywords="flask-marshmallow",
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",

@@ -1,7 +1,7 @@
 import json
 
 from flask import Flask, url_for
-from werkzeug.wrappers import BaseResponse
+from werkzeug.wrappers import Response
 
 from flask_marshmallow import Marshmallow
 from tests.markers import flask_1_req
@@ -29,7 +29,7 @@ def test_schema(app, schemas, mockauthor):
 def test_jsonify_instance(app, schemas, mockauthor):
     s = schemas.AuthorSchema()
     resp = s.jsonify(mockauthor)
-    assert isinstance(resp, BaseResponse)
+    assert isinstance(resp, Response)
     assert resp.content_type == "application/json"
     obj = json.loads(resp.get_data(as_text=True))
     assert isinstance(obj, dict)
@@ -39,7 +39,7 @@ def test_jsonify_instance(app, schemas, mockauthor):
 def test_jsonify_collection(app, schemas, mockauthorlist):
     s = schemas.AuthorSchema()
     resp = s.jsonify(mockauthorlist, many=True)
-    assert isinstance(resp, BaseResponse)
+    assert isinstance(resp, Response)
     assert resp.content_type == "application/json"
     obj = json.loads(resp.get_data(as_text=True))
     assert isinstance(obj, list)
@@ -49,7 +49,7 @@ def test_jsonify_collection(app, schemas, mockauthorlist):
 def test_jsonify_collection_via_schema_attr(app, schemas, mockauthorlist):
     s = schemas.AuthorSchema(many=True)
     resp = s.jsonify(mockauthorlist)
-    assert isinstance(resp, BaseResponse)
+    assert isinstance(resp, Response)
     assert resp.content_type == "application/json"
     obj = json.loads(resp.get_data(as_text=True))
     assert isinstance(obj, list)
