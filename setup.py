@@ -7,7 +7,7 @@ EXTRAS_REQUIRE = {
         "flask-sqlalchemy>=3.0.0",
         "marshmallow-sqlalchemy>=0.28.2",
     ],
-    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==4.5.0", "sphinx-issues==3.0.1"],
+    "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==6.1.3", "sphinx-issues==3.0.1"],
 }
 EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
 EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit"]
