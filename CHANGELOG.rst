@@ -4,7 +4,8 @@ Changelog
 0.15.0 (unreleased)
 *******************
 
-* Only support Python>=3.6, marshmallow>=3.0.0, and marshmallow-sqlalchemy>=0.24.0.
+* Only support Python>=3.6, marshmallow>=3.0.0, and
+  marshmallow-sqlalchemy>=0.28.2
 * Add support for python3.11
 * *Backwards-incompatible*: ``URLFor`` and ``AbsoluteURLFor`` now do not accept
   parameters for ``flask.url_for`` as top-level parameters. They must always be
