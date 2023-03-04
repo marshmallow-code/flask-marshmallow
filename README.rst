@@ -119,8 +119,8 @@ MIT licensed. See the bundled `LICENSE <https://github.com/marshmallow-code/flas
     :target: https://pypi.org/project/flask-marshmallow/
     :alt: Latest version
 
-.. |build-status| image:: https://github.com/marshmallow/flask-marshmallow/workflows/build/badge.svg?event=push
-    :target: https://github.com/marshmallow/flask-marshmallow/actions?query=workflow%3Abuild
+.. |build-status| image:: https://github.com/marshmallow-code/flask-marshmallow/workflows/build/badge.svg?event=push
+    :target: https://github.com/marshmallow-code/flask-marshmallow/actions?query=workflow%3Abuild
     :alt: Build status
 
 .. |docs| image:: https://readthedocs.org/projects/flask-marshmallow/badge/
