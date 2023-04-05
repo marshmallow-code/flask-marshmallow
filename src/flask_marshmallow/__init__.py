@@ -29,7 +29,7 @@ else:
     else:
         has_sqla = True
 
-__version__ = "0.14.0"
+__version__ = "0.15.0"
 __version_info__ = Version(__version__).release
 __all__ = ["EXTENSION_NAME", "Marshmallow", "Schema", "fields", "exceptions", "pprint"]
 

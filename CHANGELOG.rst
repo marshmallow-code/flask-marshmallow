@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.15.0 (unreleased)
+0.15.0 (2023-04-05)
 *******************
 
 * Only support Python>=3.6, marshmallow>=3.0.0, and
