@@ -56,7 +56,6 @@ setup(
     keywords="flask-marshmallow",
     python_requires=">=3.8",
     classifiers=[
-        "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
