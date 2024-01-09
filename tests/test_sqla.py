@@ -174,9 +174,6 @@ class TestSQLAlchemy:
     # this is triggered by marshmallow-sqlalchemy on sqlalchemy v1.4.x on the current version
     # it should be fixed in an upcoming marshmallow-sqlalchemy release
     @requires_sqlalchemyschema
-    @pytest.mark.filterwarnings(
-        "ignore:Deprecated API features detected:sqlalchemy.exc.LegacyAPIWarning"
-    )
     def test_hyperlink_related_field(self, extma, models, db, extapp):
         class BookSchema(extma.SQLAlchemySchema):
             class Meta:
