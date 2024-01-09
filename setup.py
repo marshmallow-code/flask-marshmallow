@@ -10,7 +10,7 @@ EXTRAS_REQUIRE = {
     "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==7.1.2", "sphinx-issues==3.0.1"],
 }
 EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
-EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit"]
+EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit~=3.5"]
 
 REQUIRES = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
 
@@ -54,7 +54,7 @@ setup(
     license="MIT",
     zip_safe=False,
     keywords="flask-marshmallow",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Web Environment",
@@ -62,11 +62,11 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
     test_suite="tests",

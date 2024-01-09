@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.16.0 (unreleased)
+*******************
+
+Support:
+
+* Test against Python 3.12.
+* Drop support for Python 3.7.
+
 0.15.0 (2023-04-05)
 *******************
 
