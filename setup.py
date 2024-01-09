@@ -9,7 +9,7 @@ EXTRAS_REQUIRE = {
     ],
     "docs": ["marshmallow-sqlalchemy>=0.13.0", "Sphinx==7.1.2", "sphinx-issues==3.0.1"],
 }
-EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest", "mock"]
+EXTRAS_REQUIRE["tests"] = EXTRAS_REQUIRE["sqlalchemy"] + ["pytest"]
 EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit~=3.5"]
 
 REQUIRES = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
