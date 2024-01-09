@@ -6,6 +6,7 @@ Changelog
 
 Support:
 
+* Support marshmallow-sqlalchemy>=0.29.0.
 * Test against Python 3.12.
 * Drop support for Python 3.7.
 
