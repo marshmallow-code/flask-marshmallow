@@ -24,7 +24,8 @@ else:
     except ImportError:
         warnings.warn(
             "Flask-SQLAlchemy integration requires "
-            "marshmallow-sqlalchemy to be installed."
+            "marshmallow-sqlalchemy to be installed.",
+            stacklevel=2,
         )
     else:
         has_sqla = True
