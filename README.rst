@@ -103,7 +103,7 @@ Project Links
 
 - Docs: https://flask-marshmallow.readthedocs.io/
 - Changelog: http://flask-marshmallow.readthedocs.io/en/latest/changelog.html
-- PyPI: https://pypi.python.org/pypi/flask-marshmallow
+- PyPI: https://pypi.org/project/flask-marshmallow/
 - Issues: https://github.com/marshmallow-code/flask-marshmallow/issues
 
 License

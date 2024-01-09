@@ -4,7 +4,7 @@ Flask-Marshmallow: Flask + marshmallow for beautiful APIs
 
 :ref:`changelog <changelog>` //
 `github <http://github.com/marshmallow-code/flask-marshmallow>`_ //
-`pypi <http://pypi.python.org/pypi/flask-marshmallow>`_ //
+`pypi <https://pypi.org/project/flask-marshmallow/>`_ //
 `issues <http://github.com/marshmallow-code/flask-marshmallow/issues>`_
 
 
