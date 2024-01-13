@@ -137,3 +137,11 @@ def test_aliases(ma):
 
     assert UrlFor is URLFor
     assert AbsoluteUrlFor is AbsoluteURLFor
+
+
+def test_config_field(ma, app, mockauthor):
+    app.config["NAME"] = "test"
+    field = ma.Config(key="NAME")
+
+    result = field.serialize("config_value", mockauthor)
+    assert result == "test"
