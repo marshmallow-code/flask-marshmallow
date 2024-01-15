@@ -81,11 +81,11 @@ class FileSize(Validator):
 
     def __init__(
         self,
-        min: str | None = None,
-        max: str | None = None,
+        min: typing.Optional[str] = None,
+        max: typing.Optional[str] = None,
         min_inclusive: bool = True,
         max_inclusive: bool = True,
-        error: str | None = None,
+        error: typing.Optional[str] = None,
     ):
         self.min = min
         self.max = max
@@ -159,7 +159,7 @@ class FileType(Validator):
     def __init__(
         self,
         accept: typing.Iterable[str],
-        error: str | None = None,
+        error: typing.Optional[str] = None,
     ):
         self.allowed_types = {ext.lower() for ext in accept}
         self.error = error or self.default_message
