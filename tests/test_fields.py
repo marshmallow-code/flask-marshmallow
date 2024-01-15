@@ -145,3 +145,7 @@ def test_config_field(ma, app, mockauthor):
 
     result = field.serialize("config_value", mockauthor)
     assert result == "test"
+
+    field = ma.Config(key="DOES_NOT_EXIST")
+    with pytest.raises(ValueError, match="not found in the app config"):
+        field.serialize("config_value", mockauthor)

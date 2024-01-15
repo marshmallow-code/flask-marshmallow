@@ -202,7 +202,7 @@ class Config(fields.Field):
             user = String()
             title = Config('API_TITLE')
 
-    This field should only be used in an output schema. The ``ValueError`` will
+    This field should only be used in an output schema. A ``ValueError`` will
     be raised if the config key is not found in the app config.
 
     :param str key: The key of the configuration value.
@@ -216,5 +216,5 @@ class Config(fields.Field):
 
     def _serialize(self, value, attr, obj, **kwargs):
         if self.key not in current_app.config:
-            raise ValueError(f"The key {self.key} is not found in the app config.")
+            raise ValueError(f"The key {self.key!r} is not found in the app config.")
         return current_app.config[self.key]
