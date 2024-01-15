@@ -13,8 +13,7 @@ from werkzeug.datastructures import FileStorage
 
 
 def _get_filestorage_size(file):
-    """Return the size of the FileStorage object in bytes.
-    """
+    """Return the size of the FileStorage object in bytes."""
     size = len(file.read())
     file.stream.seek(0)
     return size
@@ -23,10 +22,9 @@ def _get_filestorage_size(file):
 # This function is copied from loguru with few modifications.
 # https://github.com/Delgan/loguru/blob/master/loguru/_string_parsers.py#L35
 def _parse_size(size):
-    """Return the value which the ``size`` represents in bytes.
-    """
+    """Return the value which the ``size`` represents in bytes."""
     size = size.strip()
-    reg = re.compile(r'([e\+\-\.\d]+)\s*([kmgtpezy])?(i)?(b)', flags=re.I)
+    reg = re.compile(r"([e\+\-\.\d]+)\s*([kmgtpezy])?(i)?(b)", flags=re.I)
 
     match = reg.fullmatch(size)
 
@@ -40,9 +38,9 @@ def _parse_size(size):
     except ValueError as e:
         raise ValueError(f"Invalid float value while parsing size: '{s!r}'") from e
 
-    u = 'kmgtpezy'.index(u.lower()) + 1 if u else 0
+    u = "kmgtpezy".index(u.lower()) + 1 if u else 0
     i = 1024 if i else 1000
-    b = {'b': 8, 'B': 1}[b] if b else 1
+    b = {"b": 8, "B": 1}[b] if b else 1
     size: float = s * i**u / b
 
     return size
@@ -72,14 +70,14 @@ class FileSize(Validator):
             Can be interpolated with `{input}`, `{min}` and `{max}`.
     """
 
-    message_min = 'Must be {min_op} {{min}}.'
-    message_max = 'Must be {max_op} {{max}}.'
-    message_all = 'Must be {min_op} {{min}} and {max_op} {{max}}.'
+    message_min = "Must be {min_op} {{min}}."
+    message_max = "Must be {max_op} {{max}}."
+    message_all = "Must be {min_op} {{min}} and {max_op} {{max}}."
 
-    message_gte = 'greater than or equal to'
-    message_gt = 'greater than'
-    message_lte = 'less than or equal to'
-    message_lt = 'less than'
+    message_gte = "greater than or equal to"
+    message_gt = "greater than"
+    message_lte = "less than or equal to"
+    message_lt = "less than"
 
     def __init__(
         self,
@@ -109,7 +107,7 @@ class FileSize(Validator):
         )
 
     def _repr_args(self):
-        return 'min={!r}, max={!r}, min_inclusive={!r}, max_inclusive={!r}'.format(
+        return "min={!r}, max={!r}, min_inclusive={!r}, max_inclusive={!r}".format(
             self.min, self.max, self.min_inclusive, self.max_inclusive
         )
 
@@ -119,18 +117,22 @@ class FileSize(Validator):
     def __call__(self, value):
         if not isinstance(value, FileStorage):
             raise TypeError(
-                f'A FileStorage object is required, not {type(value).__name__!r}'
+                f"A FileStorage object is required, not {type(value).__name__!r}"
             )
 
         file_size = _get_filestorage_size(value)
         if self.min_size is not None and (
-            file_size < self.min_size if self.min_inclusive else file_size <= self.min_size
+            file_size < self.min_size
+            if self.min_inclusive
+            else file_size <= self.min_size
         ):
             message = self.message_min if self.max is None else self.message_all
             raise ValidationError(self._format_error(value, message))
 
         if self.max_size is not None and (
-            file_size > self.max_size if self.max_inclusive else file_size >= self.max_size
+            file_size > self.max_size
+            if self.max_inclusive
+            else file_size >= self.max_size
         ):
             message = self.message_max if self.min is None else self.message_all
             raise ValidationError(self._format_error(value, message))
@@ -152,7 +154,7 @@ class FileType(Validator):
             Can be interpolated with `{input}` and `{extensions}`.
     """
 
-    default_message = 'Not an allowed file type. Allowed file types: [{extensions}]'
+    default_message = "Not an allowed file type. Allowed file types: [{extensions}]"
 
     def __init__(
         self,
@@ -164,17 +166,18 @@ class FileType(Validator):
 
     def _format_error(self, value):
         return (self.error or self.default_message).format(
-            input=value,
-            extensions=''.join(self.allowed_types)
+            input=value, extensions="".join(self.allowed_types)
         )
 
     def __call__(self, value):
         if not isinstance(value, FileStorage):
             raise TypeError(
-                f'A FileStorage object is required, not {type(value).__name__!r}'
+                f"A FileStorage object is required, not {type(value).__name__!r}"
             )
 
-        _, extension = os.path.splitext(value.filename) if value.filename else (None, None)
+        _, extension = (
+            os.path.splitext(value.filename) if value.filename else (None, None)
+        )
         if extension is None or extension.lower() not in self.allowed_types:
             raise ValidationError(self._format_error(value))
 
