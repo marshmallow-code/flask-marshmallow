@@ -6,6 +6,11 @@ Changelog
 * Add field ``File`` for uploaded File.
 * Add `FileType` and `FileSize` validation classes.
 
+Features:
+
+* Add field ``Config`` for serializing Flask configuration values (:issue:`280`, :pr:`281`).
+  Thanks :user:`greyli` for the PR.
+
 Support:
 
 * Support marshmallow-sqlalchemy>=0.29.0.

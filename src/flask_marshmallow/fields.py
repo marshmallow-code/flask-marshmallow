@@ -10,11 +10,20 @@
 import re
 
 from flask import url_for
+from flask import current_app
 from marshmallow import fields
 from marshmallow import missing
 
 
-__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks", "File"]
+__all__ = [
+    "URLFor",
+    "UrlFor",
+    "AbsoluteURLFor",
+    "AbsoluteUrlFor",
+    "Hyperlinks",
+    "File",
+    "Config",
+]
 
 
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
@@ -202,3 +211,35 @@ class File(fields.Field):
         if not isinstance(value, FileStorage):
             raise self.make_error("invalid")
         return value
+
+
+class Config(fields.Field):
+    """A field for Flask configuration values.
+
+    Examples: ::
+
+        from flask import Flask
+
+        app = Flask(__name__)
+        app.config['API_TITLE'] = 'Pet API'
+
+        class FooSchema(Schema):
+            user = String()
+            title = Config('API_TITLE')
+
+    This field should only be used in an output schema. A ``ValueError`` will
+    be raised if the config key is not found in the app config.
+
+    :param str key: The key of the configuration value.
+    """
+
+    _CHECK_ATTRIBUTE = False
+
+    def __init__(self, key, **kwargs):
+        fields.Field.__init__(self, **kwargs)
+        self.key = key
+
+    def _serialize(self, value, attr, obj, **kwargs):
+        if self.key not in current_app.config:
+            raise ValueError(f"The key {self.key!r} is not found in the app config.")
+        return current_app.config[self.key]

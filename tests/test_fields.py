@@ -154,3 +154,15 @@ def test_file_field(ma, mockauthor):
 
     with pytest.raises(ValidationError, match="Not a valid file."):
         field.deserialize("123", mockauthor)
+
+
+def test_config_field(ma, app, mockauthor):
+    app.config["NAME"] = "test"
+    field = ma.Config(key="NAME")
+
+    result = field.serialize("config_value", mockauthor)
+    assert result == "test"
+
+    field = ma.Config(key="DOES_NOT_EXIST")
+    with pytest.raises(ValueError, match="not found in the app config"):
+        field.serialize("config_value", mockauthor)
