@@ -4,6 +4,11 @@ Changelog
 0.16.0 (unreleased)
 *******************
 
+Features:
+
+* Add field ``Config`` for serializing Flask configuration values (:issue:`280`, :pr:`281`).
+  Thanks :user:`greyli` for the PR.
+
 Support:
 
 * Support marshmallow-sqlalchemy>=0.29.0.
