@@ -3,6 +3,8 @@ Changelog
 
 0.16.0 (unreleased)
 *******************
+* Add field ``File`` for uploaded File.
+* Add `FileType` and `FileSize` validation classes.
 
 Support:
 
@@ -33,8 +35,8 @@ Bug fixes:
 *******************
 
 * Add ``values`` argument to ``URLFor`` and ``AbsoluteURLFor`` for passing values to ``flask.url_for``.
- This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
- Thanks :user:`AlrasheedA` for the PR.
+  This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
+  Thanks :user:`AlrasheedA` for the PR.
 
 Deprecation:
 

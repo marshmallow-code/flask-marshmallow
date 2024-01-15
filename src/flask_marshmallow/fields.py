@@ -14,7 +14,7 @@ from marshmallow import fields
 from marshmallow import missing
 
 
-__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks"]
+__all__ = ["URLFor", "UrlFor", "AbsoluteURLFor", "AbsoluteUrlFor", "Hyperlinks", "File"]
 
 
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
@@ -178,3 +178,27 @@ class Hyperlinks(fields.Field):
 
     def _serialize(self, value, attr, obj):
         return _rapply(self.schema, _url_val, key=attr, obj=obj)
+
+
+class File(fields.Field):
+    """A binary file field for uploaded files.
+
+    Examples: ::
+
+        class ImageSchema(Schema):
+            image = File(required=True)
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.metadata["type"] = "string"
+        self.metadata["format"] = "binary"
+
+    default_error_messages = {"invalid": "Not a valid file."}
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        from werkzeug.datastructures import FileStorage
+
+        if not isinstance(value, FileStorage):
+            raise self.make_error("invalid")
+        return value
