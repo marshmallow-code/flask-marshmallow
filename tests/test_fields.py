@@ -1,7 +1,11 @@
+import io
+
 import pytest
 from flask import url_for
 from flask_marshmallow.fields import _tpl
+from marshmallow.exceptions import ValidationError
 from werkzeug.routing import BuildError
+from werkzeug.datastructures import FileStorage
 
 
 @pytest.mark.parametrize(
@@ -137,6 +141,19 @@ def test_aliases(ma):
 
     assert UrlFor is URLFor
     assert AbsoluteUrlFor is AbsoluteURLFor
+
+
+def test_file_field(ma, mockauthor):
+    field = ma.File()
+    fs = FileStorage(io.BytesIO(b"test"), "test.jpg")
+    result = field.deserialize(fs, mockauthor)
+    assert result == fs
+
+    with pytest.raises(ValidationError, match="Field may not be null."):
+        field.deserialize(None, mockauthor)
+
+    with pytest.raises(ValidationError, match="Not a valid file."):
+        field.deserialize("123", mockauthor)
 
 
 def test_config_field(ma, app, mockauthor):

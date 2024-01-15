@@ -178,6 +178,7 @@ You can now use your schema to dump and load your ORM objects.
 
 - By default, `~flask_marshmallow.sqla.SQLAlchemySchema` uses the scoped session created by Flask-SQLAlchemy.
 - `~flask_marshmallow.sqla.SQLAlchemySchema` subclasses `flask_marshmallow.Schema`, so it includes the `~flask_marshmallow.Schema.jsonify` method.
+
 Note: By default, Flask's `jsonify` method sorts the list of keys and returns consistent results to ensure that external HTTP caches aren't trashed. As a side effect, this will override `ordered=True <https://marshmallow.readthedocs.io/en/latest/quickstart.html#ordering-output>`_ 
 in the SQLAlchemySchema's `class Meta` (if you set it). To disable this, set `JSON_SORT_KEYS=False` in your Flask app config. In production it's recommended to let `jsonify` sort the keys and not set `ordered=True` in your `~flask_marshmallow.sqla.SQLAlchemySchema` in order to minimize generation time and maximize cacheability of the results.
 
@@ -226,6 +227,9 @@ API
     :members:
 
 .. automodule:: flask_marshmallow.fields
+    :members:
+
+.. automodule:: flask_marshmallow.validate
     :members:
 
 .. automodule:: flask_marshmallow.sqla

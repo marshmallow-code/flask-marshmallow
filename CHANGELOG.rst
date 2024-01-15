@@ -6,6 +6,9 @@ Changelog
 
 Features:
 
+* Add field ``fields.File``, ``validate.FileType``, and ``validate.FileSize`` 
+  for deserializing uploaded files (:issue:`280`, :pr:`282`).
+  Thanks :user:`uncle-lv` for the PR
 * Add field ``Config`` for serializing Flask configuration values (:issue:`280`, :pr:`281`).
   Thanks :user:`greyli` for the PR.
 
@@ -38,8 +41,8 @@ Bug fixes:
 *******************
 
 * Add ``values`` argument to ``URLFor`` and ``AbsoluteURLFor`` for passing values to ``flask.url_for``.
- This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
- Thanks :user:`AlrasheedA` for the PR.
+  This prevents unrelated parameters from getting passed (:issue:`52`, :issue:`67`).
+  Thanks :user:`AlrasheedA` for the PR.
 
 Deprecation:
 

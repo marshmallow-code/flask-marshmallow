@@ -21,6 +21,7 @@ __all__ = [
     "AbsoluteURLFor",
     "AbsoluteUrlFor",
     "Hyperlinks",
+    "File",
     "Config",
 ]
 
@@ -188,6 +189,31 @@ class Hyperlinks(fields.Field):
         return _rapply(self.schema, _url_val, key=attr, obj=obj)
 
 
+class File(fields.Field):
+    """A binary file field for uploaded files.
+
+    Examples: ::
+
+        class ImageSchema(Schema):
+            image = File(required=True)
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Metadata used by apispec
+        self.metadata["type"] = "string"
+        self.metadata["format"] = "binary"
+
+    default_error_messages = {"invalid": "Not a valid file."}
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        from werkzeug.datastructures import FileStorage
+
+        if not isinstance(value, FileStorage):
+            raise self.make_error("invalid")
+        return value
+
+
 class Config(fields.Field):
     """A field for Flask configuration values.
 
@@ -210,7 +236,7 @@ class Config(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, key, **kwargs):
+    def __init__(self, key: str, **kwargs):
         fields.Field.__init__(self, **kwargs)
         self.key = key
 
