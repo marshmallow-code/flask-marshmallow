@@ -3,11 +3,12 @@ Changelog
 
 0.16.0 (unreleased)
 *******************
-* Add field ``File`` for uploaded File.
-* Add `FileType` and `FileSize` validation classes.
 
 Features:
 
+* Add field ``fields.File``, ``validate.FileType``, and ``validate.FileSize`` 
+  for deserializing uploaded files (:issue:`280`, :pr:`282`).
+  Thanks :user:`uncle-lv` for the PR
 * Add field ``Config`` for serializing Flask configuration values (:issue:`280`, :pr:`281`).
   Thanks :user:`greyli` for the PR.
 

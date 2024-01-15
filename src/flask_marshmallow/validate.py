@@ -2,10 +2,11 @@
     flask_marshmallow.validate
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom, validation classes for various types of data.
+    Custom validation classes for various types of data.
 """
 import os
 import re
+import typing
 
 from marshmallow.exceptions import ValidationError
 from marshmallow.validate import Validator as Validator
@@ -21,7 +22,7 @@ def _get_filestorage_size(file):
 
 # This function is copied from loguru with few modifications.
 # https://github.com/Delgan/loguru/blob/master/loguru/_string_parsers.py#L35
-def _parse_size(size):
+def _parse_size(size: str) -> float:
     """Return the value which the ``size`` represents in bytes."""
     size = size.strip()
     reg = re.compile(r"([e\+\-\.\d]+)\s*([kmgtpezy])?(i)?(b)", flags=re.I)
@@ -41,9 +42,7 @@ def _parse_size(size):
     u = "kmgtpezy".index(u.lower()) + 1 if u else 0
     i = 1024 if i else 1000
     b = {"b": 8, "B": 1}[b] if b else 1
-    size: float = s * i**u / b
-
-    return size
+    return s * i**u / b
 
 
 class FileSize(Validator):
@@ -56,6 +55,7 @@ class FileSize(Validator):
     or is specified as `True`, then the ``max`` bound is included in the range.
 
     Example: ::
+
         class ImageSchema(Schema):
             image = File(required=True, validate=FileSize(min='1 MiB', max='2 MiB'))
 
@@ -81,11 +81,11 @@ class FileSize(Validator):
 
     def __init__(
         self,
-        min=None,
-        max=None,
-        min_inclusive=True,
-        max_inclusive=True,
-        error=None,
+        min: str | None = None,
+        max: str | None = None,
+        min_inclusive: bool = True,
+        max_inclusive: bool = True,
+        error: str | None = None,
     ):
         self.min = min
         self.max = max
@@ -158,8 +158,8 @@ class FileType(Validator):
 
     def __init__(
         self,
-        accept,
-        error=None,
+        accept: typing.Iterable[str],
+        error: str | None = None,
     ):
         self.allowed_types = {ext.lower() for ext in accept}
         self.error = error or self.default_message

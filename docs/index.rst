@@ -229,6 +229,9 @@ API
 .. automodule:: flask_marshmallow.fields
     :members:
 
+.. automodule:: flask_marshmallow.validate
+    :members:
+
 .. automodule:: flask_marshmallow.sqla
     :members:
 

@@ -200,6 +200,7 @@ class File(fields.Field):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Metadata used by apispec
         self.metadata["type"] = "string"
         self.metadata["format"] = "binary"
 
@@ -235,7 +236,7 @@ class Config(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, key, **kwargs):
+    def __init__(self, key: str, **kwargs):
         fields.Field.__init__(self, **kwargs)
         self.key = key
 
