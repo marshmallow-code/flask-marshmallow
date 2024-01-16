@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.16.0 (unreleased)
-*******************
+1.0.0 (unreleased)
+******************
 
 Features:
 
@@ -17,6 +17,11 @@ Support:
 * Support marshmallow-sqlalchemy>=0.29.0.
 * Test against Python 3.12.
 * Drop support for Python 3.7.
+
+Other changes:
+
+* *Backwards-incompatible*: Remove ```flask_marshmallow.__version__``
+  attribute. Use feature detection or ``importlib.metadata.version("flask-marshmallow")`` instead.
 
 0.15.0 (2023-04-05)
 *******************
