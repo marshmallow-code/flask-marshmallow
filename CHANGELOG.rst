@@ -20,8 +20,9 @@ Support:
 
 Other changes:
 
-* *Backwards-incompatible*: Remove ```flask_marshmallow.__version__``
-  attribute. Use feature detection or ``importlib.metadata.version("flask-marshmallow")`` instead.
+* *Backwards-incompatible*: Remove ```flask_marshmallow.__version__`` 
+  and ``flask_marshmallow.__version_info__`` attributes (:pr:`284`). 
+  Use feature detection or ``importlib.metadata.version("flask-marshmallow")`` instead.
 
 0.15.0 (2023-04-05)
 *******************
