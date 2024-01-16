@@ -1,5 +1,3 @@
-import re
-
 from setuptools import find_packages, setup
 
 EXTRAS_REQUIRE = {
@@ -15,23 +13,6 @@ EXTRAS_REQUIRE["dev"] = EXTRAS_REQUIRE["tests"] + ["tox", "pre-commit~=3.5"]
 REQUIRES = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
 
 
-def find_version(fname):
-    """Attempts to find the version number in the file names fname.
-    Raises RuntimeError if not found.
-    """
-    version = ""
-    with open(fname) as fp:
-        reg = re.compile(r'__version__ = [\'"]([^\'"]*)[\'"]')
-        for line in fp:
-            m = reg.match(line)
-            if m:
-                version = m.group(1)
-                break
-    if not version:
-        raise RuntimeError("Cannot find version information")
-    return version
-
-
 def read(fname):
     with open(fname) as fp:
         content = fp.read()
@@ -40,7 +21,7 @@ def read(fname):
 
 setup(
     name="flask-marshmallow",
-    version=find_version("src/flask_marshmallow/__init__.py"),
+    version="1.0.0",
     description="Flask + marshmallow for beautiful APIs",
     long_description=read("README.rst"),
     author="Steven Loria",
