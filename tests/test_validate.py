@@ -58,7 +58,7 @@ def test_filesize_repr():
                 min=None, max=None, error=None, min_inclusive=True, max_inclusive=True
             )
         )
-        == "<FileSize(min=None, max=None, min_inclusive=True, max_inclusive=True, error=None)>"
+        == "<FileSize(min=None, max=None, min_inclusive=True, max_inclusive=True, error=None)>"  # noqa: E501
     )
 
     assert (
@@ -71,8 +71,8 @@ def test_filesize_repr():
                 max_inclusive=False,
             )
         )
-        == "<FileSize(min='1 KiB', max='3 KiB', min_inclusive=False, max_inclusive=False, error='foo')>"
-    )  # noqa: E501
+        == "<FileSize(min='1 KiB', max='3 KiB', min_inclusive=False, max_inclusive=False, error='foo')>"  # noqa: E501
+    )
 
 
 def test_filesize_wrongtype():

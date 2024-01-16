@@ -9,11 +9,8 @@
 """
 import re
 
-from flask import url_for
-from flask import current_app
-from marshmallow import fields
-from marshmallow import missing
-
+from flask import current_app, url_for
+from marshmallow import fields, missing
 
 __all__ = [
     "URLFor",
@@ -78,7 +75,10 @@ class URLFor(fields.Field):
     Usage: ::
 
         url = URLFor('author_get', values=dict(id='<id>'))
-        https_url = URLFor('author_get', values=dict(id='<id>', _scheme='https', _external=True))
+        https_url = URLFor(
+            'author_get',
+            values=dict(id='<id>', _scheme='https', _external=True),
+        )
 
     :param str endpoint: Flask endpoint name.
     :param dict values: Same keyword arguments as Flask's url_for, except string
@@ -109,8 +109,7 @@ class URLFor(fields.Field):
                     param_values[name] = attribute_value
                 else:
                     raise AttributeError(
-                        "{attr_name!r} is not a valid "
-                        "attribute of {obj!r}".format(attr_name=attr_name, obj=obj)
+                        f"{attr_name!r} is not a valid " f"attribute of {obj!r}"
                     )
             else:
                 param_values[name] = attr_tpl
@@ -135,7 +134,9 @@ AbsoluteUrlFor = AbsoluteURLFor
 
 
 def _rapply(d, func, *args, **kwargs):
-    """Apply a function to all values in a dictionary or list of dictionaries, recursively."""
+    """Apply a function to all values in a dictionary or
+    list of dictionaries, recursively.
+    """
     if isinstance(d, (tuple, list)):
         return [_rapply(each, func, *args, **kwargs) for each in d]
     if isinstance(d, dict):

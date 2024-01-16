@@ -1,7 +1,7 @@
-import pytest
 import importlib.metadata
-from packaging.version import Version
 
+import pytest
+from packaging.version import Version
 
 flask_version = Version(importlib.metadata.version("flask"))
 flask_1_req = pytest.mark.skipif(

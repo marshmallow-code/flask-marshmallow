@@ -1,11 +1,11 @@
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import ValidationError
 from werkzeug.wrappers import Response
 
 from flask_marshmallow import Marshmallow
 from flask_marshmallow.sqla import HyperlinkRelated
-from marshmallow import ValidationError
 from tests.conftest import Bunch
 
 try:
@@ -171,8 +171,9 @@ class TestSQLAlchemy:
         assert isinstance(resp, Response)
 
     # FIXME: temporarily filter out this warning
-    # this is triggered by marshmallow-sqlalchemy on sqlalchemy v1.4.x on the current version
-    # it should be fixed in an upcoming marshmallow-sqlalchemy release
+    # this is triggered by marshmallow-sqlalchemy on sqlalchemy v1.4.x
+    # on the current version it should be fixed
+    # in an upcoming marshmallow-sqlalchemy release
     @requires_sqlalchemyschema
     def test_hyperlink_related_field(self, extma, models, db, extapp):
         class BookSchema(extma.SQLAlchemySchema):

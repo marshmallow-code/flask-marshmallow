@@ -7,9 +7,10 @@
     `SQLAlchemyAutoSchema <marshmallow_sqlalchemy.SQLAlchemyAutoSchema>` classes
     that use the scoped session from Flask-SQLAlchemy.
 """
-from flask import url_for, current_app
 from urllib import parse
+
 import marshmallow_sqlalchemy as msqla
+from flask import current_app, url_for
 from marshmallow.exceptions import ValidationError
 
 from .schema import Schema
