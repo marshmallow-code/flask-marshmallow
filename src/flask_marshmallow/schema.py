@@ -1,7 +1,6 @@
 import flask
 import marshmallow as ma
 
-
 sentinel = object()
 
 

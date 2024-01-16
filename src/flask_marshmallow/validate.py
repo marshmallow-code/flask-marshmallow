@@ -49,7 +49,8 @@ class FileSize(Validator):
     """Validator which succeeds if the file passed to it is within the specified
     size range. If ``min`` is not specified, or is specified as `None`,
     no lower bound exists. If ``max`` is not specified, or is specified as `None`,
-    no upper bound exists. The inclusivity of the bounds (if they exist) is configurable.
+    no upper bound exists. The inclusivity of the bounds (if they exist)
+    is configurable.
     If ``min_inclusive`` is not specified, or is specified as `True`, then
     the ``min`` bound is included in the range. If ``max_inclusive`` is not specified,
     or is specified as `True`, then the ``max`` bound is included in the range.

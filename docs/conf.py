@@ -1,6 +1,6 @@
 import datetime as dt
-import sys
 import os
+import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
 import flask_marshmallow  # noqa: E402

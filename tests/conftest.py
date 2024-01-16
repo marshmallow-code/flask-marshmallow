@@ -1,6 +1,7 @@
 """Pytest fixtures for the test suite."""
 import pytest
 from flask import Flask
+
 from flask_marshmallow import Marshmallow
 
 _app = Flask(__name__)

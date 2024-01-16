@@ -43,9 +43,21 @@ build-backend = "flit_core.buildapi"
 include = ["docs/", "tests/", "CHANGELOG.rst", "CONTRIBUTING.rst", "tox.ini"]
 exclude = ["docs/_build/"]
 
-[tool.black]
-line-length = 88
-target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+[tool.ruff]
+src = ["src"]
+fix = true
+show-fixes = true
+show-source = true
+
+[tool.ruff.lint]
+select = [
+  "B",  # flake8-bugbear
+  "E",  # pycodestyle error
+  "F",  # pyflakes
+  "I",  # isort
+  "UP", # pyupgrade
+  "W",  # pycodestyle warning
+]
 
 [tool.pytest.ini_options]
 filterwarnings = [

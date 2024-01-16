@@ -7,7 +7,8 @@
 """
 import warnings
 
-from marshmallow import fields as base_fields, exceptions, pprint
+from marshmallow import exceptions, pprint
+from marshmallow import fields as base_fields
 
 from . import fields
 from .schema import Schema
@@ -80,14 +81,15 @@ class Marshmallow:
             })
 
 
-    In order to integrate with Flask-SQLAlchemy, this extension must be initialized *after*
-    `flask_sqlalchemy.SQLAlchemy`. ::
+    In order to integrate with Flask-SQLAlchemy, this extension must be initialized
+    *after* `flask_sqlalchemy.SQLAlchemy`. ::
 
             db = SQLAlchemy(app)
             ma = Marshmallow(app)
 
-    This gives you access to `ma.SQLAlchemySchema` and `ma.SQLAlchemyAutoSchema`, which generate
-    marshmallow `~marshmallow.Schema` classes based on the passed in model or table. ::
+    This gives you access to `ma.SQLAlchemySchema` and `ma.SQLAlchemyAutoSchema`, which
+    generate marshmallow `~marshmallow.Schema` classes
+    based on the passed in model or table. ::
 
         class AuthorSchema(ma.SQLAlchemyAutoSchema):
             class Meta:

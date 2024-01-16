@@ -2,10 +2,11 @@ import io
 
 import pytest
 from flask import url_for
-from flask_marshmallow.fields import _tpl
 from marshmallow.exceptions import ValidationError
-from werkzeug.routing import BuildError
 from werkzeug.datastructures import FileStorage
+from werkzeug.routing import BuildError
+
+from flask_marshmallow.fields import _tpl
 
 
 @pytest.mark.parametrize(
@@ -137,7 +138,7 @@ def test_absolute_url_deserialization(ma):
 
 
 def test_aliases(ma):
-    from flask_marshmallow.fields import AbsoluteUrlFor, AbsoluteURLFor, UrlFor, URLFor
+    from flask_marshmallow.fields import AbsoluteURLFor, AbsoluteUrlFor, URLFor, UrlFor
 
     assert UrlFor is URLFor
     assert AbsoluteUrlFor is AbsoluteURLFor
