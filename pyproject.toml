@@ -50,6 +50,5 @@ target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
 [tool.pytest.ini_options]
 filterwarnings = [
   "error",
-  "ignore:The Query\\.get\\(\\) method is considered legacy:sqlalchemy.exc.LegacyAPIWarning",
   "ignore:distutils Version classes are deprecated\\. Use packaging.version instead\\.:DeprecationWarning:marshmallow",
 ]
