@@ -1,9 +1,7 @@
 import datetime as dt
+import importlib.metadata
 import os
 import sys
-
-sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
-import flask_marshmallow  # noqa: E402
 
 sys.path.append(os.path.abspath("_themes"))
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx_issues"]
@@ -39,7 +37,7 @@ copyright = "2014-{:%Y}".format(
 )
 
 
-version = release = flask_marshmallow.__version__
+version = release = importlib.metadata.version("flask-marshmallow")
 exclude_patterns = ["_build"]
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "flask_theme_support.FlaskyStyle"
