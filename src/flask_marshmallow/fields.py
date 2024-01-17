@@ -93,7 +93,7 @@ class URLFor(fields.Field):
     def __init__(
         self,
         endpoint: str,
-        values: dict[str, typing.Any] | None = None,
+        values: typing.Optional[typing.Dict[str, typing.Any]] = None,
         **kwargs,
     ):
         self.endpoint = endpoint
@@ -129,7 +129,10 @@ class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
     def __init__(
-        self, endpoint: str, values: dict[str, typing.Any] | None = None, **kwargs
+        self,
+        endpoint: str,
+        values: typing.Optional[typing.Dict[str, typing.Any]] = None,
+        **kwargs,
     ):
         if values:
             values["_external"] = True
@@ -141,7 +144,9 @@ class AbsoluteURLFor(URLFor):
 AbsoluteUrlFor = AbsoluteURLFor
 
 
-def _rapply(d: dict | typing.Iterable, func: typing.Callable, *args, **kwargs):
+def _rapply(
+    d: typing.Union[dict, typing.Iterable], func: typing.Callable, *args, **kwargs
+):
     """Apply a function to all values in a dictionary or
     list of dictionaries, recursively.
     """
