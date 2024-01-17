@@ -1,12 +1,12 @@
 Changelog
 =========
 
-1.1.0 (unreleased)
+1.1.0 (2024-01-16)
 ******************
 
 Features:
 
-* Add type coverage.
+* Add type coverage (:pr:`290`).
 
 1.0.0 (2024-01-16)
 ******************
