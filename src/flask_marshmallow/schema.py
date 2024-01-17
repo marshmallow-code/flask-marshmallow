@@ -1,7 +1,10 @@
+import typing
+
 import flask
 import marshmallow as ma
 
-sentinel = object()
+if typing.TYPE_CHECKING:
+    from flask.wrappers import Response
 
 
 class Schema(ma.Schema):
@@ -10,13 +13,15 @@ class Schema(ma.Schema):
     See `marshmallow.Schema` for more details about the `Schema` API.
     """
 
-    def jsonify(self, obj, many=sentinel, *args, **kwargs):
+    def jsonify(
+        self, obj: typing.Any, many: typing.Optional[bool] = None, *args, **kwargs
+    ) -> "Response":
         """Return a JSON response containing the serialized data.
 
 
         :param obj: Object to serialize.
         :param bool many: Whether `obj` should be serialized as an instance
-            or as a collection. If unset, defaults to the value of the
+            or as a collection. If None, defaults to the value of the
             `many` attribute on this Schema.
         :param kwargs: Additional keyword arguments passed to `flask.jsonify`.
 
@@ -30,7 +35,7 @@ class Schema(ma.Schema):
             argument of this method defaulted to False, regardless of the
             value of `Schema.many`.
         """
-        if many is sentinel:
+        if many is None:
             many = self.many
         data = self.dump(obj, many=many)
         return flask.jsonify(data, *args, **kwargs)

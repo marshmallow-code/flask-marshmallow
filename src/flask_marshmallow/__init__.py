@@ -5,6 +5,7 @@
     Integrates the marshmallow serialization/deserialization library
     with your Flask application.
 """
+import typing
 import warnings
 
 from marshmallow import exceptions, pprint
@@ -12,6 +13,9 @@ from marshmallow import fields as base_fields
 
 from . import fields
 from .schema import Schema
+
+if typing.TYPE_CHECKING:
+    from flask import Flask
 
 has_sqla = False
 try:
@@ -98,7 +102,7 @@ class Marshmallow:
     :param Flask app: The Flask application object.
     """
 
-    def __init__(self, app=None):
+    def __init__(self, app: typing.Optional["Flask"] = None):
         self.Schema = Schema
         if has_sqla:
             self.SQLAlchemySchema = sqla.SQLAlchemySchema
@@ -109,7 +113,7 @@ class Marshmallow:
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app):
+    def init_app(self, app: "Flask"):
         """Initializes the application with the extension.
 
         :param Flask app: The Flask application object.
@@ -119,8 +123,6 @@ class Marshmallow:
         # If using Flask-SQLAlchemy, attach db.session to SQLAlchemySchema
         if has_sqla and "sqlalchemy" in app.extensions:
             db = app.extensions["sqlalchemy"]
-            if self.SQLAlchemySchema:
-                self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
-            if self.SQLAlchemyAutoSchema:
-                self.SQLAlchemyAutoSchema.OPTIONS_CLASS.session = db.session
+            self.SQLAlchemySchema.OPTIONS_CLASS.session = db.session
+            self.SQLAlchemyAutoSchema.OPTIONS_CLASS.session = db.session
         app.extensions[EXTENSION_NAME] = self
