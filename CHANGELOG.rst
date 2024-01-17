@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.1.0 (unreleased)
+******************
+
+Features:
+
+* Add type coverage.
+
 1.0.0 (2024-01-16)
 ******************
 

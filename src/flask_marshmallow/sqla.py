@@ -50,7 +50,7 @@ if hasattr(msqla, "SQLAlchemySchema"):
         OPTIONS_CLASS = SQLAlchemySchemaOpts
 
 else:
-    SQLAlchemySchema = None
+    SQLAlchemySchema = None  # type: ignore
 
 if hasattr(msqla, "SQLAlchemyAutoSchema"):
 
@@ -71,7 +71,7 @@ if hasattr(msqla, "SQLAlchemyAutoSchema"):
         OPTIONS_CLASS = SQLAlchemyAutoSchemaOpts
 
 else:
-    SQLAlchemyAutoSchema = None
+    SQLAlchemyAutoSchema = None  # type: ignore
 
 auto_field = getattr(msqla, "auto_field", None)
 
@@ -87,7 +87,9 @@ class HyperlinkRelated(msqla.fields.Related):
         instead of relative URLs.
     """
 
-    def __init__(self, endpoint, url_key="id", external=False, **kwargs):
+    def __init__(
+        self, endpoint: str, url_key: str = "id", external: bool = False, **kwargs
+    ):
         super().__init__(**kwargs)
         self.endpoint = endpoint
         self.url_key = url_key

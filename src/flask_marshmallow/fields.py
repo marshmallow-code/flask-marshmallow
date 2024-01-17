@@ -8,6 +8,7 @@
     marshmallow library.
 """
 import re
+import typing
 
 from flask import current_app, url_for
 from marshmallow import fields, missing
@@ -26,7 +27,7 @@ __all__ = [
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
 
 
-def _tpl(val):
+def _tpl(val: str) -> str | None:
     """Return value within ``< >`` if possible, else return ``None``."""
     match = _tpl_pattern.match(val)
     if match:
@@ -89,7 +90,12 @@ class URLFor(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, endpoint, values=None, id=None, **kwargs):
+    def __init__(
+        self,
+        endpoint: str,
+        values: dict[str, typing.Any] | None = None,
+        **kwargs,
+    ):
         self.endpoint = endpoint
         self.values = values or {}
         fields.Field.__init__(self, **kwargs)
@@ -122,7 +128,9 @@ UrlFor = URLFor
 class AbsoluteURLFor(URLFor):
     """Field that outputs the absolute URL for an endpoint."""
 
-    def __init__(self, endpoint, values=None, **kwargs):
+    def __init__(
+        self, endpoint: str, values: dict[str, typing.Any] | None = None, **kwargs
+    ):
         if values:
             values["_external"] = True
         else:
@@ -133,7 +141,7 @@ class AbsoluteURLFor(URLFor):
 AbsoluteUrlFor = AbsoluteURLFor
 
 
-def _rapply(d, func, *args, **kwargs):
+def _rapply(d: dict | typing.Iterable, func: typing.Callable, *args, **kwargs):
     """Apply a function to all values in a dictionary or
     list of dictionaries, recursively.
     """
@@ -145,7 +153,7 @@ def _rapply(d, func, *args, **kwargs):
         return func(d, *args, **kwargs)
 
 
-def _url_val(val, key, obj, **kwargs):
+def _url_val(val: typing.Any, key: str, obj: typing.Any, **kwargs):
     """Function applied by `HyperlinksField` to get the correct value in the
     schema.
     """
@@ -182,7 +190,7 @@ class Hyperlinks(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, schema, **kwargs):
+    def __init__(self, schema: dict[str, typing.Union[URLFor, str]], **kwargs):
         self.schema = schema
         fields.Field.__init__(self, **kwargs)
 
