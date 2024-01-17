@@ -195,7 +195,7 @@ class Hyperlinks(fields.Field):
 
     _CHECK_ATTRIBUTE = False
 
-    def __init__(self, schema: dict[str, typing.Union[URLFor, str]], **kwargs):
+    def __init__(self, schema: typing.Dict[str, typing.Union[URLFor, str]], **kwargs):
         self.schema = schema
         fields.Field.__init__(self, **kwargs)
 
