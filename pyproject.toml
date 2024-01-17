@@ -19,7 +19,7 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 requires-python = ">=3.8"
-dependencies = ["Flask", "marshmallow>=3.0.0", "packaging>=17.0"]
+dependencies = ["Flask>=2.2", "marshmallow>=3.0.0"]
 
 [project.urls]
 Issues = "https://github.com/marshmallow-code/flask-marshmallow/issues"
