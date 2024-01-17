@@ -4,7 +4,6 @@ from flask import Flask, url_for
 from werkzeug.wrappers import Response
 
 from flask_marshmallow import Marshmallow
-from tests.markers import flask_1_req
 
 
 def test_deferred_initialization():
@@ -35,7 +34,6 @@ def test_jsonify_instance(app, schemas, mockauthor):
     assert isinstance(obj, dict)
 
 
-@flask_1_req
 def test_jsonify_collection(app, schemas, mockauthorlist):
     s = schemas.AuthorSchema()
     resp = s.jsonify(mockauthorlist, many=True)
@@ -45,7 +43,6 @@ def test_jsonify_collection(app, schemas, mockauthorlist):
     assert isinstance(obj, list)
 
 
-@flask_1_req
 def test_jsonify_collection_via_schema_attr(app, schemas, mockauthorlist):
     s = schemas.AuthorSchema(many=True)
     resp = s.jsonify(mockauthorlist)
