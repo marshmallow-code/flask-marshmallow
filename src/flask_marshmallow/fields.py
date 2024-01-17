@@ -27,7 +27,7 @@ __all__ = [
 _tpl_pattern = re.compile(r"\s*<\s*(\S*)\s*>\s*")
 
 
-def _tpl(val: str) -> str | None:
+def _tpl(val: str) -> typing.Optional[str]:
     """Return value within ``< >`` if possible, else return ``None``."""
     match = _tpl_pattern.match(val)
     if match:
