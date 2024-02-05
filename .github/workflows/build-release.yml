@@ -48,7 +48,6 @@ jobs:
   # this duplicates pre-commit.ci, so only run it on tags
   # it guarantees that linting is passing prior to a release
   lint-pre-release:
-    name: lint
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags')
     steps:
