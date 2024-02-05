@@ -17,15 +17,17 @@ develop-eggs
 .installed.cfg
 lib
 lib64
+pip-wheel-metadata
 
 # Installer logs
 pip-log.txt
 
 # Unit test / coverage reports
-.cache
 .coverage
+htmlcov
 .tox
 nosetests.xml
+.cache
 .pytest_cache
 
 # Translations
@@ -33,19 +35,50 @@ nosetests.xml
 
 # Mr Developer
 .mr.developer.cfg
+
+# IDE
 .project
 .pydevproject
+.idea
 
-# Complexity
-output/*.html
-output/*/index.html
+# Coverage
+cover
+.coveragerc
 
 # Sphinx
 docs/_build
 README.html
 
-.konchrc
-*.ai
-
 *.ipynb
 .ipynb_checkpoints
+
+Vagrantfile
+.vagrant
+
+*.db
+*.ai
+.konchrc
+_sandbox
+pylintrc
+
+# Virtualenvs
+env
+venv
+
+# pyenv
+.python-version
+
+# pytest
+.pytest_cache
+
+# Other
+.directory
+*.pprof
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ruff
+.ruff_cache
