@@ -13,10 +13,9 @@ from marshmallow.validate import Validator as Validator
 from werkzeug.datastructures import FileStorage
 
 
-def _get_filestorage_size(file):
+def _get_filestorage_size(file: FileStorage) -> int:
     """Return the size of the FileStorage object in bytes."""
-    size = len(file.read())
-    file.stream.seek(0)
+    size: int = file.stream.getbuffer().nbytes  # type: ignore
     return size
 
 
