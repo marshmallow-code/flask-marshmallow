@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.2.0 (unreleased)
+******************
+
+Features:
+
+* Performance improvement to `valdiate.FileSize` (:pr:`293`).
+  Thanks :user:`uncle-lv`.
+
 1.1.0 (2024-01-16)
 ******************
 
