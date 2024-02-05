@@ -4,7 +4,10 @@ version = "1.1.0"
 description = "Flask + marshmallow for beautiful APIs"
 readme = "README.rst"
 license = { file = "LICENSE" }
-maintainers = [{ name = "Steven Loria", email = "sloria1@gmail.com" }]
+maintainers = [
+  { name = "Steven Loria", email = "sloria1@gmail.com" },
+  { name = "Stephen Rosen", email = "sirosen0@gmail.com" },
+]
 classifiers = [
   "Environment :: Web Environment",
   "Intended Audience :: Developers",

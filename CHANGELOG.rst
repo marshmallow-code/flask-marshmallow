@@ -6,7 +6,7 @@ Changelog
 
 Features:
 
-* Performance improvement to `valdiate.FileSize` (:pr:`293`).
+* Performance improvement to `validate.FileSize` (:pr:`293`).
   Thanks :user:`uncle-lv`.
 
 1.1.0 (2024-01-16)

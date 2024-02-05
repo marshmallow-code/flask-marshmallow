@@ -1,4 +1,3 @@
-import datetime as dt
 import importlib.metadata
 import os
 import sys
@@ -32,9 +31,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "Flask-Marshmallow"
-copyright = "2014-{:%Y}".format(
-    dt.datetime.utcfromtimestamp(os.path.getmtime("../CHANGELOG.rst"))
-)
+copyright = "Steven Loria and contributors"
 
 
 version = release = importlib.metadata.version("flask-marshmallow")
