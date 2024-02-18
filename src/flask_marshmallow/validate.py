@@ -142,9 +142,10 @@ class FileSize(Validator):
 
 class FileType(Validator):
     """Validator which succeeds if the uploaded file is allowed by a given list
-        of extensions.
+    of extensions.
 
     Example: ::
+
         class ImageSchema(Schema):
             image = File(required=True, validate=FileType(['.png']))
 
