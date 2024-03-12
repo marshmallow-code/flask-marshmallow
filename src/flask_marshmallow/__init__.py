@@ -1,10 +1,11 @@
 """
-    flask_marshmallow
-    ~~~~~~~~~~~~~~~~~
+flask_marshmallow
+~~~~~~~~~~~~~~~~~
 
-    Integrates the marshmallow serialization/deserialization library
-    with your Flask application.
+Integrates the marshmallow serialization/deserialization library
+with your Flask application.
 """
+
 import typing
 import warnings
 

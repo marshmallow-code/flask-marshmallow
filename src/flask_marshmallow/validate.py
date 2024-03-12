@@ -1,9 +1,10 @@
 """
-    flask_marshmallow.validate
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+flask_marshmallow.validate
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom validation classes for various types of data.
+Custom validation classes for various types of data.
 """
+
 import os
 import re
 import typing
@@ -106,9 +107,7 @@ class FileSize(Validator):
         )
 
     def _repr_args(self):
-        return "min={!r}, max={!r}, min_inclusive={!r}, max_inclusive={!r}".format(
-            self.min, self.max, self.min_inclusive, self.max_inclusive
-        )
+        return f"min={self.min!r}, max={self.max!r}, min_inclusive={self.min_inclusive!r}, max_inclusive={self.max_inclusive!r}"
 
     def _format_error(self, value, message):
         return (self.error or message).format(input=value, min=self.min, max=self.max)

@@ -1,12 +1,13 @@
 """
-    flask_marshmallow.fields
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+flask_marshmallow.fields
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom, Flask-specific fields.
+Custom, Flask-specific fields.
 
-    See the `marshmallow.fields` module for the list of all fields available from the
-    marshmallow library.
+See the `marshmallow.fields` module for the list of all fields available from the
+marshmallow library.
 """
+
 import re
 import typing
 

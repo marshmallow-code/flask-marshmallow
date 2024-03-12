@@ -1,4 +1,5 @@
 """Pytest fixtures for the test suite."""
+
 import pytest
 from flask import Flask
 
