@@ -1,9 +1,10 @@
 """
-    flask_marshmallow.validate
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+flask_marshmallow.validate
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom validation classes for various types of data.
+Custom validation classes for various types of data.
 """
+
 import os
 import re
 import typing
@@ -57,7 +58,7 @@ class FileSize(Validator):
     Example: ::
 
         class ImageSchema(Schema):
-            image = File(required=True, validate=FileSize(min='1 MiB', max='2 MiB'))
+            image = File(required=True, validate=FileSize(min="1 MiB", max="2 MiB"))
 
     :param min: The minimum size (lower bound). If not provided, minimum
         size will not be checked.
@@ -106,8 +107,10 @@ class FileSize(Validator):
         )
 
     def _repr_args(self):
-        return "min={!r}, max={!r}, min_inclusive={!r}, max_inclusive={!r}".format(
-            self.min, self.max, self.min_inclusive, self.max_inclusive
+        return (
+            f"min={self.min!r}, max={self.max!r}, "
+            f"min_inclusive={self.min_inclusive!r}, "
+            f"max_inclusive={self.max_inclusive!r}"
         )
 
     def _format_error(self, value, message):
@@ -146,7 +149,7 @@ class FileType(Validator):
     Example: ::
 
         class ImageSchema(Schema):
-            image = File(required=True, validate=FileType(['.png']))
+            image = File(required=True, validate=FileType([".png"]))
 
     :param accept: A sequence of allowed extensions.
     :param error: Error message to raise in case of a validation error.

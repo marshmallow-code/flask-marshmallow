@@ -1,10 +1,11 @@
 """
-    flask_marshmallow
-    ~~~~~~~~~~~~~~~~~
+flask_marshmallow
+~~~~~~~~~~~~~~~~~
 
-    Integrates the marshmallow serialization/deserialization library
-    with your Flask application.
+Integrates the marshmallow serialization/deserialization library
+with your Flask application.
 """
+
 import typing
 import warnings
 
@@ -75,14 +76,16 @@ class Marshmallow:
 
         class BookSchema(ma.Schema):
             class Meta:
-                fields = ('id', 'title', 'author', 'links')
+                fields = ("id", "title", "author", "links")
 
             author = ma.Nested(AuthorSchema)
 
-            links = ma.Hyperlinks({
-                'self': ma.URLFor('book_detail', values=dict(id='<id>')),
-                'collection': ma.URLFor('book_list')
-            })
+            links = ma.Hyperlinks(
+                {
+                    "self": ma.URLFor("book_detail", values=dict(id="<id>")),
+                    "collection": ma.URLFor("book_list"),
+                }
+            )
 
 
     In order to integrate with Flask-SQLAlchemy, this extension must be initialized

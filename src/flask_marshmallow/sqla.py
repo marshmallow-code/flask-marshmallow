@@ -1,12 +1,13 @@
 """
-    flask_marshmallow.sqla
-    ~~~~~~~~~~~~~~~~~~~~~~
+flask_marshmallow.sqla
+~~~~~~~~~~~~~~~~~~~~~~
 
-    Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
-    `SQLAlchemySchema <marshmallow_sqlalchemy.SQLAlchemySchema>` and
-    `SQLAlchemyAutoSchema <marshmallow_sqlalchemy.SQLAlchemyAutoSchema>` classes
-    that use the scoped session from Flask-SQLAlchemy.
+Integration with Flask-SQLAlchemy and marshmallow-sqlalchemy. Provides
+`SQLAlchemySchema <marshmallow_sqlalchemy.SQLAlchemySchema>` and
+`SQLAlchemyAutoSchema <marshmallow_sqlalchemy.SQLAlchemyAutoSchema>` classes
+that use the scoped session from Flask-SQLAlchemy.
 """
+
 from urllib import parse
 
 import marshmallow_sqlalchemy as msqla

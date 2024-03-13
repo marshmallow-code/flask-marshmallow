@@ -1,12 +1,13 @@
 """
-    flask_marshmallow.fields
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+flask_marshmallow.fields
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Custom, Flask-specific fields.
+Custom, Flask-specific fields.
 
-    See the `marshmallow.fields` module for the list of all fields available from the
-    marshmallow library.
+See the `marshmallow.fields` module for the list of all fields available from the
+marshmallow library.
 """
+
 import re
 import typing
 
@@ -75,10 +76,10 @@ class URLFor(fields.Field):
 
     Usage: ::
 
-        url = URLFor('author_get', values=dict(id='<id>'))
+        url = URLFor("author_get", values=dict(id="<id>"))
         https_url = URLFor(
-            'author_get',
-            values=dict(id='<id>', _scheme='https', _external=True),
+            "author_get",
+            values=dict(id="<id>", _scheme="https", _external=True),
         )
 
     :param str endpoint: Flask endpoint name.
@@ -175,19 +176,23 @@ class Hyperlinks(fields.Field):
 
     Example: ::
 
-        _links = Hyperlinks({
-            'self': URLFor('author', values=dict(id='<id>')),
-            'collection': URLFor('author_list'),
-        })
+        _links = Hyperlinks(
+            {
+                "self": URLFor("author", values=dict(id="<id>")),
+                "collection": URLFor("author_list"),
+            }
+        )
 
     `URLFor` objects can be nested within the dictionary. ::
 
-        _links = Hyperlinks({
-            'self': {
-                'href': URLFor('book', values=dict(id='<id>')),
-                'title': 'book detail'
+        _links = Hyperlinks(
+            {
+                "self": {
+                    "href": URLFor("book", values=dict(id="<id>")),
+                    "title": "book detail",
+                }
             }
-        })
+        )
 
     :param dict schema: A dict that maps names to
         :class:`~flask_marshmallow.fields.URLFor` fields.
@@ -236,11 +241,12 @@ class Config(fields.Field):
         from flask import Flask
 
         app = Flask(__name__)
-        app.config['API_TITLE'] = 'Pet API'
+        app.config["API_TITLE"] = "Pet API"
+
 
         class FooSchema(Schema):
             user = String()
-            title = Config('API_TITLE')
+            title = Config("API_TITLE")
 
     This field should only be used in an output schema. A ``ValueError`` will
     be raised if the config key is not found in the app config.
