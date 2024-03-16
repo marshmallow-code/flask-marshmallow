@@ -5,6 +5,7 @@ flask_marshmallow.validate
 Custom validation classes for various types of data.
 """
 
+import io
 import os
 import re
 import typing
@@ -16,8 +17,11 @@ from werkzeug.datastructures import FileStorage
 
 def _get_filestorage_size(file: FileStorage) -> int:
     """Return the size of the FileStorage object in bytes."""
-    size: int = file.stream.getbuffer().nbytes  # type: ignore
-    return size
+    stream = file.stream
+    if isinstance(stream, io.BytesIO):
+        return stream.getbuffer().nbytes
+
+    return os.stat(stream.fileno()).st_size
 
 
 # This function is copied from loguru with few modifications.
