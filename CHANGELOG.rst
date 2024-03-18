@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.2.1 (unreleased)
+******************
+
+Bug fixes:
+
+* Fix `File` field when it receives an empty value (:pr:`301`, :issue:`apiflask/apiflask#551`).
+  Thanks :user:`uncle-lv`.
+
 1.2.0 (2024-02-05)
 ******************
 
