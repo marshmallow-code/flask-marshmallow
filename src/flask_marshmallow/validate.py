@@ -5,9 +5,11 @@ flask_marshmallow.validate
 Custom validation classes for various types of data.
 """
 
+import io
 import os
 import re
 import typing
+from tempfile import SpooledTemporaryFile
 
 from marshmallow.exceptions import ValidationError
 from marshmallow.validate import Validator as Validator
@@ -16,7 +18,15 @@ from werkzeug.datastructures import FileStorage
 
 def _get_filestorage_size(file: FileStorage) -> int:
     """Return the size of the FileStorage object in bytes."""
-    size: int = file.stream.getbuffer().nbytes  # type: ignore
+    stream = file.stream
+    if isinstance(stream, io.BytesIO):
+        return stream.getbuffer().nbytes
+
+    if isinstance(stream, SpooledTemporaryFile):
+        return os.stat(stream.fileno()).st_size
+
+    size = len(file.read())
+    file.stream.seek(0)
     return size
 
 

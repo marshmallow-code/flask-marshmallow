@@ -8,6 +8,8 @@ Bug fixes:
 
 * Fix `File` field when it receives an empty value (:pr:`301`, :issue:`apiflask/apiflask#551`).
   Thanks :user:`uncle-lv`.
+* Fix `validate.FileSize` to handle `SpooledTemporaryFile` (:pr:`300`).
+  Thanks again :user:`uncle-lv`.
 
 1.2.0 (2024-02-05)
 ******************

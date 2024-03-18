@@ -1,4 +1,5 @@
 import io
+from tempfile import SpooledTemporaryFile
 
 import pytest
 from flask import url_for
@@ -150,6 +151,12 @@ def test_file_field(ma, mockauthor):
     fs = FileStorage(io.BytesIO(b"test"), "test.jpg")
     result = field.deserialize(fs, mockauthor)
     assert result == fs
+
+    with SpooledTemporaryFile() as temp:
+        temp.write(b"temp")
+        fs = FileStorage(temp, "temp.jpg")
+        result = field.deserialize(fs, mockauthor)
+        assert result == fs
 
     result = field.deserialize("", mockauthor)
     assert result is missing
