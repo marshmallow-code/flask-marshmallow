@@ -9,6 +9,7 @@ import io
 import os
 import re
 import typing
+from tempfile import SpooledTemporaryFile
 
 from marshmallow.exceptions import ValidationError
 from marshmallow.validate import Validator as Validator
@@ -21,7 +22,12 @@ def _get_filestorage_size(file: FileStorage) -> int:
     if isinstance(stream, io.BytesIO):
         return stream.getbuffer().nbytes
 
-    return os.stat(stream.fileno()).st_size
+    if isinstance(stream, SpooledTemporaryFile):
+        return os.stat(stream.fileno()).st_size
+
+    size = len(file.read())
+    file.stream.seek(0)
+    return size
 
 
 # This function is copied from loguru with few modifications.
