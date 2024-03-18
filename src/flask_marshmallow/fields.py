@@ -229,8 +229,8 @@ class File(fields.Field):
     def deserialize(
         self,
         value: typing.Any,
-        attr: str | None = None,
-        data: typing.Mapping[str, typing.Any] | None = None,
+        attr: typing.Optional[str] = None,
+        data: typing.Optional[typing.Mapping[str, typing.Any]] = None,
         **kwargs,
     ):
         if isinstance(value, Sequence) and len(value) == 0:
