@@ -10,6 +10,7 @@ marshmallow library.
 
 import re
 import typing
+from collections.abc import Sequence
 
 from flask import current_app, url_for
 from marshmallow import fields, missing
@@ -224,6 +225,17 @@ class File(fields.Field):
         self.metadata["format"] = "binary"
 
     default_error_messages = {"invalid": "Not a valid file."}
+
+    def deserialize(
+        self,
+        value: typing.Any,
+        attr: str | None = None,
+        data: typing.Mapping[str, typing.Any] | None = None,
+        **kwargs,
+    ):
+        if isinstance(value, Sequence) and len(value) == 0:
+            value = missing
+        return super().deserialize(value, attr, data, **kwargs)
 
     def _deserialize(self, value, attr, data, **kwargs):
         from werkzeug.datastructures import FileStorage

@@ -2,6 +2,7 @@ import io
 
 import pytest
 from flask import url_for
+from marshmallow import missing
 from marshmallow.exceptions import ValidationError
 from werkzeug.datastructures import FileStorage
 from werkzeug.routing import BuildError
@@ -149,6 +150,9 @@ def test_file_field(ma, mockauthor):
     fs = FileStorage(io.BytesIO(b"test"), "test.jpg")
     result = field.deserialize(fs, mockauthor)
     assert result == fs
+
+    result = field.deserialize("", mockauthor)
+    assert result is missing
 
     with pytest.raises(ValidationError, match="Field may not be null."):
         field.deserialize(None, mockauthor)
