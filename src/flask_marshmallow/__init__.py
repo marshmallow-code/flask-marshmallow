@@ -35,6 +35,8 @@ else:
     else:
         has_sqla = True
 
+__version__ = "1.2.1"
+
 __all__ = [
     "EXTENSION_NAME",
     "Marshmallow",
