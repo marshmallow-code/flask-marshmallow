@@ -35,7 +35,7 @@ docs = [
   "sphinx-issues==4.1.0",
 ]
 tests = ["flask-marshmallow[sqlalchemy]", "pytest"]
-dev = ["flask-marshmallow[tests]", "tox", "pre-commit~=3.5"]
+dev = ["flask-marshmallow[tests]", "tox", "pre-commit>=3.5,<5.0"]
 sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=0.29.0"]
 
 [build-system]
