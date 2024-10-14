@@ -31,7 +31,7 @@ Funding = "https://opencollective.com/marshmallow"
 [project.optional-dependencies]
 docs = [
   "marshmallow-sqlalchemy>=0.19.0",
-  "Sphinx==8.1.0",
+  "Sphinx==8.1.3",
   "sphinx-issues==4.1.0",
 ]
 tests = ["flask-marshmallow[sqlalchemy]", "pytest"]
