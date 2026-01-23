@@ -180,7 +180,7 @@ class FileType(Validator):
 
     def _format_error(self, value):
         return (self.error or self.default_message).format(
-            input=value, extensions="".join(self.allowed_types)
+            input=value, extensions=",".join(self.allowed_types)
         )
 
     def __call__(self, value):

@@ -1,4 +1,5 @@
 import io
+import re
 from tempfile import SpooledTemporaryFile
 
 import pytest
@@ -162,7 +163,7 @@ def test_filetype():
 
     with pytest.raises(
         ValidationError,
-        match=r"Not an allowed file type. Allowed file types: \[.*?\]",  # noqa: W605
+        match=re.escape("Not an allowed file type. Allowed file types: [.png,.jpg]"),  # noqa: W605
     ):
         no_ext_fs = FileStorage(io.BytesIO(b"".ljust(1024)), "test")
-        validate.FileType([".png"])(no_ext_fs)
+        validate.FileType([".png", ".jpg"])(no_ext_fs)
