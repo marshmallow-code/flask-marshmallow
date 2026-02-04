@@ -5,7 +5,7 @@ description = "Flask + marshmallow for beautiful APIs"
 readme = "README.rst"
 license = { file = "LICENSE" }
 maintainers = [
-  { name = "Steven Loria", email = "sloria1@gmail.com" },
+  { name = "Steven Loria", email = "oss@stevenloria.com" },
   { name = "Stephen Rosen", email = "sirosen0@gmail.com" },
 ]
 classifiers = [
@@ -14,14 +14,14 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["Flask>=2.2", "marshmallow>=3.0.0"]
 
 [project.urls]
@@ -35,7 +35,7 @@ docs = [
   "sphinx-issues==5.0.1",
 ]
 tests = ["flask-marshmallow[sqlalchemy]", "pytest"]
-dev = ["flask-marshmallow[tests]", "tox", "pre-commit>=3.5,<5.0"]
+dev = ["flask-marshmallow[tests]", "tox", "pre-commit>=4.5,<5.0"]
 sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=0.29.0"]
 
 [build-system]
