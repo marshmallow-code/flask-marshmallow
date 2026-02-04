@@ -8,6 +8,10 @@ Bug fixes:
 
 * Add missing commas in error message for ``validate.FileType`` (:pr:`374`).
 
+Support:
+
+* Support Python 3.10-3.14 (:pr:`376`).
+
 1.3.0 (2025-01-06)
 ******************
 
