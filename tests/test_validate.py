@@ -165,4 +165,4 @@ def test_filetype():
         match=r"Not an allowed file type. Allowed file types: \[.*?\]",  # noqa: W605
     ):
         no_ext_fs = FileStorage(io.BytesIO(b"".ljust(1024)), "test")
-        validate.FileType([".png"])(no_ext_fs)
+        validate.FileType([".png", ".jpg"])(no_ext_fs)

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+unreleased
+**********
+
+Bug fixes:
+
+* Add missing commas in error message for ``validate.FileType`` (:pr:`374`).
+
 1.3.0 (2025-01-06)
 ******************
 
