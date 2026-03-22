@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -76,6 +78,7 @@ class TestSQLAlchemy:
             __tablename__ = "book"
             id = db.Column(db.Integer, primary_key=True)
             title = db.Column(db.String(255))
+            price = db.Column(db.Numeric(scale=2))
             author_id = db.Column(db.Integer, db.ForeignKey("author.id"))
             author = db.relationship("AuthorModel", backref="books")
 
@@ -289,3 +292,25 @@ class TestSQLAlchemy:
 
         deserialized = author_schema.load(author_result)
         assert deserialized["books"][0] == book
+
+    @requires_sqlalchemyschema
+    def test_auto_field_numeric_deserializes_to_decimal(self, extma, models):
+        class BookSchema(extma.SQLAlchemyAutoSchema):
+            class Meta:
+                model = models.Book
+                load_instance = False
+
+            price = extma.auto_field()
+
+        schema = BookSchema()
+        field = schema.fields["price"]
+
+        assert isinstance(field, extma.Decimal)
+        assert field.as_string is False
+
+        loaded = schema.load({"price": "12.34"})
+        assert loaded["price"] == Decimal("12.34")
+        assert isinstance(loaded["price"], Decimal)
+
+        dumped = schema.dump(models.Book(price=Decimal("12.34")))
+        assert dumped["price"] == Decimal("12.34")
