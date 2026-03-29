@@ -46,6 +46,10 @@ class TestSQLAlchemy:
 
         yield app_
 
+        if "sqlalchemy" in app_.extensions:
+            db = app_.extensions["sqlalchemy"]
+            db.session.remove()
+            db.engine.dispose()
         ctx.pop()
 
     @pytest.fixture
