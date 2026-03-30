@@ -1,6 +1,14 @@
 Changelog
 =========
 
+(unreleased)
+************
+
+Bug fixes:
+
+* Fix setting of scoped session on ``SQLAlchemyAuto`` (:pr:`382`).
+  Thanks :user:`galuszkak` for the PR.
+
 1.4.0 (2026-02-04)
 ******************
 
