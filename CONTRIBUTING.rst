@@ -36,25 +36,19 @@ Setting Up for Local Development
     $ git clone https://github.com/marshmallow-code/flask-marshmallow.git
     $ cd flask-marshmallow
 
-2. Install development requirements. **It is highly recommended that you use a virtualenv.**
-   Use the following command to install an editable version of
-   flask-marshmallow along with its development requirements.
+2. Install `uv <https://docs.astral.sh/uv/getting-started/installation/>`_.
+
+3. Install development requirements.
 
 ::
 
-    # After activating your virtualenv
-    $ pip install -e '.[dev]'
+    $ uv sync
 
-3. (Optional, but recommended) Install the pre-commit hooks, which will format and lint your git staged files. 
+4. (Optional but recommended) Install the pre-commit hooks, which will format and lint your git staged files.
 
 ::
 
-    # The pre-commit CLI was installed above
-    $ pre-commit install
-
-.. note::
-
-    flask-marshmallow uses `black <https://github.com/ambv/black>`_ for code formatting, which is only compatible with Python>=3.6. Therefore, the ``pre-commit install`` command will only work if you have the ``python3.6`` interpreter installed.
+    $ uv run pre-commit install --allow-missing-config
 
 Git Branch Structure
 ********************
@@ -102,15 +96,15 @@ Running Tests
 
 To run all tests: ::
 
-    $ pytest
+    $ uv run pytest
 
 To run syntax checks: ::
 
-    $ tox -e lint
+    $ uv run tox -e lint
 
 (Optional) To run tests in all supported Python versions in their own virtual environments (must have each interpreter installed): ::
 
-    $ tox
+    $ uv run tox
 
 Documentation
 *************
@@ -119,7 +113,7 @@ Contributions to the documentation are welcome. Documentation is written in `reS
 
 To build the docs in "watch" mode: ::
 
-   $ tox -e watch-docs
+   $ uv run tox -e docs-serve
 
 Changes in the `docs/` directory will automatically trigger a rebuild.
 
