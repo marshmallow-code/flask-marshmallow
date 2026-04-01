@@ -32,18 +32,9 @@ Funding = "https://opencollective.com/marshmallow"
 sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=0.29.0"]
 
 [dependency-groups]
-docs = [
-  "marshmallow-sqlalchemy>=0.19.0",
-  "sphinx-issues",
-  "sphinx>=8.1",
-]
+docs = ["marshmallow-sqlalchemy>=0.19.0", "sphinx-issues", "sphinx>=8.1"]
 tests = ["pytest"]
-dev = [
-  { include-group = "tests" },
-  "tox",
-  "tox-uv",
-  "pre-commit>=4.5,<5.0",
-]
+dev = [{ include-group = "tests" }, "tox", "tox-uv", "pre-commit>=4.5,<5.0"]
 
 [tool.uv]
 default-groups = ["dev"]
@@ -78,5 +69,7 @@ select = [
 [tool.pytest.ini_options]
 filterwarnings = [
   "error",
+  # TODO: Remove below when Python 3.10 is no longer supported
   "ignore:distutils Version classes are deprecated\\. Use packaging.version instead\\.:DeprecationWarning:marshmallow",
+  "ignore:The distutils package is deprecated:DeprecationWarning",
 ]
