@@ -3,7 +3,7 @@ name = "flask-marshmallow"
 version = "1.4.0"
 description = "Flask + marshmallow for beautiful APIs"
 readme = "README.rst"
-license = { file = "LICENSE" }
+license = "MIT"
 maintainers = [
   { name = "Steven Loria", email = "oss@stevenloria.com" },
   { name = "Stephen Rosen", email = "sirosen0@gmail.com" },
@@ -11,7 +11,6 @@ maintainers = [
 classifiers = [
   "Environment :: Web Environment",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
@@ -22,7 +21,7 @@ classifiers = [
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 requires-python = ">=3.10"
-dependencies = ["Flask>=2.2", "marshmallow>=3.0.0"]
+dependencies = ["Flask>=2.2", "marshmallow>=4.0.0"]
 
 [project.urls]
 Issues = "https://github.com/marshmallow-code/flask-marshmallow/issues"

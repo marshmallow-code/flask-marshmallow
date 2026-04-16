@@ -4,6 +4,10 @@ Changelog
 (unreleased)
 ************
 
+Other changes:
+
+* Drop support for marshmallow 3, which is EOL.
+
 Bug fixes:
 
 * Fix setting of scoped session on ``SQLAlchemyAuto`` (:pr:`382`).
