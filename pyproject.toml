@@ -1,6 +1,6 @@
 [project]
 name = "flask-marshmallow"
-version = "1.4.0"
+version = "1.5.0"
 description = "Flask + marshmallow for beautiful APIs"
 readme = "README.rst"
 license = "MIT"
