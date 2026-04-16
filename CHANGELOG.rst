@@ -9,6 +9,11 @@ Bug fixes:
 * Fix setting of scoped session on ``SQLAlchemyAuto`` (:pr:`382`).
   Thanks :user:`galuszkak` for the PR.
 
+Other changes:
+
+* Drop support for marshmallow 3, which is EOL.
+* Bump minimum version of marshmallow-sqlalchemy to 1.4.0 for the `sqlalchemy` extra.
+
 1.4.0 (2026-02-04)
 ******************
 
