@@ -28,7 +28,7 @@ Issues = "https://github.com/marshmallow-code/flask-marshmallow/issues"
 Funding = "https://opencollective.com/marshmallow"
 
 [project.optional-dependencies]
-sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=0.29.0"]
+sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=1.4.0"]
 
 [dependency-groups]
 docs = ["marshmallow-sqlalchemy>=0.19.0", "sphinx-issues", "sphinx>=8.1"]

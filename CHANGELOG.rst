@@ -7,6 +7,7 @@ Changelog
 Other changes:
 
 * Drop support for marshmallow 3, which is EOL.
+* Bump minimum version of marshmallow-sqlalchemy to 1.4.0 for the `sqlalchemy` extra.
 
 Bug fixes:
 
