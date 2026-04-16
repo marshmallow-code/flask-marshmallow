@@ -330,8 +330,8 @@ tests = [
 requires-dist = [
     { name = "flask", specifier = ">=2.2" },
     { name = "flask-sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=3.0.0" },
-    { name = "marshmallow", specifier = ">=3.0.0" },
-    { name = "marshmallow-sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=0.29.0" },
+    { name = "marshmallow", specifier = ">=4.0.0" },
+    { name = "marshmallow-sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=1.4.0" },
 ]
 provides-extras = ["sqlalchemy"]
 
