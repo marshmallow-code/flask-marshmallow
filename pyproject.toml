@@ -33,7 +33,13 @@ sqlalchemy = ["flask-sqlalchemy>=3.0.0", "marshmallow-sqlalchemy>=1.4.0"]
 [dependency-groups]
 docs = ["marshmallow-sqlalchemy>=0.19.0", "sphinx-issues", "sphinx>=8.1"]
 tests = ["pytest"]
-dev = [{ include-group = "tests" }, "tox", "tox-uv", "pre-commit>=4.5,<5.0"]
+lint = ["pre-commit>=4.5,<5.0"]
+dev = [
+  { include-group = "tests" },
+  { include-group = "lint" },
+  "tox",
+  "tox-uv",
+]
 
 [tool.uv]
 default-groups = ["dev"]
