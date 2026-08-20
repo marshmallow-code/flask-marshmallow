@@ -57,7 +57,7 @@ EXTENSION_NAME = "flask-marshmallow"
 
 
 def _attach_fields(obj):
-    """Attach all the marshmallow fields classes to ``obj``, including
+    """Attach all the marshmallow field classes to ``obj``, including
     Flask-Marshmallow's custom fields.
     """
     for attr in base_fields.__all__:
@@ -81,7 +81,7 @@ class Marshmallow:
     all fields in :mod:`marshmallow.fields`, as well as the Flask-specific
     fields in :mod:`flask_marshmallow.fields`.
 
-    You can declare schema like so::
+    You can declare a schema like so::
 
         class BookSchema(ma.Schema):
             id = ma.Integer(dump_only=True)

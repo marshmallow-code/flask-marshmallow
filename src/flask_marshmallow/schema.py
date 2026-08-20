@@ -25,6 +25,7 @@ class Schema(ma.Schema):
         :param bool many: Whether `obj` should be serialized as an instance
             or as a collection. If None, defaults to the value of the
             `many` attribute on this Schema.
+        :param args: Additional positional arguments passed to `flask.jsonify`.
         :param kwargs: Additional keyword arguments passed to `flask.jsonify`.
 
         .. versionchanged:: 0.6.0
