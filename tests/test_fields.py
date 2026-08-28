@@ -168,6 +168,15 @@ def test_file_field(ma, mockauthor):
         field.deserialize("123", mockauthor)
 
 
+def test_file_field_allow_none(ma):
+    field = ma.File(allow_none=True)
+    assert field.deserialize(None) is None
+    assert field.deserialize("") is None
+    assert field.deserialize("null") is None
+    empty = FileStorage(io.BytesIO(b""), "")
+    assert field.deserialize(empty) is None
+
+
 def test_config_field(ma, app, mockauthor):
     app.config["NAME"] = "test"
     field = ma.Config(key="NAME")
