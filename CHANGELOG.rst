@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Unreleased
+**********
+
+Bug fixes:
+
+* Treat empty or missing uploads as ``None`` when ``File(allow_none=True)``
+  (:issue:`319`).
+
 1.5.0 (2026-04-15)
 ******************
 
