@@ -1,6 +1,14 @@
 Changelog
 =========
 
+unreleased
+**********
+
+Other changes:
+
+* Drop support for Python 3.10.
+* Test against Python 3.15.
+
 1.5.0 (2026-04-15)
 ******************
 
