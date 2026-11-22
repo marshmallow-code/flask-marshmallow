@@ -233,6 +233,13 @@ class File(fields.Field):
         data: typing.Mapping[str, typing.Any] | None = None,
         **kwargs,
     ):
+        from werkzeug.datastructures import FileStorage
+
+        if self.allow_none:
+            if isinstance(value, str) and value in ("", "null"):
+                value = None
+            elif isinstance(value, FileStorage) and not value.filename:
+                value = None
         if isinstance(value, Sequence) and len(value) == 0:
             value = missing
         return super().deserialize(value, attr, data, **kwargs)
