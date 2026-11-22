@@ -168,6 +168,27 @@ def test_file_field(ma, mockauthor):
         field.deserialize("123", mockauthor)
 
 
+def test_file_field_allow_none_empty_uploads(ma, mockauthor):
+    field = ma.File(allow_none=True)
+
+    assert field.deserialize(None, mockauthor) is None
+    assert field.deserialize("", mockauthor) is None
+    assert field.deserialize("null", mockauthor) is None
+
+    empty_upload = FileStorage(io.BytesIO(b""), "")
+    assert field.deserialize(empty_upload, mockauthor) is None
+
+    upload = FileStorage(io.BytesIO(b"test"), "test.jpg")
+    assert field.deserialize(upload, mockauthor) is upload
+
+
+def test_file_field_allow_none_empty_sequences_are_missing(ma, mockauthor):
+    field = ma.File(allow_none=True)
+
+    assert field.deserialize([], mockauthor) is missing
+    assert field.deserialize((), mockauthor) is missing
+
+
 def test_config_field(ma, app, mockauthor):
     app.config["NAME"] = "test"
     field = ma.Config(key="NAME")

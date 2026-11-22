@@ -4,6 +4,11 @@ Changelog
 unreleased
 **********
 
+Bug fixes:
+
+* Treat empty uploads as ``None`` when ``File(allow_none=True)``
+  (:issue:`319`).
+
 Other changes:
 
 * Drop support for Python 3.10.
